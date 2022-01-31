@@ -1,7 +1,6 @@
 * {
 	outline: none;
 	--theme-color: #f78e66;
-	--link-color: #72b6b5;
 }
 body {
 	color: #d8d8d8 !important;
@@ -53,7 +52,7 @@ nav {
 }
 
 nav a {
-	color: var(--link-color) !important;
+	color: #72b6b5 !important;
 	padding-right: 2rem;
 	font-size: 1rem;
 	font-weight: bold;
@@ -80,12 +79,6 @@ main {
 	display: grid;
 }
 
-.meta {
-	font-size: 0.7rem;
-	font-weight: normal;
-	text-transform: uppercase;
-}
-
 .author-bio img {
 	width: 200px !important;
 	border-radius: 100%;
@@ -103,56 +96,53 @@ main {
 	line-height: 1.9rem;
 }
 
+.center {
+	text-align: center;
+}
+
+.image figcaption {
+
+}
+
 .content a:hover {
-	text-decoration: underline;
+	text-decoration: underline !important;
 }
 
-
-.posts {
-	list-style: none;
-	padding-left: 10px;
-	margin-top: -10px;
-}
-
-.post-group-date {
-	margin-bottom: 10px;
-}
-
-.notes {
-	list-style: none;
-	padding-left: 10px;
-	margin-top: -10px;
-}
-
-.list a {
+.post-list a {
 	text-decoration: none;
 	position: relative;
-	color: var(--link-color) !important;
+	color: var(--theme-color) !important;
+	/* color: #72b6b5 !important; */
 }
 
-.list a:hover {
-	text-decoration: none !important;
-}
-
-.list a:after {
+.post-list a:after {
 	content: "";
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	width: 0%;
-	border-bottom: 2px solid var(--link-color) ;
+	border-bottom: 2px solid var(--theme-color);
 	transition: 0.4s;
 }
 
-.list a:hover:after {
+.post-list a:hover:after {
 	width: 100%;
+}
+
+.post-list a:before,
+.post-list a:before {
+	content: "#";
+	color: #42b983;
+	position: absolute;
+	left: -0.8em;
+	font-weight: bold;
 }
 
 /* footer */
 
 footer {
 	font-weight: bold;
-	color: var(--link-color);
+	color: #72b6b5;
 	font-size: 1rem;
 	margin: 4rem 25% 4rem 25%;
 }

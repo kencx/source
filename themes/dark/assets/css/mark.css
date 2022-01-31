@@ -40,16 +40,6 @@ pre {
 	font-size: 13px;
 }
 
-figure {
-	text-align: center;
-}
-
-figcaption p {
-	text-align: center !important;
-	font-size: 12px;
-	color: #898989;
-}
-
 h1,
 h2,
 h3,
@@ -79,10 +69,12 @@ h2:before {
 } */
 
 h1 {
+	/*border-bottom: 8px solid #71BA51 !important;*/
 	font-size: 20px !important;
 }
 
 h2 {
+	/*border-bottom: 5px solid #71BA51 !important;*/
 	font-size: 18px !important;
 }
 
@@ -99,16 +91,18 @@ ol {
 
 li {
 	line-height: 24px;
+	list-style: none;
 }
 
 hr {
-	height: 1px;
+	height: 4px;
 	padding: 0;
 	margin: 16px 0;
-	background-color: #72b6b5;
+	background-color: #e7e7e7;
 	border: 0 none;
 	overflow: hidden;
 	box-sizing: content-box;
+	border-bottom: 1px solid #ddd;
 }
 
 .highlighter-rouge {

@@ -1,0 +1,24 @@
+{{ define "main" }}
+	<p class="title">
+		{{ .Title }}
+	</p>
+
+	{{ if .Content }}
+		<div>{{ .Content }}</div>
+	{{ end }}
+
+	{{ if (where .Site.Pages "Section" "notes") }}
+		{{ range .Sections.ByTitle }}
+			<div>
+				<h2>{{ .Title }}</h2>
+				<ul class="notes list">
+					{{ range .Pages.Reverse }}
+						<li>
+							<a href="{{.Permalink}}">{{.Title}}</a>
+						</li>
+					{{ end }}
+				</ul>
+			</div>
+		{{ end }}
+	{{ end }}
+{{ end }}

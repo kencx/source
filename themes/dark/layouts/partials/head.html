@@ -6,7 +6,8 @@
 	<meta name="robots" content="noodp" />
 
 	<title>{{ .Title }}</title>
-
-	<link rel="stylesheet" href="css/main.css" />
+	{{ $stylemain := resources.Get "css/main.css" | minify | fingerprint "sha512" }}
+	<link rel="stylesheet" href="{{ $stylemain.RelPermalink }}" integrity="{{ $stylemain.Data.Integrity }}">
+	<!-- <link rel="stylesheet" href="css/main.css" /> -->
 	<link rel="shortcut icon" type="image/png" href="img/favicon.png" />
 </head>

@@ -1,10 +1,7 @@
 {{ define "main" }}
-
-<main class="content">
 	<p class="title">
 		{{ .Title }}
+		<span class="meta">{{ .Date.Format "2 Jan 2006" }}</span>
 	</p>
 	{{ .Content }}
-</main>
-
 {{ end }}
