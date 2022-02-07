@@ -11,6 +11,7 @@ I have been using the Planck keyboard for almost a year now, at this time of wri
 
 {{< figure src="/notes/keyboards/images/planck.png" caption="The Planck Rev 6" alt="The Planck Rev 6" class="center" width="350px">}}
 
+Specs:
 - 67g Tangerines linear switches
 - Black DSA blank keycaps
 - Lubed and filmed with Krytox 205g0 and Deskeys
