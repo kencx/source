@@ -1,6 +1,32 @@
+@font-face {
+  font-family: "Fira Code";
+  font-style: normal;
+  font-weight: 400;
+  font-display: auto;
+  src: url("../fonts/FiraCode.woff2") format("woff2"),
+	   url("../fonts/FiraCode.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Fira Code";
+  font-style: normal;
+  font-weight: 600;
+  font-display: auto;
+  src: url("../fonts/FiraCodeMedium.woff2") format("woff2"),
+	   url("../fonts/FiraCodeMedium.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Fira Code";
+  font-style: normal;
+  font-weight: 800;
+  font-display: auto;
+  src: url("../fonts/FiraCodeBold.woff2") format("woff2"),
+	   url("../fonts/FiraCodeBold.woff") format("woff");
+}
+
 * {
-	font-family: Fira Code;
-	src: url('https://fonts.googleapis.com/css?family=Fira Code');
+	font-family: "Fira Code";
 	--theme-color: #f78e66;
 }
 
