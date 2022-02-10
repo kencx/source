@@ -1,7 +1,8 @@
 ---
-title: "My Transition to Linux"
+title: "Transition to Linux"
 date: 2021-11-18T22:46:03+08:00
-draft: true
+lastmod: 2022-02-10
+draft: false
 toc: false
 images:
 tags:
@@ -19,30 +20,30 @@ proper.
 
 ## Time
 
-Graduating meant that I had some downtime for self learning.
+I had a surprising amount of free time to do tons of self studying. It also
+helps that I work with Linux systems at work as well.
 
 ## Motivation
 
 I'm going to be honest here - the largest motivator for learning Linux was my
 hatred of Windows. A weekend of reinstalling Windows after a broken update was
 the last straw[^1]. I primarily worked on Linux VMs thereafter, before finally
-moving full-time to Xubuntu[^2] with a Windows VM.
+moving full-time to Xubuntu[^2].
 
 I'm not saying Windows is terrible. I'm just saying its terrible for me. There
-are many [problems]() with the Linux ecosystem, and I will say its definitely
-not for the average user who just wishes to get things done. There are many
-things that will not *just* work.
+are many [problems](https://corn.codeberg.page/notlinux.html) with the Linux
+ecosystem, and I will say its definitely not for the average user who just
+wishes to get things done. There are many things that will not *just work*.
 
 Even so, there were pull factors that drew me into Linux
 - Better support for dev tooling and packages (especially Docker)
-- Flexibility and [customization](https://reddit.com/r/unixporn)
+- Flexibility and [customization](https://github.com/kencx/dotfiles)
 - Fun
 
-I came for the first point but probably stuck around due to the latter two. The
-process of customization in `r/unixporn`, `r/vim` and `r/neovim` probably taught
-me much more about shell scripting than I can learn from any videos or tutorials.
-`r/selfhosted` also opened the doors to FOSS, DevOps, automation and network
-security, which are all super interesting to me.
+I came for the first point but probably stuck around due to the latter two.
+Ricing my system probably taught me much more about shell scripting than any
+tutorial or book. I also learned an unhealthy amount of Lua just from configuring
+neovim.
 
 ## Courage
 
@@ -55,10 +56,10 @@ Increased exposure and use of tools eventually led to familiarity and habit. Its
 important to start small and pick up new information as you go along. For
 example, before I made the switch to Linux full-time, I "rehearsed" the
 installation of my tools, packages and dotfiles in the VM. I assumed the actual
-installation and setup would then be quick and easy.
+installation and setup would then be quick and easy[^3].
 
 I was wrong of course. As I have been working exclusively on VMs, I failed to
-account for the necessary drivers that were absent or incompatible. Cue 3 hours
+account for the necessary (Nvidia) drivers that were absent or incompatible. Cue 3 hours
 of troubleshooting before I got my Wifi and graphics card to work. It was a boon
 however, as I did learn a whole lot more about troubleshooting in Linux systems
 (which is a plus since I work in environment stability!).
@@ -68,13 +69,13 @@ however, as I did learn a whole lot more about troubleshooting in Linux systems
 What started out as a goal to stop using Windows out of spite has opened many
 doors. Through the process, I have picked up many tools and concepts
 - Operating systems, computer networking
-- Containers and Virtualization (Docker and Vagrant)
+- Containers and Virtualization
 - Proper use of Git and Github
-- Automation (Ansible and Terraform)
-- Vim!!
+- Automation (Ansible and CI/CD)
+- (n)vim!!
 
 If you are going through a similar journey, I have just one piece of advice:
-Docker and Vagrant are your friends. A lab environment is REALLY, REALLY
+Docker and Vagrant are your friends. A lab environment is **REALLY, REALLY**
 helpful. It incentivizes you to test things out, providing some hands-on
 experience, while not having to worry about breaking your system.
 
@@ -84,3 +85,6 @@ everyday.
 
 [^1]: Thankfully, my backup systems made the process much smoother than it would have been otherwise.
 [^2]: Still testing out Arch on the side
+[^3]: Fun fact: It, in fact, is quick and easy now! I created a full [Ansible
+  playbook](https://github.com/kencx/playbooks) to configure my entire workstation from scratch with just one
+  command.

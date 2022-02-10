@@ -6,22 +6,26 @@ theme = "dark"
 [permalinks]
   posts = "/posts/:title/"
   notes = "/:sections/:title/"
+  books = "/books/:title/"
+
+[params]
+  author = "kencx"
 
 [menu]
-  [[menu.main]]
-    identifier = "home"
-    name       = "Home"
-    url        = ""
-    weight     = 1
-
   [[menu.main]]
     identifier = "posts"
     name       = "Posts"
     url        = "posts/"
-    weight     = 2
+    weight     = 1
 
   [[menu.main]]
     identifier = "notes"
     name       = "Notes"
     url        = "notes/"
+    weight     = 2
+
+  [[menu.main]]
+    identifier = "books"
+    name       = "Books"
+    url        = "books/"
     weight     = 3
