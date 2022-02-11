@@ -29,3 +29,9 @@ theme = "dark"
     name       = "Books"
     url        = "books/"
     weight     = 3
+
+  [[menu.main]]
+    identifier = "tags"
+    name       = "#"
+    url        = "tags/"
+    weight     = 4
