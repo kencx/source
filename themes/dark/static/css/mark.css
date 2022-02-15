@@ -37,13 +37,13 @@ p {
 	box-sizing: border-box !important;
 	word-wrap: break-word !important;
 	text-align: justify;
-	margin: 20px 0 !important;
+	margin: 15px 0 !important;
 }
 
 blockquote {
 	border-left: 4px solid #42b983;
 	padding: 0 15px !important;
-	margin: 0px;
+	margin: 20px;
 }
 
 strong {
