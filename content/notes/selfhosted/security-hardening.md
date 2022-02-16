@@ -1,32 +1,29 @@
 ---
-title: "Server Security Hardening"
+title: "Security Hardening"
 date: 2022-01-23T21:00:11+08:00
+lastmod: 2022-02-16
 draft: false
 toc: false
 ---
 
 This guide follows a few key security hardening steps that should be performed
-in the first 5 minutes of starting a Linux server.
+in the first 5 minutes of starting a new Linux server.
 
 ## Creating a non root user
 
-On some distributions, we login directly as `root`. However, we should always
-operate with the [Principle of Least
-Privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege). Hence,
-we want to create a new non-root user
+Always follow the [Principle of Least
+Privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege). Create a
+new non-root user with a home directory. Add a complex password.
 
 ```bash
 $ useradd -m johndoe
 $ passwd johndoe
 ```
 
-This creates a new user `johndoe` with a home directory, and prompts for a new
-password. Although there are no restrictions, ensure your entered password is
-complex enough. You can check for the new user in `/etc/passwd`.
+You can check for the new user in `/etc/passwd`.
 
-Next, we want to ensure your new user can run commands as root. Check that the
-`sudo` group exists and that members of the group have permissions to run
-commands as root:
+For your new user to run commands as root, it has to be added to the `sudo`
+group. First, check that the `sudo` group exists:
 
 ```bash
 $ sudo visudo
@@ -38,10 +35,12 @@ $ sudo visudo
 >NEVER edit `/etc/sudoers` directly. `visudo` is safer as it prevents you from locking yourself
 >out of the file by performing syntax checks.
 
-Now, add the user to the `sudo` group:
+Then, add the user to the `sudo` group:
+
 ```bash
 $ usermod -aG sudo johndoe
-$ groups johndoe # ensure sudo is listed
+$ groups johndoe
+johndoe: johndoe, sudo
 ```
 
 ## SSH Config
@@ -49,12 +48,11 @@ $ groups johndoe # ensure sudo is listed
 >Before making any SSH changes, it is good to have a second terminal open to
 >prevent yourself from being locked out.
 
-If you have not done so, consider using SSH keys to login to your server,
-instead of a password. Coupled with disabling password authentication, it is a
-safer and faster method of accessing your server.
+Use SSH keys to login to your server, instead of passwords. Better yet, disable
+password authentication for a safer and faster method of access.
 
-To secure SSH in your server, make the following changes to your default SSH
-configuration file `etc/ssh/sshd_config`.
+To do so, make the following changes to your default SSH configuration file
+`etc/ssh/sshd_config`.
 
 ```
 PasswordAuthentication no
@@ -69,12 +67,13 @@ root login, since no one should really be using the `root` account anyway.
 ```
 Port [custom-port]
 ```
-This next step has mixed reviews among the community. By changing your SSH port
-away from the default port 22, we stop the constant barrage of bots trying to
-access your public facing servers[^1]. However, more advanced bots would simply
-locate your custom port anyway. It is good to weed out the spam in your log
-files though. Just remember to make the same port changes to all other
-applications that requires your SSH port (like ufw).
+
+This next step has mixed reviews. By changing your SSH port away from the
+default port 22, we stop the constant barrage of bots trying to access your
+public facing servers[^1]. However, more advanced bots would simply locate your
+custom port anyway. It is good to weed out the spam in your log files though.
+Just remember to make the same port changes to all other applications that
+requires your SSH port (like ufw).
 
 ```
 LoginGraceTime 30 # in sec
@@ -95,10 +94,10 @@ sshd restart`. Check your new config with `sudo sshd -T`.
 ## Firewall
 
  A firewall is the basic line of defense between your server and incoming
- network. Its never hurts to have it. Install `ufw` as your firewall `sudo apt
- install ufw`
+ network. Its never hurts to have it. `ufw` is a good firewall to have.
 
 ```bash
+$ sudo apt install ufw
 $ sudo ufw default deny incoming
 $ sudo ufw default allow outgoing
 $ sudo ufw allow ssh     # or your custom ssh port
@@ -107,8 +106,8 @@ $ sudo ufw status verbose
 ```
 
 >If you are using Docker on your server with `ufw`, you should know that Docker
->complete ignores and bypasses your ufw rules. Read more about this issue and
->how to solve it [here](https://github.com/chaifeng/ufw-docker).
+>complete ignores and bypasses your ufw rules by default. Read more
+>[here](https://github.com/chaifeng/ufw-docker) for a solution.
 
 ## Fail2Ban
 
@@ -155,7 +154,7 @@ open (speaking from experience).
 When setting up many servers, the aforementioned tasks can be somewhat of a
 chore. Thankfully, they are easily automated with Ansible. I have written a basic
 Ansible role
-[here](https://github.com/kencx/lab/tree/master/playbooks/roles/security) for
+[here](https://github.com/kencx/playbooks/tree/master/playbooks/roles/security) for
 these very tasks.
 
 Jeff Geerling also has a (much better)

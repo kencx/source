@@ -7,18 +7,25 @@ toc: false
 images:
 ---
 
-You might want to use SSH in scripting or cron jobs. Ideally, this would require a *non-interactive* SSH instance where the given passphrase would be entered automatically. This is, however, extremely challenging.
+Automated scripting with SSH is very difficult as it requires a
+*non-interactive* SSH instance where the passphrase must be entered
+automatically.
 
 The alternative would be to use a key pair *without* a passphrase. To ensure this is safe, a number of steps must be taken to secure it further.
 
-Within the server's `authorized_keys` file, we can include the following:
+For each SSH key, we restrict logins to only certain hosts with the
+`from=` keyword AND restrict these hosts to only perform a single command with
+the `command=` keyword, before exiting immediately.
+
 ```bash
+# ~/.ssh/authorized_keys
 from="hostA,hostB" command="command" ssh-ed25519 AAAA....
 ```
 
-For each SSH key within the file, we restrict logins to only `hostA` and `hostB` with `from=""`. However, this might be breached by spoofing an IP or pretending to be the host.
-
-Next, we further restrict the hosts to only perform a single command with `command=""` and exiting immediately. To run multiple commands, use a script (within the server) instead. This restricts the attacker greatly if the key pair were to be compromised.
+Without the command restriction, attackers may pretend to be the host by
+spoofing an IP. To run multiple commands, use a script (within the server)
+instead. This restricts the attacker greatly if the key pair were to be
+compromised.
 
 ### Note
 For the above to be useful, a second key pair has to be generated for the same host. To add another public key without overwriting the first, use

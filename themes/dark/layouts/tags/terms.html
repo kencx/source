@@ -1,0 +1,17 @@
+{{ define "main" }}
+	<p class="title">
+		{{ .Title }}
+	</p>
+
+	{{ if .Content }}
+		<div>{{ .Content }}</div>
+	{{ end }}
+	<ul class="notes list">
+		{{ range .Site.Taxonomies.tags.Alphabetical }}
+			<li>
+				<a href="{{ .Page.Permalink }}">{{ .Page.Title }}</a>
+				 ({{ .Count }})
+			</li>
+		{{ end }}
+	</ul>
+{{ end }}

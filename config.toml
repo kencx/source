@@ -1,7 +1,15 @@
-baseURL = "https://kencx.github.io"
+baseURL = "https://ken.cheo.dev"
 languageCode = "en-us"
 title = "kencx"
 theme = "dark"
+# enableGitInfo = true
+
+[frontmatter]
+  date = ["date", "publishDate", ":filename", ":fileModTime"]
+  # lastmod = ["lastmod", ":git"]
+
+[taxonomies]
+  tag = "tags"
 
 [permalinks]
   posts = "/posts/:title/"
@@ -10,6 +18,9 @@ theme = "dark"
 
 [params]
   author = "kencx"
+  github = "https://github.com/kencx"
+  linkedin = "https://www.linkedin.com/in/kennethcheo/"
+  email = "kennethcheo@pm.me"
 
 [menu]
   [[menu.main]]

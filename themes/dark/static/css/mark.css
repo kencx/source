@@ -10,15 +10,6 @@
 @font-face {
   font-family: "Fira Code";
   font-style: normal;
-  font-weight: 600;
-  font-display: auto;
-  src: url("../fonts/FiraCodeMedium.woff2") format("woff2"),
-	   url("../fonts/FiraCodeMedium.woff") format("woff");
-}
-
-@font-face {
-  font-family: "Fira Code";
-  font-style: normal;
   font-weight: 800;
   font-display: auto;
   src: url("../fonts/FiraCodeBold.woff2") format("woff2"),
@@ -36,7 +27,7 @@ p {
 	min-height: 1em !important;
 	box-sizing: border-box !important;
 	word-wrap: break-word !important;
-	text-align: justify;
+	/* text-align: justify; */
 	margin: 15px 0 !important;
 }
 
@@ -53,17 +44,9 @@ strong {
 }
 
 body {
-	font-size: 15px;
-	/* background: #000c07; */
+	font-size: 16px;
+	/* background: #272727 !important; */
 	background: rgb(16, 20, 23) !important;
-}
-
-pre {
-	background-color: #f8f8f8;
-	border-radius: 3px;
-	word-wrap: break-word;
-	padding: 12px 13px;
-	font-size: 13px;
 }
 
 figure {
@@ -84,7 +67,7 @@ h5,
 h6 {
 	word-break: break-all !important;
 	margin: 20px 0;
-	padding-bottom: 0.3em;
+	/* padding-bottom: 0.3em; */
 	line-height: 1.2;
 	text-align: left;
 	font-weight: bold;
@@ -143,27 +126,26 @@ hr {
 
 pre {
 	background: #00110d !important;
+	display: block;
+	font-size: 13px;
 	padding: 12px 13px;
 	overflow-x: auto !important;
-	border: 2px solid rgb(0, 39, 0);
+	word-wrap: break-word;
+}
+
+pre > code {
+	display: block;
+	text-indent: 0;
 }
 
 code {
+	background-color: #00110d;
 	margin: 0 2px;
 	padding: 3px 5px;
-	/* color: #437b91; */
-	border-radius: 2px;
 	white-space: pre;
-	background-color: #00110d;
+	max-width: 100%;
+	min-width: 100px;
 }
-
-
-
-
-
-
-
-
 
 
 

@@ -1,5 +1,5 @@
 ---
-title: "Planck"
+title: "Keyboards - Planck"
 date: 2022-01-21T17:10:11+08:00
 draft: false
 toc: false
@@ -9,7 +9,7 @@ tags:
 
 I have been using the Planck keyboard for almost a year now, at this time of writing.
 
-{{< figure src="/notes/keyboards/images/planck.png" caption="The Planck Rev 6" alt="The Planck Rev 6" class="center" width="350px">}}
+{{< figure src="/posts/keyboards/images/planck.png" caption="The Planck Rev 6" alt="The Planck Rev 6" class="center" width="350px">}}
 
 Specs:
 - 67g Tangerines linear switches
@@ -39,7 +39,7 @@ were already a seasoned touch typer. I also switched to the Planck around the
 time I was fully writing my undergraduate thesis, which might have been it
 better (or worse).
 
-{{< figure src="/notes/keyboards/images/monkeytype.png" caption="You can clearly see the steep drop, followed by consistently low tries. From [monkeytype.com](https://monkeytype.com)" alt="My drop in WPM" class="center" >}}
+{{< figure src="/posts/keyboards/images/monkeytype.png" caption="You can clearly see the steep drop, followed by consistently low tries. From [monkeytype.com](https://monkeytype.com)" alt="My drop in WPM" class="center" >}}
 
 However, the most challenging thing about this by far, which still poses some
 problems even now, is typing symbols. I struggled greatly with typing passwords
@@ -74,18 +74,18 @@ allows me to have any `Ctrl + [a-z]` combo without straining my fingers. I use
 this a lot as I navigate between tmux panes and vim windows with `Ctrl +
 h,j,k,l`.
 
-{{< figure src="/notes/keyboards/images/home-layer.png" caption="Home Layer" alt="Home Layer" class="center" width="650px">}}
+{{< figure src="/posts/keyboards/images/home-layer.png" caption="Home Layer" alt="Home Layer" class="center" width="650px">}}
 
 Also, I found that I use caps lock enough (like once a day) that it
 deserved to be somewhere accessible. Instead of a whole dedicated key, caps lock
 is activated or deactivated by quickly tapping `Esc` twice.
 
-{{< figure src="/notes/keyboards/images/number-layer.png" caption="Number Layer (Lower)" alt="Number Layer" class="center" width="650px">}}
+{{< figure src="/posts/keyboards/images/number-layer.png" caption="Number Layer (Lower)" alt="Number Layer" class="center" width="650px">}}
 
 The number and function keys are arranged in a numpad layout in the lower layer.
 It makes sense and has worked well for me so far.
 
-{{< figure src="/notes/keyboards/images/symbols-layer.png" caption="Symbols Layer (Raise)" alt="Symbols Layer" class="center" width="650px">}}
+{{< figure src="/posts/keyboards/images/symbols-layer.png" caption="Symbols Layer (Raise)" alt="Symbols Layer" class="center" width="650px">}}
 
 Finally, the symbols are arranged in their typical fashion on traditional
 keyboards on the num row. I also binded the bracket pairs with each other for
@@ -114,7 +114,7 @@ at the moment.
 ## Bill of Materials
 
 | Item                    | Price (SGD)             | Link      |
-| ----------------------- | ----------------------- | ----------|
+| :---------------------- | :---------------------- | :---------|
 | Planck Rev 6            | 161.99 (incl. shipping) | [Massdrop](https://drop.com/buy/planck-mechanical-keyboard)  |
 | 50x Tangerines          | 48.60                   | [Ilumkb](https://ilumkb.com/collections/switches/products/c3-tangerine-switch)    |
 | Black blank DSA keycaps | 15.24                   | Aliexpress|

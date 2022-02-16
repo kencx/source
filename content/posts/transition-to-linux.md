@@ -1,13 +1,12 @@
 ---
 title: "Transition to Linux"
 date: 2021-11-18T22:46:03+08:00
-lastmod: 2022-02-10
+lastmod: 2021-12-01
 draft: false
 toc: false
 images:
 tags:
   - linux
-  - reflections
 ---
 
 {{< figure src="https://imgs.xkcd.com/comics/cautionary.png" caption="relevant xkcd 456" link="https://xkcd.com/456" class="center" >}}
