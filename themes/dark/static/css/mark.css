@@ -125,12 +125,13 @@ hr {
 }
 
 pre {
-	background: #00110d !important;
+	background: #272727 !important;
 	display: block;
 	font-size: 13px;
 	padding: 12px 13px;
 	overflow-x: auto !important;
 	word-wrap: break-word;
+	border-radius: 10px;
 }
 
 pre > code {
@@ -139,12 +140,13 @@ pre > code {
 }
 
 code {
-	background-color: #00110d;
+	background-color: #272727;
 	margin: 0 2px;
 	padding: 3px 5px;
 	white-space: pre;
 	max-width: 100%;
 	min-width: 100px;
+	border-radius: 5px;
 }
 
 
