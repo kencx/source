@@ -2,7 +2,7 @@
 title: "Compose - Environment Variables"
 date: 2022-02-17T18:33:14+08:00
 lastmod:
-draft: true
+draft: false
 toc: false
 tags:
   - docker
@@ -29,14 +29,11 @@ services:
 	  - "${PORTAINER_PORT:-9443}:9443"
 ```
 
-A default value can be provided with `:-[VALUE]` as seen in `ports` above.
-Otherwise, if a value is not set, it defaults to an empty string.
+A default value can be provided with `:-[VALUE]`. Mandatory values are provided
+with `${VAR:?err}`.
 
->Provide a mandatory environment variable with `${VAR:?err}`
-
-Compose specific env variables are automatically passed with an `.env` in the
-project's directory. No extra arguments need to be passed when running
-`docker-compose up`
+Compose specific env variables are automatically passed with an `.env` file in the
+project's directory.
 
 ```bash
 portainer
@@ -47,8 +44,7 @@ portainer
 $ docker-compose up -d
 ```
 
-To specify a *different* `.env` file, use the `--env-file` flag. If a `.env` is
-present, it is ignored.
+To specify a *different* `.env` file, use the `--env-file` flag.
 
 ```bash
 portainer
@@ -61,7 +57,6 @@ $ docker-compose --env-file .env.prod up -d
 ```
 
 #### Precedence
-When the same env variable is given, compose follows the following precedence:
 1. Compose file
 2. Shell environment variables
 3. Environment file `.env` or `--env-file`
@@ -70,9 +65,9 @@ When the same env variable is given, compose follows the following precedence:
 
 ## Container Environment Variables
 
-These environment variables are passed into the *container* for use by the container. They are not read by the compose file at all.
-
-These env variables are passed with the `environment:` directive.
+These environment variables are passed into the *container* for use by the
+container. They cannot be used for variable substitution directly. The variable
+must be passed from the `.env` file.
 
 ```yaml
 services:
@@ -81,11 +76,13 @@ services:
 	environment:
 	  - "INTERNAL=INTERNAL"
 	  - "TEST=${TEST_VARIABLE}"
-```
 
-If they require variable substitution in the compose file (like `TEST_VARIABLE`
-above), the variable must be passed from **`.env`**. Any variables in the
-`env_file:` directive are not seen.
+$ docker exec -it portainer bash
+
+# inside container
+root@server# env
+INTERNAL=INTERNAL
+```
 
 To pass a (or multiple) file(s) of env variables, use the `env_file:` directive.
 
@@ -105,7 +102,7 @@ services:
 	  - "TEST=${TEST_VARIABLE}"
 ```
 
-If multiple env files are passed in `env_file`, the **final file** in the list
+If multiple env files are passed in `env_file`, the **bottom file** in the list
 takes precedence.
 
 >Environment variables passed into `env_file:` directive are NOT read by the
@@ -113,9 +110,8 @@ takes precedence.
 
 When both `environment:` and `env_file:` are set, the `environment:` directive
 takes [precedence](https://github.com/docker/docker.github.io/pull/4177) for any
-common variables between them. This is true even when the values are empty or
-undefined. To prevent confusion and conflict, always set default values in the
-`env_file`.
+common variables. This is true even when the values are empty or undefined. To
+prevent confusion and conflict, always set default values in the `env_file`.
 
 # References
 - [Compose - Environment Variables](https://docs.docker.com/compose/environment-variables/#substitute-environment-variables-in-compose-files)
