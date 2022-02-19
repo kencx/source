@@ -2,7 +2,7 @@
 title: "Validating Changes"
 date: 2022-02-20T01:43:02+08:00
 lastmod:
-draft: true
+draft: false
 toc: false
 ---
 

@@ -2,7 +2,7 @@
 title: "Compose Best Practices"
 date: 2022-02-19T22:51:48+08:00
 lastmod:
-draft: true
+draft: false
 toc: false
 tags:
   - docker

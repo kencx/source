@@ -30,7 +30,6 @@ $ hugo new --kind note-bundle notes/[category]
 ```
 
 ## TODO
-- syntax highlighting
 - scroll to top
 - toc
 - RSS feed
