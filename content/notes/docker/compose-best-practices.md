@@ -1,5 +1,5 @@
 ---
-title: "Compose Best Practices"
+title: "Compose - Best Practices"
 date: 2022-02-19T22:51:48+08:00
 lastmod:
 draft: false
@@ -10,14 +10,24 @@ tags:
 
 #### List services in order you expect them to start
 
-Also add the `depends_on` directive to prevent premature failing of containers
+Add the `depends_on` directive to prevent premature failing of containers
 that have dependencies.
+
+```yaml
+services:
+	app_db:
+		...
+
+	app:
+		depends_on: app_db
+		...
+```
 
 #### Double quote all strings
 
 Speaks for itself.
 
-#### Pin versions of image
+#### Pin versions of image explicitly
 
 Never use `latest` tag in case of breaking changes.
 
@@ -25,18 +35,15 @@ Never use `latest` tag in case of breaking changes.
 
 Database ports are never public facing.
 
-#### Naming conflicts in multiple compose instances
+#### Label all containers with service name
 
-Label all containers with the service name to prevent clashing or confusion
-between containers across compose instances. For example,
+To prevent clashing or confusion between containers across compose instances.
 
 ```yaml
 services:
-	app-name:
+	app_db:
 		...
 
-	app-name_db:
+	app:
 		...
 ```
-
-This way, we do not confuse this stack's database with another.

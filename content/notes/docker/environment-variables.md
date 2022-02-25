@@ -9,17 +9,19 @@ tags:
 ---
 
 There are 2 types of environment variables in docker-compose:
-1. Compose specific env variables
+1. Variable substitution in compose files
 2. Container env variables
 
 Both have different functions and are configured differently.
 
->For debugging env variables, use `docker-compose config`.
+>Tip: For debugging env variables, use `docker-compose config`.
 
-## Compose Specific Environment Variables
-These environment variables are passed into compose files as such
+## Variable Substitution
+These environment variables are passed into compose files with variable
+substitution
 
 ```yaml
+# docker-compose.yml
 services:
   portainer:
     image: portainer:latest
@@ -29,10 +31,10 @@ services:
 	  - "${PORTAINER_PORT:-9443}:9443"
 ```
 
-A default value can be provided with `:-[VALUE]`. Mandatory values are provided
+A default value are provided with `:-[VALUE]` while mandatory values are provided
 with `${VAR:?err}`.
 
-Compose specific env variables are automatically passed with an `.env` file in the
+These env variables are automatically passed with an `.env` file in the
 project's directory.
 
 ```bash
@@ -65,18 +67,19 @@ $ docker-compose --env-file .env.prod up -d
 
 ## Container Environment Variables
 
-These environment variables are passed into the *container* for use by the
-container. They cannot be used for variable substitution directly. The variable
-must be passed from the `.env` file.
+These are passed into the container for use *within the container*. These cannot
+be used for variable substitution directly.
 
 ```yaml
+# docker-compose.yml
 services:
   portainer:
     image: portainer:latest
 	environment:
 	  - "INTERNAL=INTERNAL"
-	  - "TEST=${TEST_VARIABLE}"
+```
 
+```bash
 $ docker exec -it portainer bash
 
 # inside container
@@ -99,19 +102,51 @@ services:
 	env_file: "portainer.env"
 	environment:
 	  - "INTERNAL=INTERNAL"
-	  - "TEST=${TEST_VARIABLE}"
 ```
 
-If multiple env files are passed in `env_file`, the **bottom file** in the list
+If multiple env files are passed in `env_file`, the **last file** in the list
 takes precedence.
 
->Environment variables passed into `env_file:` directive are NOT read by the
->compose file. Do not specify any compose file variables in them.
-
-When both `environment:` and `env_file:` are set, the `environment:` directive
-takes [precedence](https://github.com/docker/docker.github.io/pull/4177) for any
+When both `environment:` and `env_file:` directives are set, the `environment:`
+directive takes
+[precedence](https://github.com/docker/docker.github.io/pull/4177) for any
 common variables. This is true even when the values are empty or undefined. To
 prevent confusion and conflict, always set default values in the `env_file`.
+
+
+```yaml
+# docker-compose.yml
+services:
+  portainer:
+    image: portainer:latest
+	env_file: "portainer.env"
+	environment:
+	  - EDITOR=nano
+	ports:
+	  - "${PORTAINER_PORT:-9443}:9443"
+```
+
+```bash
+# portainer.env
+PORTAINER_PORT=9222
+EDITOR=vim
+FILE_ONLY=true
+
+$ docker exec -it portainer bash
+
+# inside container
+root@server# env
+PORTAINER_PORT=9222
+EDITOR=nano
+FILE_ONLY=true
+```
+
+We observe that
+- `PORTAINER_PORT` in `portainer.env` is not used for variable substitution.
+  Instead, it is defined in the container. It is however, useless in the
+  container.
+- The value of `EDITOR=vim` in `portainer.env` is overwritten by the `EDITOR=nano`.
+- `FILE_ONLY` is defined and not overwritten.
 
 # References
 - [Compose - Environment Variables](https://docs.docker.com/compose/environment-variables/#substitute-environment-variables-in-compose-files)

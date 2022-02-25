@@ -21,9 +21,9 @@ $ ip addr
 
 #### Bridge Networking
 
-Each container runs in an isolated network namespace and use the **default
+Each container runs in an isolated network namespace and uses the **default
 bridge** to connect to each other. The container should lack the `docker0`
-interface, but have its own `eth0` veth pair with an IP.
+interface, but have its own `eth0` veth pair with a unique IP.
 
 ```bash
 $ docker run --net=bridge -it --rm alpine ip addr
@@ -41,7 +41,9 @@ $ ip addr
 ```
 
 #### Custom Bridge Networking
-This is the same as bridge network but uses a custom bridge that was explicitly created.
+
+This is the same as the bridge network but uses a custom bridge that was
+explicitly created.
 
 ```bash
 $ docker network create foo
@@ -58,7 +60,8 @@ $ docker run -it --rm --name=container2 --network=foo alpine sh
 2 veth pairs should be created along with the bridge interface.
 
 #### Container-defined Networking
-The container created shares a network namespace with the specified container.
+
+The container created shares a network namespace with another specified container.
 
 ```bash
 $ docker run -it --rm --name=container1 alpine sh
@@ -83,13 +86,13 @@ Not discussed - Overlays, MacVLAN, IPvlan [networks](https://docs.docker.com/net
 
 ## Container Networking
 
-Regardless of the network type used, networking from within the container is the same for all.
+Regardless of the network type used, networking from within the container is the same for all types.
 
 #### Publishing Ports
 
 By default, containers do not publish any ports to the host. To make a port
-available, it must be published with `--publish`. This creates a firewall rule
-which maps a container port to the host port.
+available, it must be published with the `--publish` flag. This creates a
+firewall rule which maps a container port to the host port.
 
 ```bash
 -p 8080:80                 # map container tcp 80 to host 8080

@@ -96,7 +96,7 @@ ENTRYPOINT ["/bin/ping"]
 CMD ["localhost"]
 ```
 
-exec form does not invoke the command shell; it cannot do evaluate environment variables (eg. `$HOME`) unless the shell is included with `["/bin/sh", "-c", ...]`.
+exec form does not invoke the command shell; it cannot evaluate environment variables (eg. `$HOME`) unless the shell is included with `["/bin/sh", "-c", ...]`.
 
 In shell form, all commands are wrapped with `/bin/sh -c` by default. Hence, it can evaluate environment variables.
 

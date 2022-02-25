@@ -20,7 +20,7 @@ theme = "dark"
   author = "kencx"
   github = "https://github.com/kencx"
   linkedin = "https://www.linkedin.com/in/kennethcheo/"
-  email = "kennethcheo@pm.me"
+  email = "ken@cheo.dev"
 
 [menu]
   [[menu.main]]
