@@ -12,9 +12,14 @@
 			<div>
 				<h2>{{ .Title }}</h2>
 				<ul class="notes list">
-					{{ range .Pages.Reverse }}
+					{{ range .Pages.ByTitle }}
 						<li>
-							<a href="{{.Permalink}}">{{.Title}}</a>
+							{{ if .Content  }}
+								<a href="{{.Permalink}}">{{.Title}}</a>
+							{{ else }}
+								{{ .Title }}
+							{{ end }}
+
 						</li>
 					{{ end }}
 				</ul>

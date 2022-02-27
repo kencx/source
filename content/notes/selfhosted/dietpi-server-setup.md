@@ -120,67 +120,12 @@ $ ssh dietpi@192.25.56.3
 
 # Post Boot Setup
 
-The next few sections are purely optional. However, [securing of your server](/notes/selfhosted/server-security-hardening) is highly recommended.
-
-## Booting from NVME SSD
-
-Instead of using an SD card, we want to boot from an NVME SSD instead. The
-advantages are widely discussed, and I will not go into the details. Here is a
-quick benchmark I performed between IO speeds before and after I switched to an
-SSD. We can clearly see a 10-fold increase.
-
-{{< figure src="/img/sdcard-benchmark.jpg" caption="SD Card" class="center" >}}
-{{< figure src="/img/ssd-benchmark.jpg" caption="NVME M.2" class="center" >}}
-
-You will need an [NVME M.2
-stick](https://www.amazon.com/Samsung-970-EVO-Plus-MZ-V7S1T0B/dp/B07MFZY2F2/ref=sr_1_3?crid=5UQNN0OJ6RNT&keywords=nvme+samsung&qid=1640853863&sprefix=nvme+samsung+%2Caps%2C468&sr=8-3),
-a USB-C case and a USB-3.0 to USB-C cable for the best results.
-
-Firstly, you want to turn off your Pi, remove the SD card and insert it into
-your PC. Identify the device name of your card with `sudo fdisk -l`. Run `dd`
-with the following flags
-
-```bash
-$ dd if=/dev/sd-card of=~/Downloads/pi_copy.img
-```
-**DO NOT** mix up `if` (the input) and `of` (the output) or you might destroy the file system.
-
-This produces an `.img` file that can be flashed into the SSD with the same
-[software](#flash-os) as before. Or you could use `dd` to flash it
-manually. Plug the SSD into your Pi and it should boot normally without the SD
-card.
-
->If you are on Windows, the easiest way to do this is to use
->[Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/).
-
-This next step is often missed, you want to check if the partition in your SSD
-has been resized. When the `.img` file was flashed, it is possible that the
-256GB SSD was resized to 16GB (your SD card's size). On DietPi,
-`dietpi-drive_manager` can help with this.
-
-## Replace Dropbear with OpenSSH
-
-On DietPi, the default SSH server is Dropbear. I would like to replace this with
-OpenSSH. Install OpenSSH in `dietpi-software`.
-
->Ensure you have a second SSH window open before doing this.
-
-You want to start OpenSSH become stopping Dropbear. Otherwise the server will
-kick you out and be inaccessible.
-
-```bash
-$ sudo systemctl start sshd
-$ sudo systemctl enable sshd
-
-$ sudo systemctl stop dropbear
-$ sudo systemctl disable dropbear
-```
+- [Boot Raspberry Pi from an SSD](/notes/selfhosted/boot-pi-ssd)
+- [Security Hardening](/notes/selfhosted/server-security-hardening).
 
 # References
 
 - [Headless Install of
 DietPi](https://www.youtube.com/watch?v=vlMpn9u0Y4o&list=PLUKd6GYp0QDk-lvY234nRkpk6dIgYb9EM&index=11)
-- [DietPi Forums - Upgrade from SD card to
-SSD](https://dietpi.com/phpbb/viewtopic.php?t=8190)
 
 [^1]: Take note that RPi 3 and RPi 4 have different power supply adapters.

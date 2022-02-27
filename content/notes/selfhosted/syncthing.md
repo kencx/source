@@ -6,9 +6,9 @@ toc: false
 images:
 ---
 
-[Syncthing](https://github.com/syncthing/syncthing) is an open source and free, file synchronization software that is simple to use and very powerful.
+[Syncthing](https://github.com/syncthing/syncthing) is an open source and free,
+file synchronization software that is:
 
-What Syncthing is:
 - A P2P network that sends all changes to all connected instances.
 - Multi-Platform compatible[^1]
 - FOSS
@@ -17,7 +17,7 @@ What Syncthing is **not**:
 - A cloud platform
 - A backup alternative
 
-As far as I'm aware, there is no IOS app for Syncthing.
+AFAIK, there is no IOS app for Syncthing.
 
 ## Central Server
 In my home network, I have a Raspberry Pi running as a central server. I use Syncthing as my personal "Dropbox" alternative to share documents between my devices. This server is then backed up locally and remotely with `restic`.
@@ -38,12 +38,22 @@ volumes:
 ```
 
 ## Configuration
+
 The first, crucial thing to do is to turn on GUI authentication. This prevents others from accessing your Syncthing interface without the correct credentials. The option is found under `Settings > GUI`.
 
 Although Syncthing does not store data in the cloud, it does safeguard against accidental deletion or change with file versioning. This is turned off by default. A good practice would be to enable simple file versioning with 5 copies for at least 30 days.
 
+>When used with Traefik, accessing the Web GUI results in a redirect loop. Solve this by opening the port to the Web GUI, accessing it via `IP:PORT` and turning off TLS:
+>
+>```
+>Actions -> Advanced -> GUI -> Use TLS (ensure it is unchecked)
+>```
+>
+>As Traefik ensures HTTPS, this is no longer necessary.
+
+
 # References
-[theselfhostingblog - How to set up a headless syncthing network](https://theselfhostingblog.com/posts/how-to-set-up-a-headless-syncthing-network/)
+- [theselfhostingblog - How to set up a headless syncthing network](https://theselfhostingblog.com/posts/how-to-set-up-a-headless-syncthing-network/)
 
 
 [^1]: For Windows, [Synctrayzor](https://github.com/canton7/SyncTrayzor) is useful as a tray utility launcher.
