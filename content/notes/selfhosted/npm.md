@@ -7,7 +7,7 @@ images:
 ---
 
 [Nginx Proxy Manager](https://nginxproxymanager.com/) is an nginx wrapper that
-quickly sets up a [reverse proxy]({{< ref "/notes/networking/reverse-proxy" >}}) with free SSL certificates and a modern web GUI.
+quickly sets up a [reverse proxy]({{< ref "/notes/networking/reverse-proxy.md" >}}) with free SSL certificates and a modern web GUI.
 
 This guide assumes your applications are running on separate docker containers
 and you wish to access them behind a reverse proxy **WITHOUT** port forwarding.

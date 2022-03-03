@@ -47,3 +47,7 @@ The expression register allows the evaluation of Vim script code and returns the
 > In insert mode, press `<C-r>=` to open the register.
 >
 > Evaluate the expression and hit `<CR>`.
+
+# References
+- [Practical
+  Vim](https://www.oreilly.com/library/view/practical-vim-2nd/9781680501629/)
