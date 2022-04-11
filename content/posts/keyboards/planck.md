@@ -7,6 +7,8 @@ tags:
   - keyboards
 ---
 
+{{< figure src="https://imgs.xkcd.com/comics/borrow_your_laptop.png" caption="relevant xkcd 1806" link="https://xkcd.com/1806" class="center" >}}
+
 I have been using the Planck keyboard for almost a year now, at this time of writing.
 
 {{< figure src="/posts/keyboards/images/planck.png" caption="The Planck Rev 6" alt="The Planck Rev 6" class="center" width="350px">}}
@@ -16,41 +18,39 @@ Specs:
 - Black DSA blank keycaps
 - Lubed and filmed with Krytox 205g0 and Deskeys
 
-I've included a [bill of materials](#bill-of-materials) at the end of this post.
+A [bill of materials](#bill-of-materials) is included at the end of this post.
 
 ## Features
 
-I got the Planck because I wanted a 40% ortholinear keyboard to type on. Why? I
-just thought it might be fun. And why not make it more ~~challenging~~fun with
-blank keycaps.
+I got the Planck because I wanted to try out a 40% ortholinear keyboard. Why? I
+just thought it might be fun.
 
 The Planck has a 4x12 layout with a maximum of just 48 keys. It is fully
 programmable with [QMK firmware](https://github.com/qmk/qmk_firmware) and to top
 it off, its fully hotswappable. Of course, soldering is fun too, but there are
 other opportunities for that.
 
-As far as 40% keyboards go, the Planck is a classic and simple choice. Instead
-of number and function rows, there are *layers*[^1]. The ortholinear layout does
-takes some time getting used to, as opposed to the normal staggered layouts. I
-certainly did not make it easier for myself by getting blank keycaps.
+As far as 40% keyboards go, the Planck is a classic choice. *Layers*[^1] make up
+for the lack of number and function rows, and you can create some cool key
+combos based on your workflow.
 
-My WPM took a nose dive in the first 3 weeks, but you should adapt fast if you
-were already a seasoned touch typer. I also switched to the Planck around the
-time I was fully writing my undergraduate thesis, which might have been it
-better (or worse).
+However, the ortholinear layout does take some time getting used to, as opposed
+to the staggered layout. My WPM fell sharply in my first 3 weeks, but I
+adapted quickly as I was already practicing touch typing. I also switched to
+the Planck around the time I was fully writing my undergraduate thesis helped me
+practice.
 
 {{< figure src="/posts/keyboards/images/monkeytype.png" caption="You can clearly see the steep drop, followed by consistently low tries. From [monkeytype.com](https://monkeytype.com)" alt="My drop in WPM" class="center" >}}
 
-However, the most challenging thing about this by far, which still poses some
-problems even now, is typing symbols. I struggled greatly with typing passwords
-and the use of symbols in programming. I've gotten a little better now - I can
-tell you `$` is the 4th symbol, although I still occasionally mix up the
-positions of `%, ^, &` and `*`. Again, blank keycaps did not help me.
+The most challenging aspect by far (even now), is typing symbols. I struggled
+greatly with typing passwords and the use of symbols in programming. I've gotten
+a little better now - I can pinpoint `$` as the 4th symbol, although I still
+occasionally mix up the positions of `%, ^, &` and `*`.
 
-I also found out last year that using your index finger (instead of your thumbs)
-to hit the spacebar is weird. To me, it seems natural, granted I've been doing
-it all my life. I did consider forcing myself to relearn this but I didn't see a
-point since my keyboard was already so tiny.
+I also discovered that I use my index finger to hit the spacebar as opposed to
+my thumbs, and this is considered weird. To me, it seems natural, granted I've
+been doing it all my life. I did consider forcing myself to relearn this but I
+didn't see a point since my keyboard was already so tiny.
 
 ## Layout
 
@@ -59,15 +59,13 @@ layouts with QMK. My personal Planck layout is tailored towards programming,
 (neo)vim and Linux systems, as these are what I primarily work with.
 
 I have 3 main layers that I use: the home layer, number layer and symbols layer.
-I try to complement the custom hotkey bindings and keyboard layout for
-ergonomics by following some rules:
 The layouts of each layer also are made with two rules in mind.
 - Each command key binding must not consist of more than 2 keys with one hand
 - The 2 keys to be pressed with one hand must not be too far away from each
   other.
 
 For example, instead of `Ctrl + Shift + A`, which is 3 keys with the left hand,
-I use `Ctrl + Shift + L` instead - 2 keys on the left, 1 on the right. `Ctrl` is
+I use `Ctrl + Shift + L` - 2 keys on the left, 1 on the right. `Ctrl` is
 also quite far from the home row, which I solve by binding it to `F` and `J`, as
 can be seen below. It is only activated when *held down*. Having it on both keys
 allows me to have any `Ctrl + [a-z]` combo without straining my fingers. I use
@@ -78,26 +76,25 @@ h,j,k,l`.
 
 Also, I found that I use caps lock enough (like once a day) that it
 deserved to be somewhere accessible. Instead of a whole dedicated key, caps lock
-is activated or deactivated by quickly tapping `Esc` twice.
+is activated and deactivated by quickly tapping `Esc` twice.
 
 {{< figure src="/posts/keyboards/images/number-layer.png" caption="Number Layer (Lower)" alt="Number Layer" class="center" width="650px">}}
 
 The number and function keys are arranged in a numpad layout in the lower layer.
-It makes sense and has worked well for me so far.
+It has worked well for me so far.
 
 {{< figure src="/posts/keyboards/images/symbols-layer.png" caption="Symbols Layer (Raise)" alt="Symbols Layer" class="center" width="650px">}}
 
-Finally, the symbols are arranged in their typical fashion on traditional
-keyboards on the num row. I also binded the bracket pairs with each other for
-easy access.
+Finally, the symbols are arranged in their typical fashion on the num row. I
+moved the bracket pairs (,[,{ next to each other for easy access.
 
 I specifically binded the number keys, which are on the `Lower` layer, to my
 right hand. That way, I can hold down `Lower` with my left hand and press any
 number with my right. This goes for symbol keys on the `Raise` layer as well.
 
-This probably isn't the final layout. Like I said, I'm still tweaking it to find
-out what works best. I also have yet to leverage the full power of QMK. I plan
-to incorporate the use of [tap dance](https://docs.qmk.fm/#/feature_tap_dance)
+This will not be the final layout. I am constantly tweaking it to find out what
+works best. I also have yet to leverage the full power of QMK. I plan to
+incorporate the use of [tap dance](https://docs.qmk.fm/#/feature_tap_dance)
 keys, [macros](https://docs.qmk.fm/#/feature_macros) and add a whole new layer
 just for window navigation.
 
