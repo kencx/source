@@ -10,9 +10,9 @@ This is a site for my personal notes, most of which are related to dev and
 devops. They might be useful or incredibly niche. Read more about that
 [here]({{< ref "/posts/hugo-serve.md" >}}).
 
->Another flaw in human character is that everybody wants to build and nobody
->wants to do maintenance.
->-- Kurt Vonnegut Jr.
+<!-- >Another flaw in human character is that everybody wants to build and nobody -->
+<!-- >wants to do maintenance. -->
+<!-- >-- Kurt Vonnegut Jr. -->
 
 Find me on [Github](https://github.com/kencx).
 

@@ -10,7 +10,13 @@ tags:
 
 `ENTRYPOINT` and `CMD` defines the process that starts running when a container is started.
 
-#### ENTRYPOINT
+## Summary
+| ENTRYPOINT                     | CMD                      |
+| :-----------------------------:| :----------------------: |
+| Dedicated command for image    | Arguments for ENTRYPOINT |
+| Use container as an executable | Default argument for executable container |
+
+## ENTRYPOINT
 
 By default, Docker provides a **default entrypoint `/bin/sh -c`**. If we pass `bash` as an argument when starting a Ubuntu container, the process that is executed would be `/bin/sh -c bash`.
 
@@ -19,9 +25,11 @@ $ docker run -it ubuntu bash
 # /bin/sh -c bash
 ```
 
-`ENTRYPOINT` thus, allows the container to run as an *executable*. To set a custom `ENTRYPOINT`, we can define it with `ENTRYPOINT` in the `Dockerfile` or by passing it with the `--entrypoint` flag.
+`ENTRYPOINT` thus, allows the container to run as an *executable*.
 
-#### CMD
+To set a custom `ENTRYPOINT`, we can define it with `ENTRYPOINT` in the `Dockerfile` or by passing it with the `--entrypoint` flag.
+
+## CMD
 
 On the other hand, `CMD` is the **argument** that is passed to `ENTRYPOINT`. In the above example, `bash` is the command. In fact, `CMD ["bash"]` is the default `CMD` specified in the Ubuntu image, so we can just run
 
@@ -79,12 +87,6 @@ root /#
 # /bin/sh -c bash
 ```
 
-## Summary
-| ENTRYPOINT                     | CMD                      |
-| :-----------------------------:| :----------------------: |
-| Dedicated command for image    | General purpose command  |
-| Use container as an executable | Arguments for ENTRYPOINT |
-
 
 # Shell & Exec Form
 To make things more confusing, there are 2 different ways to define `ENTRYPOINT` and `CMD` - shell and exec form.
@@ -102,7 +104,7 @@ In shell form, all commands are wrapped with `/bin/sh -c` by default. Hence, it 
 
 #### Summary
 |   Form     | Dockerfile                       | Command                    |
-| ---------- | -------------------------------- | -------------------------- |
+| :--------: | :------------------------------- | :------------------------- |
 | shell form | ENTRYPOINT /bin/ping -c 3        | /bin/sh -c 'bin/ping -c 3' |
 | shell form | CMD localhost                    | /bin/sh -c localhost       |
 | exec form  | ENTRYPOINT ["/bin/ping", "-c 3"] | /bin/ping -c 3             |

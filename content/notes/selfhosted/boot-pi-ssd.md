@@ -18,10 +18,9 @@ $ dd if=/dev/sd-card of=~/Downloads/pi_copy.img
 ```
 **DO NOT** mix up `if` (the input) and `of` (the output) or you might destroy the file system.
 
-This produces an `.img` file that can be flashed into the SSD with the same
-[software](#flash-os) as before. Or you could use `dd` to flash it
-manually. Plug the SSD into your Pi and it should boot normally without the SD
-card.
+This produces an `.img` file that can be flashed into the SSD with
+Balena-Etcher. Or you could use `dd` to flash it manually. Plug the SSD into
+your Pi and it should boot normally without the SD card.
 
 >If you are on Windows, the easiest way to do this is to use
 >[Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/).
