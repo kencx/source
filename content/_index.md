@@ -1,5 +1,5 @@
 
-I am a junior DevOps engineer based in Singapore. I am responsible for managing,
+I'm a junior DevOps engineer based in Singapore, responsible for managing,
 maintaining and monitoring internal Linux systems. I am familiar with Python and
 Go, and try my best to automate my job away. In my spare time, I enjoy indie
 games, building [keyboards]({{< ref "/tags/keyboards/"

@@ -1,5 +1,6 @@
 
 nav {
+	display: flex;
 	padding-top: 2rem;
 	line-height: 1.5;
 }
@@ -7,7 +8,7 @@ nav {
 nav a {
 	color: var(--link-color) !important;
 	padding-right: 2rem;
-	font-size: 1rem;
+	font-size: 1.3rem;
 	font-weight: bold;
 }
 

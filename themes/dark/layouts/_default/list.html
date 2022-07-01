@@ -5,7 +5,7 @@
 
 	{{ range .Pages.GroupByDate "Jan 2006" }}
 		<div class="post-group-date">
-			<h2>{{ .Key }}</h2>
+			<h3>{{ .Key }}</h3>
 			<ul class="posts list">
 				{{ range .Pages }}
 					<li><a href="{{ .Permalink }}">{{ .Title }}</a></li>

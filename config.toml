@@ -35,14 +35,14 @@ theme = "dark"
     url        = "notes/"
     weight     = 2
 
-  [[menu.main]]
-    identifier = "books"
-    name       = "Books"
-    url        = "books/"
-    weight     = 3
+  # [[menu.main]]
+  #   identifier = "books"
+  #   name       = "Books"
+  #   url        = "books/"
+  #   weight     = 3
 
   [[menu.main]]
     identifier = "tags"
-    name       = "#"
+    name       = "Tags"
     url        = "tags/"
     weight     = 4

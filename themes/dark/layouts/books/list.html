@@ -10,7 +10,7 @@
 	{{ if (where .Site.Pages "Section" "books") }}
 		{{ range .Sections.ByTitle }}
 			<div>
-				<h2>{{ .Title }}</h2>
+				<h3>{{ .Title }}</h3>
 				<ul class="notes list">
 					{{ range .Pages.ByTitle }}
 						<li>
