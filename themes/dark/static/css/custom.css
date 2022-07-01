@@ -3,75 +3,56 @@
 	--theme-color: #f78e66;
 	--link-color: #72b6b5;
 }
+
 body {
 	color: #d8d8d8 !important;
 }
 
-img {
-	max-width: 100% !important;
-}
-
 .main-container {
-	max-width: 850px;
+	width: 660px;
+	max-width: 100%;
 	margin: 0 auto;
+	/* border: 1px solid white; */
 }
 
 /* header */
 
-header {
-	margin: 2rem 20% -2rem 20%;
-	display: flex;
-	justify-content: center;
-}
-
-header * {
-	color: var(--theme-color) !important;
-	font-size: 2rem !important;
-}
-
-/* .blinking { */
-/* 	animation: opacity 1s ease-in-out infinite; */
-/* 	opacity: 1; */
+/* header { */
+/* 	margin: 2rem 20% -2rem 20%; */
+/* 	display: flex; */
+/* 	justify-content: center; */
 /* } */
 /**/
-/* @keyframes opacity { */
-/* 	0% { */
-/* 		opacity: 1; */
-/* 	} */
-/**/
-/* 	50% { */
-/* 		opacity: 0; */
-/* 	} */
-/**/
-/* 	100% { */
-/* 		opacity: 1; */
-/* 	} */
+/* header * { */
+/* 	color: var(--theme-color) !important; */
+/* 	font-size: 2rem !important; */
 /* } */
 
-/* nav */
+/* footer */
 
-nav {
-	padding-top: 3rem;
-	line-height: 2rem;
-}
-
-nav a {
-	color: var(--link-color) !important;
-	padding-right: 2rem;
-	font-size: 1rem;
+footer {
 	font-weight: bold;
+	color: var(--link-color);
+	font-size: 1rem;
+	margin: 4rem 0;
 }
 
-nav a:hover {
-	text-decoration: underline !important;
+.icons a {
+	font-size: 20px;
+	padding-right: 8px;
+	padding-left: 8px;
 }
 
 /* main */
 
 main {
-	margin-top: 3rem;
 	display: grid;
+	margin-top: 3rem;
 	line-height: 1.5rem;
+}
+
+img {
+	max-width: 100% !important;
 }
 
 .title {
@@ -88,21 +69,13 @@ main {
 	text-transform: uppercase;
 }
 
-.icons a {
-	font-size: 20px;
-	padding-right: 8px;
-	padding-left: 8px;
-}
-
 .content a {
-	/* text-decoration: underline; */
-	line-height: 1.9rem;
+	line-height: 1.6;
 }
 
 .content a:hover {
 	text-decoration: underline;
 }
-
 
 .posts {
 	list-style: none;
@@ -148,16 +121,7 @@ main {
 	width: 100%;
 }
 
-/* footer */
-
-footer {
-	font-weight: bold;
-	color: var(--link-color);
-	font-size: 1rem;
-	margin: 4rem 0;
-}
-
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 660px) {
 	nav,
 	header,
 	footer,

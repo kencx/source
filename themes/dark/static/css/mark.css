@@ -23,7 +23,7 @@
 
 p {
 	letter-spacing: 0.2px !important;
-	line-height: 1.7 !important;
+	line-height: 1.8 !important;
 	min-height: 1em !important;
 	box-sizing: border-box !important;
 	word-wrap: break-word !important;
@@ -39,7 +39,6 @@ blockquote {
 
 strong {
 	font-weight: bold;
-	/*border-bottom: 2px solid #BADA55;*/
 	/*color: #898989;*/
 }
 
@@ -66,38 +65,40 @@ h4,
 h5,
 h6 {
 	word-break: break-all !important;
-	margin: 20px 0;
-	/* padding-bottom: 0.3em; */
 	line-height: 1.2;
 	text-align: left;
 	font-weight: bold;
-	/* color: #80f79f; */
 	color: var(--theme-color);
 	position: relative;
 }
-/*
-h1:before,
-h2:before {
-	content: "#";
-	color: #42b983;
-	position: absolute;
-	left: -0.8em;
-	top: -2px;
-	font-size: 1.2em;
-	font-weight: bold;
-} */
 
 h1 {
-	font-size: 20px !important;
+	margin: 20px 0;
+	font-size: 26px !important;
 }
 
 h2 {
+	margin: 16px 0;
 	font-size: 24px !important;
 }
 
+h3 {
+	margin: 16px 0;
+	font-size: 20px !important;
+}
+
+h4 {
+	margin: 16px 0;
+	font-size: 18px !important;
+}
+
 a {
-	/* color: #ffa0c0 !important; */
 	color: #72b6b5 !important;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #ccf;
 	text-decoration: none;
 }
 
@@ -126,11 +127,10 @@ hr {
 
 pre {
 	background: #272727 !important;
-	display: block;
+	display: grid;
 	font-size: 13px;
 	padding: 12px 13px;
-	overflow-x: auto !important;
-	word-wrap: break-word;
+	width: 100%;
 	border-radius: 10px;
 }
 
@@ -144,13 +144,12 @@ code {
 	margin: 0 2px;
 	padding: 3px 5px;
 	white-space: pre;
+	width: 100%;
 	max-width: 100%;
 	min-width: 100px;
 	border-radius: 5px;
+	overflow-x: auto;
 }
-
-
-
 
 /* syntax  */
 

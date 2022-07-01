@@ -1,0 +1,17 @@
+
+nav {
+	padding-top: 2rem;
+	line-height: 1.5;
+}
+
+nav a {
+	color: var(--link-color) !important;
+	padding-right: 2rem;
+	font-size: 1rem;
+	font-weight: bold;
+}
+
+nav a:hover {
+	text-decoration: underline !important;
+}
+
