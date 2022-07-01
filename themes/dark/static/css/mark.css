@@ -44,8 +44,8 @@ strong {
 
 body {
 	font-size: 16px;
-	/* background: #272727 !important; */
-	background: rgb(16, 20, 23) !important;
+	background: #1F1F28 !important;
+	/* background: #16161D !important; */
 }
 
 figure {
@@ -127,6 +127,7 @@ hr {
 
 pre {
 	background: #272727 !important;
+	/* background: rgb(16, 20, 23) !important; */
 	display: grid;
 	font-size: 13px;
 	padding: 12px 13px;
@@ -141,6 +142,7 @@ pre > code {
 
 code {
 	background-color: #272727;
+	/* background: rgb(16, 20, 23) !important; */
 	margin: 0 2px;
 	padding: 3px 5px;
 	white-space: pre;
