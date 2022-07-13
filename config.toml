@@ -19,7 +19,6 @@ theme = "dark"
 [params]
   author = "kencx"
   github = "https://github.com/kencx"
-  linkedin = "https://www.linkedin.com/in/kennethcheo/"
   email = "ken@cheo.dev"
 
 [menu]
