@@ -33,8 +33,8 @@ changes are automatically deployed with Github Actions. More information
 ### keyb
 
 A simple [TUI](https://github.com/kencx/keyb) for creating and viewing custom
-hotkeys cheatsheets on the terminal. Built with Go, supports fuzzy filtering and fully
-customizable.
+hotkeys cheatsheets on the terminal. Built with Go, supports fuzzy filtering and
+is fully customizable.
 
 ### dotfiles
 
