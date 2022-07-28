@@ -2,8 +2,10 @@
 title: "Update Version Number"
 date: 2022-04-24T00:51:45+08:00
 lastmod: 2022-04-24T00:51:45+08:00
-draft: false
+draft: true
 toc: false
+tags:
+  - git
 ---
 
 This simple bash function increments a version number based on [semantic versioning](https://semver.org/).

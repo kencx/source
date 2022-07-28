@@ -4,6 +4,8 @@ date: 2022-04-19T12:44:09+08:00
 lastmod: 2022-04-19T12:44:09+08:00
 draft: true
 toc: false
+tags:
+  - git
 ---
 
 It is good practice to run `git fetch` instead of `git pull` when collecting changes from remote.
