@@ -37,10 +37,11 @@ footer {
 	margin: 4rem 0;
 }
 
-.icons a {
-	font-size: 20px;
-	padding-right: 8px;
-	padding-left: 8px;
+.icons a svg {
+	height: 1.1rem;
+	width: 1.1rem;
+	padding-right: 4px;
+	padding-left: 4px;
 }
 
 /* main */
