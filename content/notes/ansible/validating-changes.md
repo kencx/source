@@ -4,6 +4,8 @@ date: 2022-02-20T01:43:02+08:00
 lastmod:
 draft: false
 toc: false
+tags:
+- ansible
 ---
 
 `changed_when` and `failed_when` are useful in *validation* tasks in order to

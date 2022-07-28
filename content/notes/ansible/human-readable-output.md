@@ -2,8 +2,10 @@
 title: "Human Readable Output"
 date: 2022-04-19T12:08:07+08:00
 lastmod: 2022-04-19T12:08:07+08:00
-draft: true
+draft: false
 toc: false
+tags:
+- ansible
 ---
 
 By default, Ansible returns an output in json format when running playbooks.

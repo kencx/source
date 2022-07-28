@@ -4,6 +4,8 @@ date: 2022-07-01T09:55:25+08:00
 lastmod:
 draft: false
 toc: false
+tags:
+- go
 ---
 
 An enveloped JSON response looks like this:

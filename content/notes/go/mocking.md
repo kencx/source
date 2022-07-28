@@ -4,6 +4,8 @@ date: 2022-07-01T09:55:25+08:00
 lastmod:
 draft: false
 toc: false
+tags:
+- go
 ---
 
 When creating mocks, we want the ability to modify the mocked object's methods

@@ -2,8 +2,10 @@
 title: "Installing Ansible"
 date: 2022-04-19T12:19:39+08:00
 lastmod: 2022-04-19T12:19:39+08:00
-draft: true
+draft: false
 toc: false
+tags:
+- ansible
 ---
 
 Ansible's release history is [really confusing](https://docs.ansible.com/ansible/devel/reference_appendices/release_and_maintenance.html).

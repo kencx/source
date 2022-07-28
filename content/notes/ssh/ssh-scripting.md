@@ -4,7 +4,8 @@ date: 2022-01-02T00:12:00+08:00
 lastmod:
 draft: false
 toc: false
-images:
+tags:
+- ssh
 ---
 
 Automated scripting with SSH is very difficult as it requires a

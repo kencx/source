@@ -4,7 +4,8 @@ date: 2021-11-25T00:42:06+08:00
 lastmod: 2021-12-03
 draft: false
 toc: false
-images:
+tags:
+- ssh
 ---
 
 Generate a new key pair. This will prompt for an optional passphrase and file

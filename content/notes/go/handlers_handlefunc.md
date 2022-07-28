@@ -4,6 +4,8 @@ date: 2022-07-01T09:55:25+08:00
 lastmod:
 draft: false
 toc: false
+tags:
+- go
 ---
 
 Go's `http` package has four different but similar sounding functions and types:

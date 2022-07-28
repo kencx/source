@@ -4,6 +4,8 @@ date: 2022-04-19T15:14:15+08:00
 lastmod: 2022-04-19T15:14:15+08:00
 draft: false
 toc: false
+tags:
+- networking
 ---
 
 These notes provide basic troubleshooting guidelines to networking issues.

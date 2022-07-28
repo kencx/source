@@ -4,6 +4,8 @@ date: 2022-04-19T12:07:24+08:00
 lastmod: 2022-04-19T12:07:24+08:00
 draft: false
 toc: false
+tags:
+- ansible
 ---
 
 To compare two versions of software, use the `version()` test.

@@ -4,6 +4,8 @@ date: 2022-02-25T23:21:25+08:00
 lastmod:
 draft: false
 toc: false
+tags:
+- linux
 ---
 
 This guide is for Ubuntu/Debian systems only.

@@ -4,6 +4,8 @@ date: 2022-02-25T23:29:53+08:00
 lastmod: 2022-02-25T23:29:53+08:00
 draft: false
 toc: false
+tags:
+- vim
 ---
 
 Registers are Vim's way of storing text cut, copied and pasted text.
