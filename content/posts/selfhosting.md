@@ -3,7 +3,7 @@ title: "The Beginnings of Selfhosting"
 date: 2021-12-31T22:36:13+08:00
 lastmod: 2022-02-01
 draft: false
-toc: false
+toc: true
 images:
 tags:
   - selfhosted

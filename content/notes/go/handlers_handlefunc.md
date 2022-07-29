@@ -3,7 +3,7 @@ title: "Handler, Handle, HandleFunc and HandlerFunc"
 date: 2022-07-01T09:55:25+08:00
 lastmod:
 draft: false
-toc: false
+toc: true
 tags:
 - go
 ---

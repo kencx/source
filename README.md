@@ -31,5 +31,4 @@ $ hugo new --kind note-bundle notes/[category]
 
 ## TODO
 - scroll to top
-- toc
 - Mobile support - icons, navbar wrap

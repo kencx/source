@@ -2,7 +2,7 @@
 title: "Keyboards - Planck"
 date: 2022-01-21T17:10:11+08:00
 draft: false
-toc: false
+toc: true
 tags:
   - keyboards
 ---

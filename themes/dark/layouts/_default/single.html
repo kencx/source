@@ -1,26 +1,29 @@
 {{ define "main" }}
-	<p class="title">
-		{{ .Title }}
-		<span class="meta">
-			{{ $date := .Date.Format "2 Jan 2006" }}
-			{{ $lastmod := .Lastmod.Format "2 Jan 2006" }}
-			{{ $date }}
-				{{ if gt .ReadingTime 1 }}
-					{{ .Scratch.Set "timeUnit" "mins" }}
-				{{ else }}
-					{{ .Scratch.Set "timeUnit" "min" }}
-				{{ end }}
-				• {{ .ReadingTime }} {{ .Scratch.Get "timeUnit" }}
-		</span>
-	</p>
-	{{ .Content }}
-	<p class="post-footer">
-		<span class="meta">
-				{{ if eq $date $lastmod }}
+	<div>
+		<p class="title">
+			{{ .Title }}
+			<span class="meta">
+				{{ $date := .Date.Format "2 Jan 2006" }}
+				{{ $lastmod := .Lastmod.Format "2 Jan 2006" }}
+				{{ $date }}
+					{{ if gt .ReadingTime 1 }}
+						{{ .Scratch.Set "timeUnit" "mins" }}
+					{{ else }}
+						{{ .Scratch.Set "timeUnit" "min" }}
+					{{ end }}
+					• {{ .ReadingTime }} {{ .Scratch.Get "timeUnit" }}
+			</span>
+		</p>
+		{{ .Content }}
+		<p class="post-footer">
+			<span class="meta">
+					{{ if eq $date $lastmod }}
 
-				{{ else }}
-					Edited: {{ $lastmod }}
-				{{ end }}
-		</span>
-	</p>
+					{{ else }}
+						Edited: {{ $lastmod }}
+					{{ end }}
+			</span>
+		</p>
+	</div>
+	{{ partial "toc.html" . }}
 {{ end }}
