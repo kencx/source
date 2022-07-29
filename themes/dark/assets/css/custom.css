@@ -57,12 +57,20 @@ main > aside.tableOfContents {
 	padding-top: 0;
 }
 
+.tableOfContents .scroll-to-top-btn {
+	margin-left: 1.6rem;
+}
+
+.tableOfContents ul {
+	margin-bottom: 0.125rem;
+}
+
 .tableOfContents li {
 	padding-top: 0.25rem;
 	list-style: none;
 }
 
-.tableOfContents li a {
+.tableOfContents a {
 	color: #adadad !important;
 	font-size: 1rem;
 	font-weight: 100;
