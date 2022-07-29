@@ -7,10 +7,12 @@
 
 	<title>{{ .Title }}</title>
 
-	{{ $stylemain := resources.Get "css/main.css" | minify | fingerprint "sha512" }}
-	<link rel="stylesheet" href="{{ $stylemain.RelPermalink }}" integrity="{{ $stylemain.Data.Integrity }}">
-	<!-- <link rel="stylesheet" href="css/main.css" /> -->
-	<link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+	{{ $base := resources.Get "css/main.css" }}
+	{{ $nav := resources.Get "css/nav.css" }}
+	{{ $custom := resources.Get "css/custom.css" }}
+	{{ $style := slice $base $nav $custom | resources.Concat "assets/css/bundle.css" | minify | fingerprint "sha512" }}
 
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png" />
+	<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
 	<link rel="alternate" type="application/rss+xml" href="{{ .Site.BaseURL }}/feed.xml" title="{{ .Site.Title }}">
 </head>

@@ -32,5 +32,4 @@ $ hugo new --kind note-bundle notes/[category]
 ## TODO
 - scroll to top
 - toc
-- RSS feed
 - Mobile support - icons, navbar wrap
