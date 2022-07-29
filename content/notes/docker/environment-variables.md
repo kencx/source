@@ -3,7 +3,7 @@ title: "Compose - Environment Variables"
 date: 2022-02-17T18:33:14+08:00
 lastmod:
 draft: false
-toc: false
+toc: true
 tags:
   - docker
 ---
@@ -25,10 +25,10 @@ substitution
 services:
   portainer:
     image: portainer:latest
-	volumes:
-	  - "${PORTAINER_DATA_DIR}:./data"
-	ports:
-	  - "${PORTAINER_PORT:-9443}:9443"
+    volumes:
+        - "${PORTAINER_DATA_DIR}:./data"
+    ports:
+        - "${PORTAINER_PORT:-9443}:9443"
 ```
 
 A default value are provided with `:-[VALUE]` while mandatory values are provided
@@ -58,7 +58,7 @@ portainer
 $ docker-compose --env-file .env.prod up -d
 ```
 
-#### Precedence
+### Precedence
 1. Compose file
 2. Shell environment variables
 3. Environment file `.env` or `--env-file`

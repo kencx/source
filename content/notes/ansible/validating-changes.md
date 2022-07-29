@@ -20,9 +20,9 @@ change or failure condition, and it should not fail if Python3 is not installed.
 tasks:
   - name: check for installed version
     command: python3 --version
-	ignore_errors: true
-	changed_when: false
-	failed_when: false
+    ignore_errors: true
+    changed_when: false
+    failed_when: false
     register: python_installed_version
 ```
 
@@ -33,7 +33,7 @@ idempotency as there is no change condition.
 tasks:
   - name: validate nginx conf
     command: nginx -t
-	changed_when: false
+    changed_when: false
 ```
 
 # References

@@ -2,7 +2,7 @@
 title: "Transition to Linux"
 date: 2021-11-18T22:46:03+08:00
 lastmod: 2021-12-01
-draft: false
+draft: true
 toc: true
 images:
 tags:

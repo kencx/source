@@ -30,5 +30,5 @@ $ hugo new --kind note-bundle notes/[category]
 ```
 
 ## TODO
-- scroll to top
+- expand scroll to top button to all pages
 - Mobile support - icons, navbar wrap

@@ -6,10 +6,11 @@ toc: true
 tags:
   - docker
 ---
+## Docker Networking
 
 Docker has 5 network types, all configured through `docker0`.
 
-#### Host Networking
+### Host Networking
 
 The container shares the same network namespace as its host. These 2 commands
 should return the same set of network interfaces.
@@ -19,7 +20,7 @@ $ docker run --net=host -it --rm alpine ip addr
 $ ip addr
 ```
 
-#### Bridge Networking
+### Bridge Networking
 
 Each container runs in an isolated network namespace and uses the **default
 bridge** to connect to each other. The container should lack the `docker0`
@@ -40,7 +41,7 @@ $ ip addr
        valid_lft forever preferred_lft forever
 ```
 
-#### Custom Bridge Networking
+### Custom Bridge Networking
 
 This is the same as the bridge network but uses a custom bridge that was
 explicitly created.
@@ -59,7 +60,7 @@ $ docker run -it --rm --name=container2 --network=foo alpine sh
 
 2 veth pairs should be created along with the bridge interface.
 
-#### Container-defined Networking
+### Container-defined Networking
 
 The container created shares a network namespace with another specified container.
 
@@ -71,7 +72,7 @@ $ docker run -it --rm --name=container2 \
 
 Both containers share the same network interface.
 
-#### No networking
+### No networking
 Disables all networking for the container
 
 ```bash
@@ -80,7 +81,7 @@ $ docker run --net=none alpine ip addr
 
 No interfaces are created except `lo` (localhost).
 
-#### Others
+### Others
 
 Not discussed - Overlays, MacVLAN, IPvlan [networks](https://docs.docker.com/network/).
 
@@ -88,7 +89,7 @@ Not discussed - Overlays, MacVLAN, IPvlan [networks](https://docs.docker.com/net
 
 Regardless of the network type used, networking from within the container is the same for all types.
 
-#### Publishing Ports
+### Publishing Ports
 
 By default, containers do not publish any ports to the host. To make a port
 available, it must be published with the `--publish` flag. This creates a
@@ -99,7 +100,7 @@ firewall rule which maps a container port to the host port.
 -p 192.168.86.2:8080:80    # map container tcp 80 to host of ip 1929168.86.2 on port 8080
 ```
 
-#### IP Address, Hostname
+### IP Address, Hostname
 
 A container is assigned an IP address for every Docker network it connects to.
 IP addresses are assigned by the Docker daemon (which acts as a DHCP server),
@@ -109,7 +110,7 @@ When starting a container with a connect `--network`, a static IP can be
 assigned with `--ip` or `--ip6`. Similarly, the container's hostname can be
 overridden with `--hostname` (defaults to the container's ID).
 
-#### DNS
+### DNS
 
 A custom DNS server can be specified to each Docker container with `--dns`.
 Google's DNS `8.8.8.8` is added if it no DNS server is given.

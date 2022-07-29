@@ -2,7 +2,7 @@
 title: "Git Commands"
 date: 2021-12-03T23:59:42+08:00
 draft: false
-toc: false
+toc: true
 tags:
   - git
 ---

@@ -3,10 +3,12 @@ title: "Testing Handlers and Middlewares"
 date: 2022-07-01T09:55:25+08:00
 lastmod:
 draft: false
-toc: false
+toc: true
 tags:
 - go
 ---
+
+## Helper Struct
 
 Create a helper struct to store request information
 

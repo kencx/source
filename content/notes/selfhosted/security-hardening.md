@@ -3,7 +3,11 @@ title: "Security Hardening"
 date: 2022-01-23T21:00:11+08:00
 lastmod: 2022-02-16
 draft: false
-toc: false
+toc: true
+tags:
+- security
+- selfhosted
+- linux
 ---
 
 This guide follows a few key security hardening steps that should be performed

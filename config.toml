@@ -8,6 +8,15 @@ theme = "dark"
   date = ["date", "publishDate", ":filename", ":fileModTime"]
   # lastmod = ["lastmod", ":git"]
 
+[markup]
+  [markup.highlight]
+	lineNos = false
+    lineNumbersInTable = false
+	tabWidth = 4
+
+  [markup.tableOfContents]
+    endLevel = 5
+
 [taxonomies]
   tag = "tags"
 

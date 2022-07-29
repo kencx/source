@@ -19,21 +19,21 @@ the vars file and updates Python if necessary.
 latest_python_version: '1.6.2'
 ```
 
-```yaml
+```yaml {hl_lines=[14]}
 # main.yml
 tasks:
-	- name: Check Python version
-	command: "python3 --version"
-	ignore_errors: true
-	changed_when: false
-	failed_when: false
-	register: installed_python_version
+  - name: Check Python version
+    command: "python3 --version"
+    ignore_errors: true
+    changed_when: false
+    failed_when: false
+    register: installed_python_version
 
-	- name: "Install Python {{ latest_python_version }}"
-	apt:
-		name: "{{ python_package }}"
-		state: present
-	when: installed_python_version is version(latest_python_version, '<')
+  - name: "Install Python {{ latest_python_version }}"
+    apt:
+      name: "{{ python_package }}"
+      state: present
+    when: installed_python_version is version(latest_python_version, '<')
 ```
 
 ## References

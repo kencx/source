@@ -25,10 +25,10 @@ concern](https://docs.docker.com/engine/security/#docker-daemon-attack-surface).
 
 If an attacker manages to access any container with access to the docker socket, they can obtain root access to the host machine trivially.
 
-#### SSH/HTTPS
+### SSH/HTTPS
 Read [here](https://docs.docker.com/engine/security/protect-access/) for more info.
 
-#### Socket Proxy
+### Socket Proxy
 
 A solution is to use a socket proxy. A socket proxy is similar to a firewall for
 the docker socket. It is a container without a network connection that controls
@@ -90,7 +90,7 @@ not explicitly specified. This is the case for most public images. Additionally,
 Linux is known for starting as a root user before dropping back to a non-root
 user. This is necessary to support port-binding below port 1024.
 
-#### Security Risks
+### Security Risks
 
 Although containers are containerized, running as root poses huge security
 risks, especially when an attacker manages to break out of the container. It
@@ -101,7 +101,7 @@ would allow the attacker to gain root privileges to your entire host system.
 
 You can choose to run the container as a non-root user through 2 methods.
 
-#### Support with environment variables
+### Support with environment variables
 
 Some images (like those from [linuxserver.io](linuxserver.io)) offer support for
 `UID` and `GID` environment variables. Ideally, when writing docker images,
@@ -113,7 +113,7 @@ environment:
   - PGID=1000
 ```
 
-#### Explicitly stating the user
+### Explicitly stating the user
 
 Docker has the CLI flag `--user` to start containers as a specific user. For
 docker-compose, we have to explicitly state the container's user with the

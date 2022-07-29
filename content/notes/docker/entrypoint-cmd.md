@@ -3,18 +3,10 @@ title: "Entrypoint and CMD"
 date: 2022-02-16T18:30:40+08:00
 lastmod:
 draft: false
-toc: false
+toc: true
 tags:
   - docker
 ---
-
-`ENTRYPOINT` and `CMD` defines the process that starts running when a container is started.
-
-## Summary
-| ENTRYPOINT                     | CMD                      |
-| :-----------------------------:| :----------------------: |
-| Dedicated command for image    | Arguments for ENTRYPOINT |
-| Use container as an executable | Default argument for executable container |
 
 ## ENTRYPOINT
 
@@ -87,8 +79,16 @@ root /#
 # /bin/sh -c bash
 ```
 
+## Summary
 
-# Shell & Exec Form
+`ENTRYPOINT` and `CMD` defines the process that starts running when a container is started.
+
+| ENTRYPOINT                     | CMD                      |
+| :-----------------------------:| :----------------------: |
+| Dedicated command for image    | Arguments for ENTRYPOINT |
+| Use container as an executable | Default argument for executable container |
+
+## Shell & Exec Form
 To make things more confusing, there are 2 different ways to define `ENTRYPOINT` and `CMD` - shell and exec form.
 
 So far, we have been using exec form in all the examples.
@@ -102,7 +102,7 @@ exec form does not invoke the command shell; it cannot evaluate environment vari
 
 In shell form, all commands are wrapped with `/bin/sh -c` by default. Hence, it can evaluate environment variables.
 
-#### Summary
+## Summary
 |   Form     | Dockerfile                       | Command                    |
 | :--------: | :------------------------------- | :------------------------- |
 | shell form | ENTRYPOINT /bin/ping -c 3        | /bin/sh -c 'bin/ping -c 3' |

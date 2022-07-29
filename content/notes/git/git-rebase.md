@@ -3,15 +3,16 @@ title: "Rebase"
 date: 2022-02-20T01:33:05+08:00
 lastmod:
 draft: false
-toc: false
+toc: true
 tags:
   - git
 ---
 
+>**Warning**:
 >Before performing any rebasing, ensure that you are not overwriting any changes
 >from other contributors or colleagues.
 
-#### Amend commit message N commits ago
+## Amend commit message N commits ago
 
 In order to **amend** a commit message from many commits ago, we need to perform
 an interactive rebase
@@ -44,7 +45,7 @@ Make the changes and use `git log` to check. Finally, force push the changes.
 $ git push -f [remote] [branch]
 ```
 
-#### Squash the last N commits
+## Squash the last N commits
 To **squash** the last N commits, we perform an interactive rebase.
 
 ```bash
@@ -67,7 +68,7 @@ Save and write a new commit message. Force push the changes.
 $ git push -f [remote] [branch]
 ```
 
-#### Pull squashed commits
+## Pull squashed commits
 
 You might have squashed remote commits that you wish to pull to a separate local
 repository, that contains the unsquashed commits. In order to maintain the same

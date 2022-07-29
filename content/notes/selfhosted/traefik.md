@@ -3,7 +3,9 @@ title: "Traefik"
 date: 2022-02-20T01:51:59+08:00
 lastmod: 2022-04-19
 draft: false
-toc: false
+toc: true
+tags:
+- selfhosted
 ---
 
 This page describes my notes for setup and configuration of a Traefik reverse
@@ -83,7 +85,7 @@ All other containers with the applied labels should now be discovered.
 ## Configuration
 Traefik uses static and dynamic configuration.
 
-#### Static
+### Static
 There are three mediums to define Traefik's static configuration: `yaml`, `toml` and `CLI`. `CLI` is the most common for [simple setups](https://doc.traefik.io/traefik/user-guides/docker-compose/basic-example/). We will be using `yaml` in `traefik.yml` instead.
 
 ```yaml
@@ -112,7 +114,7 @@ providers:
 >pass environment variables, use Traefik's own [Environment
 >Variables](https://doc.traefik.io/traefik/reference/static-configuration/env/).
 
-#### Dynamic
+### Dynamic
 
 We are using the file provider for Traefik's dynamic configuration to include
 middleware and services. These are located in `/rules`

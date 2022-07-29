@@ -10,7 +10,7 @@ tags:
 Say a contributor has submitted a PR to **your** project. Before merging, you would
 like to perform a minor change to their PR.
 
-#### Requirements
+## Requirements
 
 - The contributor forked your project
 - The contributor made changes on a `feature` branch
@@ -19,7 +19,7 @@ like to perform a minor change to their PR.
   allowed](https://stackoverflow.com/questions/20928727/adding-commits-to-another-persons-pull-request-on-github)
   you to push to their branch. This is usually the case if you are a maintainer.
 
-#### Steps
+## Steps
 
 Assuming the contributor is `johnadams`.
 
