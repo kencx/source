@@ -63,9 +63,9 @@ complete with SSL certificates and DNS resolution.
 This served me well for about three days before I wanted external access to
 these local services.
 
-However, I vastly overestimated my existing skills and spent more than 3 days
-trying to get [Wireguard](https://www.wireguard.com/) working. This was
-partially due to my insistence on avoiding external port forwarding. Without
+However, I vastly overestimated my existing skills and spent more than three
+days trying to get [Wireguard](https://www.wireguard.com/) working. This was
+also due to my insistence on avoiding external port forwarding. Without
 diving into the details (I'll leave it for my notes), requests from an external
 WG client (my phone) can access my home server via
 
@@ -75,9 +75,11 @@ phone --> VPS --> Pi
 
 To do this, I had to ensure that the external client was using the local DNS
 server for name resolution, and that requests that arrived via the `wg0`
-interface were port forwarded (via iptables) to their destinations. This was a
-non-trivial for me then, but I really did learn *a lot* from the whole process,
-about DNS configuration, iptables or just networking administration as a whole.
+interface were port forwarded (via iptables) to their destinations.
+
+This was a non-trivial for me then, but I really did learn *a lot* from the
+whole process, about DNS configuration, iptables or just networking
+administration as a whole.
 
 ## Future
 
