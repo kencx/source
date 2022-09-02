@@ -23,6 +23,7 @@ theme = "dark"
 [permalinks]
   posts = "/posts/:title/"
   notes = "/:sections/:title/"
+  projects = "/projects/:title/"
   books = "/books/:title/"
 
 [params]
@@ -43,14 +44,20 @@ theme = "dark"
     url        = "notes/"
     weight     = 2
 
+  [[menu.main]]
+    identifier = "projects"
+    name       = "Projects"
+    url        = "projects/"
+    weight     = 3
+
   # [[menu.main]]
   #   identifier = "books"
   #   name       = "Books"
   #   url        = "books/"
-  #   weight     = 3
+  #   weight     = 4
 
   [[menu.main]]
     identifier = "tags"
     name       = "Tags"
     url        = "tags/"
-    weight     = 4
+    weight     = 5

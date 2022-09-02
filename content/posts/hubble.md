@@ -6,6 +6,7 @@ draft: false
 toc: true
 images:
 tags:
+  - homelab
   - selfhosted
 ---
 
