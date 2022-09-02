@@ -32,12 +32,6 @@ nav button {
 	border: none;
 }
 
-/* to allow menu to appear on hover */
-.has-dropdown:focus-within .dropdown {
-	opacity: 1;
-	pointer-events: auto;
-}
-
 .dropdown {
 	opacity: 0;
 	z-index: 2;
@@ -53,6 +47,7 @@ nav button {
 }
 
 .dropdown-item {
+	visibility: hidden;
   width: 100%;
 	height: 100%;
 	list-style-type: none;
@@ -64,6 +59,14 @@ nav button {
 .dropdown-item:hover {
 	background: #353545;
 	text-decoration: none !important;
+}
+
+/* to allow menu to appear on hover */
+.has-dropdown:focus-within .dropdown,
+.has-dropdown:focus-within .dropdown > a {
+	visibility: visible;
+	opacity: 1;
+	pointer-events: auto;
 }
 
 @media screen and (max-width: 660px) {
