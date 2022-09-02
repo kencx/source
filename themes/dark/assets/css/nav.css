@@ -26,6 +26,12 @@ nav a:hover {
 	margin: 0;
 }
 
+nav button {
+	color: var(--link-color);
+	background-color: transparent;
+	border: none;
+}
+
 /* to allow menu to appear on hover */
 .has-dropdown:focus-within .dropdown {
 	opacity: 1;
@@ -33,10 +39,10 @@ nav a:hover {
 }
 
 .dropdown {
-	position: absolute;
-	background: var(--bg-color);
 	opacity: 0;
 	z-index: 2;
+	position: absolute;
+	background: var(--bg-color);
 	transition: opacity 0.5s ease-out;
 
 	display: flex;
@@ -52,6 +58,12 @@ nav a:hover {
 	list-style-type: none;
 	margin-top: 0.5rem;
 	padding: 0.5rem;
+	font-size: 0.9rem;
+}
+
+.dropdown-item:hover {
+	background: #353545;
+	text-decoration: none !important;
 }
 
 @media screen and (max-width: 660px) {
