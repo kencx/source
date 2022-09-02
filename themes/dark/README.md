@@ -10,5 +10,5 @@ Add new svg icons to `layouts/partials/svg/icons.html` in the following form:
 and include it in your html with
 
 ```
-< a href="...">{{ partial "svg/icons" "[name]" }}</a>
+<a href="...">{{ partial "svg/icons" "[name]" }}</a>
 ```

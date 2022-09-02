@@ -16,3 +16,45 @@ nav a:hover {
 	text-decoration: underline !important;
 }
 
+
+/* responsive dropdown menu */
+
+.dropdown-btn {
+	display: none;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+/* to allow menu to appear on hover */
+.has-dropdown:focus-within .dropdown {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.dropdown {
+	position: absolute;
+	background: var(--bg-color);
+	opacity: 0;
+	z-index: 2;
+	transition: opacity 0.5s ease-out;
+
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	margin-top: 0.5rem;
+	padding: 0;
+}
+
+.dropdown-item {
+  width: 100%;
+	height: 100%;
+	list-style-type: none;
+	margin-top: 0.5rem;
+	padding: 0.5rem;
+}
+
+@media screen and (max-width: 660px) {
+	.navbar { display: none; }
+	.dropdown-btn { display: inline-block; }
+}

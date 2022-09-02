@@ -1,6 +1,20 @@
-<nav>
-	<a href="{{.Site.BaseURL}}/">Home</a>
+<nav role="navigation">
+	<a class="navbar" href="{{.Site.BaseURL}}/">Home</a>
 	{{ range .Site.Menus.main }}
-	<a href="/{{ .URL }}">{{ .Name }}</a>
+	<a class="navbar" href="/{{ .URL }}">{{ .Name }}</a>
 	{{ end }}
+
+	<ul class="dropdown-btn">
+		<li class= "has-dropdown">
+			<a href="#">{{ partial "svg/icons" "hamburger" }}</a>
+
+			<ul class="dropdown" aria-label="submenu">
+				<a class="dropdown-item" href="{{ .Site.BaseURL }}">Home</a>
+				{{ range .Site.Menus.main }}
+					<a class="dropdown-item" href="/{{ .URL }}">{{ .Name }}</a>
+				{{ end }}
+			</ul>
+
+		</li>
+	</ul>
 </nav>

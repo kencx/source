@@ -44,7 +44,7 @@ strong {
 
 body {
 	font-size: 16px;
-	background: #1F1F28 !important;
+	background: var(--bg-color) !important;
 	/* background: #16161D !important; */
 }
 
