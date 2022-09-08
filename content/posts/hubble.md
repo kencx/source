@@ -10,7 +10,7 @@ tags:
   - selfhosted
 ---
 
-After the [Planck]({{< ref "/posts/selfhosting.md" >}}), I wanted a dedicated
+After the [Planck]({{< ref "/posts/selfhosting.md" >}})[^1], I wanted a dedicated
 server for learning and working with DevOps concepts and tools.
 
 ## Hubble
@@ -111,6 +111,8 @@ All data is also backed up via [restic](https://restic.net/) and
 >prevent burnout.
 
 ## Challenges
+{{< figure src="https://imgs.xkcd.com/comics/hard_reboot.png" caption="relevant xkcd 1495" link="https://xkcd.com/1495" class="center" >}}
+
 ### Analysis Paralysis
 
 Moving from a simple SBC to a hypervisor was not simple. There were many new
@@ -243,3 +245,5 @@ orchestration and service discovery tools. I am also saving up for a dedicated
 NAS server, although it will be constrained by my terrible networking setup.
 
 Let's see where we'll be in another six months.
+
+[^1]: Not to be confused with the [Planck]({{< ref "/posts/keyboards/planck.md" >}}) keyboard that I use.

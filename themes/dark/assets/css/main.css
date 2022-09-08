@@ -58,6 +58,10 @@ figcaption p {
 	color: #898989;
 }
 
+details {
+	padding-bottom: 1rem;
+}
+
 h1,
 h2,
 h3,
