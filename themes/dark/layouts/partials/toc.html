@@ -1,7 +1,9 @@
 {{ if (.Params.toc) }}
 <aside class="tableOfContents">
-	<h4>Table of Contents</h4>
+  <h4>
+    Table of Contents
+    <span><a style="position: relative; top: 5px;" href="#top">{{ partial "svg/icons" "up" }}</a></span>
+  </h4>
 	{{ .TableOfContents }}
-	<a class="scroll-to-top-btn" href="#top">{{ partial "svg/icons" "up" }}</a>
 </aside>
 {{ end }}
