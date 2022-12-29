@@ -2,7 +2,7 @@
 title: "Modes"
 date: 2022-12-29T19:27:19+08:00
 lastmod: 2022-12-29T19:27:19+08:00
-draft: true
+draft: false
 toc: true
 tags:
 - linux
