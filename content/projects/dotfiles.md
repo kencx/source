@@ -3,7 +3,7 @@ title: "dotfiles"
 date: 2022-07-01T09:55:25+08:00
 lastmod:
 weight: 99
-draft: false
+draft: true
 repo_url: https://github.com/kencx/dotfiles
 post_url:
 tools:

@@ -12,5 +12,5 @@ tools:
 
 A lightweight hotkey cheatsheet in the terminal. `keyb` can create and view
 custom hotkey cheatsheets in a nice TUI. It supports fuzzy filtering, vim key
-bindings and is fully customizable. I personally use it everyday as a popup
-cheatsheet for keybinds or short commands.
+bindings and is fully customizable. I use it everyday as a popup cheatsheet for
+keybinds or short commands.

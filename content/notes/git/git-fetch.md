@@ -2,7 +2,7 @@
 title: "Git Fetch"
 date: 2022-04-19T12:44:09+08:00
 lastmod: 2022-04-19T12:44:09+08:00
-draft: true
+draft: false
 toc: false
 tags:
   - git

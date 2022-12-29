@@ -16,23 +16,28 @@ The theme is a modified Jekyll theme [Dark
 Reader](https://github.com/sharadcodes/jekyll-theme-dark-reader) which I ported
 to Hugo and tweaked to my liking. The colorscheme is inspired by [Gruvbox
 Dark](https://github.com/morhetz/gruvbox) and
-[kanagawa](https://github.com/rebelot/kanagawa.nvim), and the font is
-[FiraCode](https://github.com/tonsky/FiraCode).
+[kanagawa](https://github.com/rebelot/kanagawa.nvim), and the font is Nimbus Sans and
+[Fira Code](https://github.com/tonsky/FiraCode).
 
 The site aims to be lightweight, responsive and secure. It has no tracking,
 little to no JavaScript and borrows from
 [bettermotherfuckingwebsite](https://bettermotherfuckingwebsite.com/).
 
-Finally, this site is built entirely with
-[IndieWeb's](https://indieweb.org/principles) principles in mind.
+<!-- Finally, this site is built entirely with -->
+<!-- [IndieWeb's](https://indieweb.org/principles) principles in mind. -->
 
 ## Structure
 
-The site is first and foremost a [personal knowledge base]({{< ref
-"/posts/hugo-serve" >}}), and second a blog. It aims to store my notes and
-information in a [Zettelkasten Method](https://zettelkasten.de/introduction/)
-like manner. It is also a place for me to discuss and share my interests,
-whatever they may be at the time.
+The site is first and foremost a [digital garden or personal knowledge base]({{< ref
+"/posts/hugo-serve" >}}), and second a blog. All information here represent my known
+knowledge, thoughts and interests at the time. I don't guarantee information here is
+accurate, but I try my best to ensure that it is well-researched and referenced.
+
+Information is also transient and always updated when I receive new knowledge:
+- Blog posts are sorted chronologically by the date they are first posted and appended
+  with a "last edited" date.
+- Notes are sorted alphabetically with a "last edited" date
+
 
 ## Software
 

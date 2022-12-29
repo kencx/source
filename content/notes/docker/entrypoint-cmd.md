@@ -84,7 +84,7 @@ root /#
 `ENTRYPOINT` and `CMD` defines the process that starts running when a container is started.
 
 | ENTRYPOINT                     | CMD                      |
-| :-----------------------------:| :----------------------: |
+| ------------------------------ | ------------------------ |
 | Dedicated command for image    | Arguments for ENTRYPOINT |
 | Use container as an executable | Default argument for executable container |
 
@@ -104,7 +104,7 @@ In shell form, all commands are wrapped with `/bin/sh -c` by default. Hence, it 
 
 ## Summary
 |   Form     | Dockerfile                       | Command                    |
-| :--------: | :------------------------------- | :------------------------- |
+| :--------: | -------------------------------- | -------------------------- |
 | shell form | ENTRYPOINT /bin/ping -c 3        | /bin/sh -c 'bin/ping -c 3' |
 | shell form | CMD localhost                    | /bin/sh -c localhost       |
 | exec form  | ENTRYPOINT ["/bin/ping", "-c 3"] | /bin/ping -c 3             |

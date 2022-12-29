@@ -1,26 +1,29 @@
 ---
-title: "Installing Ansible"
+title: "Installing Ansible 2.12 with all dependencies"
 date: 2022-04-19T12:19:39+08:00
-lastmod: 2022-04-19T12:19:39+08:00
+lastmod: 2022-12-29T16:38:39+08:00
 draft: false
 toc: false
 tags:
 - ansible
 ---
 
-Ansible's release history is [really confusing](https://docs.ansible.com/ansible/devel/reference_appendices/release_and_maintenance.html).
+>TLDR: See
+>[here](https://github.com/kencx/dotfiles/blob/master/dots/bin/bin/install-ansible)
+>for the full script.
 
-Ansible's core package has taken on a number of names:
+Ansible's release history is [really confusing](https://docs.ansible.com/ansible/devel/reference_appendices/release_and_maintenance.html). Ansible's core package has taken on a number of names:
 - ansible (pre 2.9)
 - ansible-base (2.10)
 - ansible-core (post 2.10)
 
-and from Ansible 2.10, Ansible community packages have also split off into their
-own "Ansible Community package" which has a different release cycle and its own
-versioning system.
+and from Ansible 2.10, Ansible community packages have also split off into their own
+"[Ansible Community package](https://github.com/ansible-community)" which has a
+[different](https://docs.ansible.com/ansible/devel/reference_appendices/release_and_maintenance.html#ansible-community-package-release-cycle)
+release cycle and its own versioning system.
 
 To properly install the latest version of Ansible 2.12 without dependency
-issues, we use [pipx](https://github.com/pypa/pipx)
+issues, I use [pipx](https://github.com/pypa/pipx)
 
 ```bash
 # install or update pipx

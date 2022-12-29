@@ -17,6 +17,7 @@ Add the public key to the server's `authorized_keys` file.
 ```bash
 $ ssh-copy-id -i ~/.ssh/key.pub user@ip
 ```
+
 To eliminate the need to type the passphrase for every use of the key, we can
 cache the private key with `ssh-agent` and `ssh-add`
 ```bash
@@ -33,11 +34,11 @@ $ ssh user@ip
 
 For SSH to work properly, all files must have the correct permissions:
 
-| file		  | permissions			|
-| :---------: | :------------------ |
-| ~/.ssh/	  | d r - x - - - - - - |
-| public key  | - r w - r - - r - - |
-| private key | - r w - - - - - - - |
+| file		    | mode |
+| :---------: | :--- |
+| ~/.ssh/	    | 0700 |
+| public key  | 0644 |
+| private key | 0600 |
 
 # References
 - [SSH Crash Course](https://www.youtube.com/watch?v=hQWRp-FdTpc)

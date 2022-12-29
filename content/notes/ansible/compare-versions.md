@@ -1,18 +1,14 @@
 ---
 title: "Compare Versions"
 date: 2022-04-19T12:07:24+08:00
-lastmod: 2022-04-19T12:07:24+08:00
+lastmod: 2022-12-29T16:38:39+08:00
 draft: false
 toc: false
 tags:
 - ansible
 ---
 
-To compare two versions of software, use the `version()` test.
-
-The first task checks the installed version of Python on the remote host. The
-second task compares `installed_python_version` with `latest_python_version` in
-the vars file and updates Python if necessary.
+To compare two versions of software, use the `version()` [test](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_tests.html#comparing-versions).
 
 ```yaml
 # vars.yml
@@ -36,5 +32,9 @@ tasks:
     when: installed_python_version is version(latest_python_version, '<')
 ```
 
+1. Check the installed version of Python and register it was `installed_python_version`
+2. If `installed_python_version < latest_python_version`, install the latest version
+
+
 ## References
-- [Ansible - Playbook Tests](https://docs.ansible.com/ansible/latest/user_guide/playbooks_tests.html)
+- [Ansible - Playbook Tests; Comparing Versions](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_tests.html#comparing-versions)
