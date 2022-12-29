@@ -2,7 +2,7 @@
 title: "Arch Linux Installation"
 date: 2022-12-29T17:19:20+08:00
 lastmod: 2022-12-29T17:19:20+08:00
-draft: true
+draft: false
 toc: true
 tags:
 - linux
