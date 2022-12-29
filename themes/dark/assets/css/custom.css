@@ -62,10 +62,6 @@ main > aside.tableOfContents {
 	padding-right: 0;
 }
 
-.tableOfContents .scroll-to-top-btn {
-	margin-left: 1.6rem;
-}
-
 .tableOfContents ul {
 	margin-bottom: 0.125rem;
 }
@@ -100,6 +96,8 @@ footer {
 }
 
 .icons a svg {
+  position: relative;
+  top: 3px;
 	height: 1.1rem;
 	width: 1.1rem;
 	padding-right: 4px;
@@ -117,8 +115,9 @@ footer {
 
 .title {
 	color: var(--theme-color);
-	font-size: 40px;
+	font-size: 2.5rem;
 	font-weight: bold;
+  line-height: 1.5 !important;
 	display: grid;
 }
 
@@ -172,6 +171,10 @@ footer {
 
 .list a:hover:after {
 	width: 100%;
+}
+
+.tools {
+  font-family: "Fira Code, monospace";
 }
 
 @media screen and (max-width: 660px) {
