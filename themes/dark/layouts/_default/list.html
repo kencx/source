@@ -1,8 +1,8 @@
 {{ define "main" }}
 <div>
-	<p class="title">
-		{{ .Title }}
-	</p>
+  <h1>
+    {{ .Title }}
+  </h1>
 
 	{{ range .Pages.GroupByDate "Jan 2006" }}
 		<div class="post-group-date">

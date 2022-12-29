@@ -1,0 +1,20 @@
+
+{{ define "main" }}
+	<div>
+		<p class="title">
+			{{ .Title }}
+			<span class="meta">
+				{{ $lastmod := .Lastmod.Format "2 Jan 2006" }}
+				{{ $lastmod }}
+					{{ if gt .ReadingTime 1 }}
+						{{ .Scratch.Set "timeUnit" "mins" }}
+					{{ else }}
+						{{ .Scratch.Set "timeUnit" "min" }}
+					{{ end }}
+					• {{ .ReadingTime }} {{ .Scratch.Get "timeUnit" }}
+			</span>
+		</p>
+		{{ .Content }}
+	</div>
+	{{ partial "toc.html" . }}
+{{ end }}

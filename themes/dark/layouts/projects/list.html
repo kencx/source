@@ -1,8 +1,8 @@
 {{ define "main" }}
 <div>
-	<p class="title">
+	<h1>
 		{{ .Title }}
-	</p>
+	</h1>
 
 	{{ if .Content }}
 		<div>{{ .Content }}</div>
@@ -11,9 +11,9 @@
 	{{ if (where .Site.Pages "Section" "projects") }}
 		<div>
 			{{ range .Pages.ByWeight }}
-				<h2>{{ .Title }}</h2>
+				<h2 style="margin-bottom: 2px;">{{ .Title }}</h2>
 
-				<small>
+				<small class="tools">
 					<a href="{{ .Params.repo_url }}">Github</a> |
 					{{ if .Params.post_url }}
 						<a href="{{ .Params.post_url }}">Blog</a> |
