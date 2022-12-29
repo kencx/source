@@ -17,7 +17,6 @@
 }
 
 * {
-	font-family: "Fira Code";
 	--theme-color: #f78e66;
 }
 
@@ -78,22 +77,22 @@ h6 {
 
 h1 {
 	margin: 20px 0;
-	font-size: 26px !important;
+	font-size: 2rem !important;
 }
 
 h2 {
 	margin: 16px 0;
-	font-size: 24px !important;
+	font-size: 1.75rem !important;
 }
 
 h3 {
 	margin: 16px 0;
-	font-size: 20px !important;
+	font-size: 1.25rem !important;
 }
 
 h4 {
 	margin: 16px 0;
-	font-size: 18px !important;
+	font-size: 1.125rem !important;
 }
 
 a {
