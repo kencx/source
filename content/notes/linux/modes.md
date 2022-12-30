@@ -123,8 +123,13 @@ $ chmod u+s program
 # -rwsr-xr-x
 ```
 
+`setuid` on directories is [ignored](https://superuser.com/questions/471844/why-is-setuid-ignored-on-directories) on most Linux systems.
+
 ### setgid bit
 The `setgid` bit has octal `2000`. This set the effective group ID to that of the file owner.
+
+Similar to `setuid`, executables that have `setgid` will be run with the effective group
+ID of the executable's group.
 
 If `setgid` is set on a directory, newly created files in the directory will be
 belong to the directory's group rather than file creator's group.

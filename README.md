@@ -28,7 +28,3 @@ For notes of new category:
 ```bash
 $ hugo new --kind note-bundle notes/[category]
 ```
-
-## TODO
-- expand scroll to top button to all pages
-- Mobile support - icons, navbar wrap
