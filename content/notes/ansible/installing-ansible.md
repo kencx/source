@@ -1,5 +1,5 @@
 ---
-title: "Installing Ansible 2.12 with all dependencies"
+title: "Installing Ansible 2.12 with all dependencies with pipx"
 date: 2022-04-19T12:19:39+08:00
 lastmod: 2022-12-29T16:38:39+08:00
 draft: false

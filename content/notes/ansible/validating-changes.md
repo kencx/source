@@ -1,5 +1,5 @@
 ---
-title: "Validating Changes"
+title: "Validating changes"
 date: 2022-02-20T01:43:02+08:00
 lastmod:
 draft: false

@@ -1,5 +1,5 @@
 ---
-title: "Human Readable Output"
+title: "Human readable output"
 date: 2022-04-19T12:08:07+08:00
 lastmod: 2022-12-29T16:38:39+08:00
 draft: false
