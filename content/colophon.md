@@ -23,21 +23,13 @@ The site aims to be lightweight, responsive and secure. It has no tracking,
 little to no JavaScript and borrows from
 [bettermotherfuckingwebsite](https://bettermotherfuckingwebsite.com/).
 
-<!-- Finally, this site is built entirely with -->
-<!-- [IndieWeb's](https://indieweb.org/principles) principles in mind. -->
-
 ## Structure
-
-The site is first and foremost a [digital garden or personal knowledge base]({{< ref
-"/posts/hugo-serve" >}}), and second a blog. All information here represent my known
-knowledge, thoughts and interests at the time. I don't guarantee information here is
-accurate, but I try my best to ensure that it is well-researched and referenced.
-
-Information is also transient and always updated when I receive new knowledge:
+- Notes are sorted alphabetically with a "last edited" date
 - Blog posts are sorted chronologically by the date they are first posted and appended
   with a "last edited" date.
-- Notes are sorted alphabetically with a "last edited" date
-
+- Some documents are incomplete and will be flagged as such. Take these with a
+  grain of salt.
+- A site-wide search engine is _coming soon_.
 
 ## Software
 
