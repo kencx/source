@@ -24,7 +24,6 @@ theme = "dark"
   posts = "/posts/:title/"
   notes = "/:sections/:title/"
   projects = "/projects/:title/"
-  books = "/books/:title/"
 
 [params]
   author = "kencx"
