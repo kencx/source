@@ -31,10 +31,14 @@ kernel. This allows developers to refer to the same file multiple times for
 different purposes when working with Unix syscalls such as `read()` and
 `write()`.
 
->Example: A program wants to read from and write to one file in two separate
->places. In this case, it opens the file twice and two new file
->descriptors are created. These will refer to two different entries in the
->system-wide [open file description table](#open-file-descriptor-table).
+
+{{< alert type="example" >}}
+A program wants to read from and write to one file in two separate
+places. In this case, it opens the file twice and two new file
+descriptors are created. These will refer to two different entries in the
+system-wide [open file description table](#open-file-descriptor-table).
+{{< /alert >}}
+
 
 ### File descriptor vs file description
 
@@ -92,7 +96,9 @@ This means that a file descriptor number can be reused during the process lifesp
 
 ## Sharing File Descriptors between Parent and Child
 
->**Warning**: This section can be improved.
+{{< alert type="warning" >}}
+This section can be improved.
+{{< /alert >}}
 
 After a `fork()` or `clone()` call, a child and parent have an equal set of file
 descriptors, which refer to the **same** entries in the system-wide open file

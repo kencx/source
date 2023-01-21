@@ -33,9 +33,11 @@ $ docker network create socket-proxy
    certificates. We will be using the digitalocean
    [provider](https://doc.traefik.io/traefik/https/acme/#providers).
 
->A certificate file is required for every different domain. This includes second
->level domains, eg. `dev.example.com` and `sit.example.com`. Ensure that the
->second level domains are also added as entries to the provider.
+{{< alert type="note" >}}
+A certificate file is required for every different domain. This includes second
+level domains, eg. `dev.example.com` and `sit.example.com`. Ensure that the
+second level domains are also added as entries to the provider.
+{{< /alert >}}
 
 Set the necessary environment variables for your provider in `traefik.env`:
 
@@ -51,9 +53,11 @@ TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_CASERVER=https://acme-v02.api.let
 DOMAIN_NAME=example.com
 ```
 
->`ACME_EMAIL` and `ACME_CASERVER` can be set in the static configuration file as
->well under `certificateResolvers`. We chose to set them here as we want to pass
->down the env variables from the global `.env` to Traefik.
+{{< alert type="note" >}}
+`ACME_EMAIL` and `ACME_CASERVER` can be set in the static configuration file as
+well under `certificateResolvers`. We chose to set them here as we want to pass
+down the env variables from the global `.env` to Traefik.
+{{< /alert >}}
 
 4. Ensure the line in `docker-compose.yml` is **uncommented**:
 
@@ -110,9 +114,11 @@ providers:
 ...
 ```
 
->Go templating {{ env 'VAR'}} cannot be used in static configuration files. To
->pass environment variables, use Traefik's own [Environment
->Variables](https://doc.traefik.io/traefik/reference/static-configuration/env/).
+{{< alert type="note" >}}
+Go templating {{ env 'VAR'}} cannot be used in static configuration files. To
+pass environment variables, use Traefik's own [Environment
+Variables](https://doc.traefik.io/traefik/reference/static-configuration/env/).
+{{< /alert >}}
 
 ### Dynamic
 

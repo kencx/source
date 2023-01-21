@@ -9,7 +9,9 @@ tags:
 - processes
 ---
 
->**Warning**: This section is incomplete.
+{{< alert type="warning" >}}
+This section is incomplete.
+{{< /alert >}}
 
 A daemon is a long living process. It is often started at launch and service
 until OS shutdown. Daemons run in the background without a controlling terminal.

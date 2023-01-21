@@ -8,9 +8,10 @@ tags:
   - git
 ---
 
->**Warning**:
->Before performing any rebasing, ensure that you are not overwriting any changes
->from other contributors or colleagues.
+{{< alert type="warning" >}}
+Before performing any rebasing, ensure that you are not overwriting any changes
+from other contributors or colleagues.
+{{< /alert >}}
 
 ## Amend commit message N commits ago
 

@@ -14,8 +14,10 @@ to provide secure, encrypted communication between two sockets. An encrypted
 channel is set up with a [TLS handshake](#tls-handshake) using [certificates]({{< ref
 "/notes/security/tls certificates.md" >}}).
 
->TLS builds on the now-deprecated SSL specifications. We use SSL and TLS
->interchangeably.
+{{< alert type="note" >}}
+TLS builds on the now-deprecated SSL specifications. We use SSL and TLS
+interchangeably.
+{{< /alert >}}
 
 ## TLS Handshake
 

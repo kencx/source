@@ -96,10 +96,13 @@ Partition the base disk based on the boot type:
 | `/mnt`      | /dev/root_partition       | Linux x86-64          | Remainder            |
 | `/mnt/home` | /dev/home_partition       | Linux x86-64          | Remainder (optional) |
 
->If the disk from which you want to boot [already has an EFI system
->partition](https://wiki.archlinux.org/title/EFI_system_partition#Check_for_an_existing_partition
->"EFI system partition"), do not create another one, but use the existing partition
->instead.
+
+{{< alert type="note" >}}
+If the disk from which you want to boot [already has an EFI system
+partition](https://wiki.archlinux.org/title/EFI_system_partition#Check_for_an_existing_partition
+"EFI system partition"), do not create another one, but use the existing partition
+instead.
+{{< /alert >}}
 
 ```bash
 $ lsblk
@@ -130,18 +133,18 @@ $ pacstrap -K /mnt base linux linux-firmware
 
 You can substitute [linux](https://archlinux.org/packages/?name=linux) for a [kernel](https://wiki.archlinux.org/title/Kernel "Kernel") package of your choice, or you could omit it entirely when installing in a container.
 
->If such an [error](https://bbs.archlinux.org/viewtopic.php?id=282191) is encountered:
->
->```bash
->error: openssl signature from "Pierre Schmitz <pierre@archlinux.org>" is marginal trust
->:: File /mnt/var/cache/pacman/pkg/openssl-3.0.7-4-x86_64.pkg.tar.zst is corrupted (invalid or corrupted package (PGP signature)).
->```
->
->Consider updating the keyring first with
->
->```bash
->$ pacman -Sy archlinux-keyring
->```
+
+{{< alert type="info" >}}
+If such an [error](https://bbs.archlinux.org/viewtopic.php?id=282191) is encountered:
+
+```bash
+error: openssl signature from "Pierre Schmitz <pierre@archlinux.org>" is marginal trust
+:: File /mnt/var/cache/pacman/pkg/openssl-3.0.7-4-x86_64.pkg.tar.zst is corrupted (invalid or corrupted package (PGP signature)).
+```
+
+Consider updating the keyring first with `pacman -Sy archlinux-keyring`.
+{{< /alert >}}
+
 
 ## Configuration
 ### Fstab and Chroot
