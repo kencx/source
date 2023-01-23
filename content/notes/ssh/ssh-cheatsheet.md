@@ -37,6 +37,7 @@ For SSH to work properly, all files must have the correct permissions:
 | file		    | mode |
 | :---------: | :--- |
 | ~/.ssh/	    | 0700 |
+| .authorized_keys | 0600 |
 | public key  | 0644 |
 | private key | 0600 |
 
