@@ -126,6 +126,16 @@ footer {
 	display: grid;
 }
 
+/* show anchor on hover only */
+/* .heading-anchor { */
+/*   display: none; */
+/* } */
+/**/
+/* .headings:hover .heading-anchor { */
+/*   display: inline; */
+/*   text-decoration: none !important; */
+/* } */
+
 .content a {
 	line-height: 1.6;
 }

@@ -65,30 +65,30 @@ $ ip route add default via 10.10.10.1 dev eth0
 $ ping archlinux.org
 ```
 
-#### Update system clock
+### Update system clock
 ```bash
 $ timedatectl set-ntp true
 $ timedatectl set-timezone Asia/Singapore
 $ timedatectl status
 ```
 
-#### Partitions
+### Partitions
 Partition the base disk based on the boot type:
 
-##### BIOS/MBR
+#### BIOS/MBR
 | Mount point | Partition           | Type         | Size      |
 | ----------- | ------------------- | ------------ | --------- |
 | `[SWAP]`    | /dev/swap_partition | Linux swap   | >512MiB   |
 | `/mnt`      | /dev/root_partition | Linux x86-64 | Remainder |
 
-##### BIOS/GPT
+#### BIOS/GPT
 | Mount point | Partition           | Type                | Size      |
 | ----------- | ------------------- | ------------------- | --------- |
 | None        | /dev/sdX1           | BIOS boot partition | 1MB       |
 | `[SWAP]`    | /dev/swap_partition | Linux swap          | >512MiB   |
 | `/mnt`      | /dev/root_partition | Linux x86-64        | Remainder |
 
-##### UEFI
+#### UEFI
 | Mount point | Partition                 | Type                  | Size                 |
 | ----------- | ------------------------- | --------------------- | -------------------- |
 | `/mnt/boot` | /dev/efi_system_partition | EFI system partition | >300 MiB             |
