@@ -9,10 +9,11 @@ tags:
 - processes
 ---
 
-A file descriptor (fd) is a positive integer that is used to identify an opened
-file in the kernel. It is bound to a process ID, where each process has its own
-**file descriptor table** that lists its opened files. All file descriptors of a
-process are stored in procfs at `/proc/PID/fd`.
+A file descriptor (fd) is a positive integer used to identify an open file or
+input/output resource (pipe, network socket etc.) in the kernel. It is bound to
+a process ID, where each process has its own **file descriptor table** that
+lists its opened files. All file descriptors of a process are stored in
+[procfs]() at `/proc/PID/fd`.
 
 ```bash
 $ ls -la /proc/123/fd
