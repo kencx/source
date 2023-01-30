@@ -1,9 +1,14 @@
 {{ if (.Params.toc) }}
 <aside class="tableOfContents">
-  <h4>
-    Table of Contents
-    <span><a style="position: relative; top: 5px;" href="#top">{{ partial "svg/icons" "up" }}</a></span>
-  </h4>
+  <header>
+    <h4>
+      Table of Contents
+      <span><a style="position: relative; top: 5px;" href="#top">{{ partial "svg/icons" "up" }}</a></span>
+    </h4>
+  </header>
+  <div class="tableOfContents-title">
+    <a href="#">{{ .Title }}</a>
+  </div>
 	{{ .TableOfContents }}
 </aside>
 {{ end }}
