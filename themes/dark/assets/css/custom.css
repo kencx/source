@@ -127,14 +127,18 @@ footer {
 }
 
 /* show anchor on hover only */
-/* .heading-anchor { */
-/*   display: none; */
-/* } */
-/**/
-/* .headings:hover .heading-anchor { */
-/*   display: inline; */
-/*   text-decoration: none !important; */
-/* } */
+.heading-anchor {
+  position: absolute;
+  top: -5px;
+  transform: translateX(-100%);
+  padding: 0 8px;
+  opacity: 0;
+}
+
+.headings:hover .heading-anchor, .heading-anchor:focus {
+  text-decoration: none !important;
+  opacity: 1;
+}
 
 .content a {
 	line-height: 1.6;
