@@ -6,9 +6,24 @@
       <span><a style="position: relative; top: 5px;" href="#top">{{ partial "svg/icons" "up" }}</a></span>
     </h4>
   </header>
-  <div class="tableOfContents-title">
-    <a href="#">{{ .Title }}</a>
-  </div>
-	{{ .TableOfContents }}
+
+  {{ if .IsSection }}
+    <nav>
+      <ul>
+        {{ range .Sections.ByTitle }}
+          <li>
+            <a href="#{{ .Title | lower }}">{{ .Title }}</a>
+          </li>
+        {{ end }}
+      </ul>
+    </nav>
+
+  {{ else }}
+    <div class="tableOfContents-title">
+      <a href="#">{{ .Title }}</a>
+    </div>
+
+    {{ .TableOfContents }}
+  {{ end }}
 </aside>
 {{ end }}
