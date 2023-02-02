@@ -8,8 +8,9 @@ The key topics resolve around devops, development and Unix systems
 administration. These might change with time. All information here is transient
 and represents my knowledge at that time. I don't guarantee that all information
 is accurate, but I try my best to ensure its well-researched and referenced.
-Incomplete documents will be flagged. Any constructive criticism is welcome.
-Contact me @ the links below.
+Incomplete documents will be flagged.
+
+Any constructive criticism is welcome. Contact me at the links below.
 
 [Colophon]({{< ref "/colophon" >}})
 
