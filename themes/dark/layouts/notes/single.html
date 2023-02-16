@@ -15,6 +15,17 @@
 			</span>
 		</p>
 		{{ .Content }}
+		<div class="meta">
+      <div class="tags">
+        {{ with .Params.tags }}
+          {{ range $i, $tag := . | sort }}
+            {{ with $.Site.GetPage (printf "/%s/%s" "tags" $tag) }}
+              <a href="{{ .Permalink }}">#{{ $tag | urlize }}</a>
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      </div>
+		</div>
 	</div>
 	{{ partial "toc.html" . }}
 {{ end }}

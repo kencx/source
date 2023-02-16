@@ -1,7 +1,7 @@
 ---
 title: "File Descriptors"
 date: 2023-01-21T00:00:00+08:00
-lastmod: 2023-01-21T00:00:00+08:00
+lastmod: 2023-01-30T00:00:00+08:00
 draft: false
 toc: true
 tags:

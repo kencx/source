@@ -6,6 +6,7 @@ draft: false
 toc: true
 tags:
   - docker
+  - docker-compose
 ---
 
 There are 2 types of environment variables in docker-compose:

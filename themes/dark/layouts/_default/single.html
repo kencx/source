@@ -15,15 +15,22 @@
 			</span>
 		</p>
 		{{ .Content }}
-		<p class="post-footer">
-			<span class="meta">
-					{{ if eq $date $lastmod }}
+		<div class="meta">
+        {{ if eq $date $lastmod }}
 
-					{{ else }}
-						Edited: {{ $lastmod }}
-					{{ end }}
-			</span>
-		</p>
+        {{ else }}
+          Edited: {{ $lastmod }}
+        {{ end }}
+      <div class="tags">
+        {{ with .Params.tags }}
+          {{ range $i, $tag := . | sort }}
+            {{ with $.Site.GetPage (printf "/%s/%s" "tags" $tag) }}
+              <a href="{{ .Permalink }}">#{{ $tag | urlize }}</a>
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      </div>
+		</div>
 	</div>
 	{{ partial "toc.html" . }}
 {{ end }}

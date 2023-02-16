@@ -6,6 +6,7 @@ draft: false
 toc: false
 tags:
   - docker
+  - docker-compose
 ---
 
 #### List services in order you expect them to start

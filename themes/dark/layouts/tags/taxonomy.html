@@ -1,7 +1,7 @@
 {{ define "main" }}
 <div>
 	<h1>
-		{{ .Title }}
+		{{ .Title | title }}
 	</h1>
 	<ul class="notes list">
 		{{ range .Pages.ByTitle }}

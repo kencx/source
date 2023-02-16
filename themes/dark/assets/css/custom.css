@@ -158,14 +158,14 @@ footer {
 	margin-bottom: 10px;
 }
 
-.post-footer {
-
-}
-
 .notes {
 	list-style: none;
 	padding-left: 10px;
 	margin-top: -10px;
+}
+
+.tags {
+
 }
 
 .list a {

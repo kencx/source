@@ -6,6 +6,7 @@ draft: false
 toc: true
 tags:
   - docker
+  - security
 ---
 
 ## Docker Socket Ownership

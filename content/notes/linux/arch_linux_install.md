@@ -6,7 +6,7 @@ draft: false
 toc: true
 tags:
 - linux
-- arch linux
+- arch-linux
 ---
 
 ## Pre-Installation
