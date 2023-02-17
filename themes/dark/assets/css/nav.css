@@ -6,9 +6,9 @@ nav {
 }
 
 nav a {
-	color: var(--link-color) !important;
+	color: var(--nav-color) !important;
 	padding-right: 2rem;
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 	font-weight: bold;
 }
 
@@ -28,7 +28,7 @@ nav a:hover {
 }
 
 nav button {
-	color: var(--link-color);
+	color: var(--nav-color);
 	background-color: transparent;
 	border: none;
 }
@@ -58,7 +58,7 @@ nav button {
 }
 
 .dropdown-item:hover {
-	background: #353545;
+	background: var(--nav-bg-hover-color);
 	text-decoration: none !important;
 }
 

@@ -1,34 +1,8 @@
-* {
-	outline: none;
-	--bg-color: #1F1F28;
-	--theme-color: #f78d54;
-	--link-color: #72b6b5;
-}
-
-html {
-	scroll-behavior: smooth;
-}
-
-body {
-	color: #d8d8d8 !important;
-}
-
-main {
-	display: grid;
-	grid-template-columns: 100% 20em;
-	margin-top: 1rem;
-	line-height: 1.5rem;
-}
-
 .main-container {
 	width: 740px;
 	max-width: 100%;
 	margin: 0 auto;
 	/* border: 1px solid white; */
-}
-
-img {
-	max-width: 100% !important;
 }
 
 /* table of contents */
@@ -46,7 +20,7 @@ main > aside.tableOfContents {
 	border-width: 0px;
 	border-left-width: 4px;
 	border-style: solid;
-	border-color: var(--theme-color);
+	border-color: var(--fade-color);
 }
 
 .tableOfContents header {
@@ -79,26 +53,19 @@ main > aside.tableOfContents {
 }
 
 .tableOfContents a {
-	color: #adadad !important;
-	font-size: 1rem;
+	color: var(--fade-color) !important;
+	font-size: 0.85rem;
 	font-weight: 100;
 	transition: all 50ms ease-in-out;
 }
 
 .tableOfContents li a:hover,
 .tableOfContents li a:focus {
-	color: #d8d8d8 !important;
+	color: var(--fg-color) !important;
 	text-decoration: none !important;
 }
 
 /* footer */
-
-footer {
-	font-weight: bold;
-	color: var(--link-color);
-	font-size: 1rem;
-	margin: 4rem 0;
-}
 
 .icons a svg {
   position: relative;
@@ -112,7 +79,7 @@ footer {
 /* content  */
 
 .meta {
-	color: var(--theme-color);
+	color: var(--fade-color);
 	font-size: 0.7rem;
 	font-weight: normal;
 	text-transform: uppercase;
@@ -120,7 +87,7 @@ footer {
 
 .title {
 	color: var(--theme-color);
-	font-size: 2.5rem;
+	font-size: 2.25rem;
 	font-weight: bold;
   line-height: 1.5 !important;
 	display: grid;
@@ -128,6 +95,7 @@ footer {
 
 /* show anchor on hover only */
 .heading-anchor {
+  color: var(--link-color) !important;
   position: absolute;
   top: -5px;
   transform: translateX(-100%);
@@ -164,14 +132,14 @@ footer {
 	margin-top: -10px;
 }
 
-.tags {
-
+.tags, .tags > a {
+	color: var(--fade-color) !important;
 }
 
 .list a {
 	text-decoration: none;
 	position: relative;
-	color: var(--link-color) !important;
+	color: var(--nav-color) !important;
 }
 
 .list a:hover {
@@ -193,6 +161,7 @@ footer {
 }
 
 .tools {
+  color: var(--fade-color);
   font-family: "Fira Code, monospace";
 }
 
