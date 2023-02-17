@@ -7,7 +7,7 @@
 	--nav-color: #d7d8df;
   --nav-bg-hover-color: #353545;
   --link-color: orange;
-  --link-visited-color: #ccf;
+  /* --link-visited-color: #ccf; */
   --blockquote-color: #42b983;
   --fade-color: #898989;
   --code-bg-color: #272822;
@@ -110,7 +110,7 @@ a {
 }
 
 a:visited {
-	color: var(--link-visited);
+	/* color: var(--link-visited-color) !important; */
 	text-decoration: none;
 }
 
@@ -169,7 +169,7 @@ pre > code {
 }
 
 code {
-  font-family: "Fira Code, monospace" !important;
+  font-family: "Fira Code", "monospace" !important;
 	background-color: var(--code-bg-color);
 	/* background: rgb(16, 20, 23) !important; */
 	margin: 0 2px;
