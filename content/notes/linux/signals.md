@@ -7,6 +7,7 @@ toc: true
 tags:
 - linux
 - processes
+- signals
 ---
 
 Signals allow for interprocess communication (IPC) that creates and sends
