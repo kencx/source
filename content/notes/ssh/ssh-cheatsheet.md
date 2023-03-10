@@ -30,6 +30,9 @@ The key pair should be fully configured for use
 $ ssh user@ip
 ```
 
+See [Caching SSH keys]({{< ref "notes/ssh/caching-keys" >}}) for persistent
+methods.
+
 ## Permissions
 
 For SSH to work properly, all files must have the correct permissions:
