@@ -2,7 +2,7 @@
 title: "Arch Linux Installation on USB"
 date: 2022-12-29T17:33:17+08:00
 lastmod: 2022-12-29T17:33:17+08:00
-draft: true
+draft: false
 toc: true
 tags:
 - linux
@@ -52,7 +52,7 @@ Install the `arch-install-scripts` package
 $ pacman -S arch-install-scripts
 ```
 
-From here, follow the [Arch Linux Installation]({{< ref "/notes/linux/arch_linux_install.md#installation" >}}) notes.
+From here, follow the [Arch Linux Installation]({{< ref "/notes/arch/arch_linux_install.md#installation" >}}) notes.
 
 
 ### From another Linux distribution

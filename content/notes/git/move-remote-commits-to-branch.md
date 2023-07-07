@@ -10,9 +10,13 @@ tags:
 
 >This action can be potentially destructive!! Take care when performing such commands.
 
-Scenario: In the process of making a change, you forked the Git repository and committed a change directly on the `master` branch instead of creating a new `feature-x` branch. You don't realise until after you have pushed the commit to remote.
+Scenario: In the process of making a change, you forked the Git repository and
+committed a change directly on the `master` branch instead of creating a new
+`feature-x` branch. You don't realise until after you have pushed the commit to
+remote.
 
-The following commands create a new branch with the commit and reset the remote `master` branch.
+The following commands create a new branch with the commit and reset the remote
+`master` branch.
 
 ```bash
 $ git branch [feature-x] master

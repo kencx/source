@@ -168,26 +168,28 @@ main > aside.tableOfContents {
 .alert {
 	padding: 10px 15px !important;
 	margin: 20px;
+	border-left: 4px solid #42b983;
+  background-color: rgba(52, 55, 62, 0.32);
 }
 
 .alert-warning {
 	border-left: 4px solid #C34043;
-  background-color: rgba(195,64,67,0.2);
+  background-color: rgba(195,64,67,0.32);
 }
 
 .alert-note {
 	border-left: 4px solid #42b983;
-  background-color: rgba(66, 185, 131, 0.2);
+  background-color: rgba(52, 55, 62, 0.32);
 }
 
 .alert-info {
-	border-left: 4px solid #E6C384;
-  background-color: rgba(230, 195, 132, 0.2);
+	border-left: 4px solid #42b983;
+  background-color: rgba(52, 55, 62, 0.32);
 }
 
 .alert-example {
 	border-left: 4px solid #7E9CD8;
-  background-color: rgba(126, 156, 216, 0.2);
+  background-color: rgba(20, 59, 136, 0.32);
 }
 
 @media screen and (max-width: 660px) {

@@ -2,8 +2,8 @@
 title: "Aliases"
 date: 2023-04-01
 lastmod: 2023-04-01
-draft: true
-toc: false
+draft: false
+toc: true
 tags:
 - bash
 ---
