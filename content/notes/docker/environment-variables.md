@@ -15,7 +15,9 @@ There are 2 types of environment variables in docker-compose:
 
 Both have different functions and are configured differently.
 
->Tip: For debugging env variables, use `docker-compose config`.
+{{< alert type="note" >}}
+For debugging env variables, use `docker-compose config`.
+{{< /alert >}}
 
 ## Variable Substitution
 These environment variables are passed into compose files with variable
@@ -149,7 +151,7 @@ We observe that
 - The value of `EDITOR=vim` in `portainer.env` is overwritten by the `EDITOR=nano`.
 - `FILE_ONLY` is defined and not overwritten.
 
-# References
+## References
 - [Compose - Environment Variables](https://docs.docker.com/compose/environment-variables/#substitute-environment-variables-in-compose-files)
 - [Compose - env_file](https://docs.docker.com/compose/compose-file/compose-file-v3/#env_file)
 - [Multiple env files in monorepo](https://github.com/docker/compose/issues/6392)

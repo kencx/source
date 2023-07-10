@@ -6,6 +6,7 @@ draft: false
 toc: false
 tags:
 - ansible
+- snippet
 ---
 
 ```yaml

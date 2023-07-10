@@ -1,5 +1,5 @@
 ---
-title: "Add Custom SSH key pair"
+title: "Add custom SSH key pair"
 date: 2023-02-02
 lastmod: 2023-02-02
 draft: false

@@ -57,7 +57,7 @@ $ \rm
 $ \r\m
 ```
 
-## Using Alises with sudo
+## Using Aliases with sudo
 Because only the first word in a command is checked for aliases, a command like
 
 ```bash

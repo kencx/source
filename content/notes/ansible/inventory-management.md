@@ -9,7 +9,10 @@ tags:
 ---
 
 ## Debugging Inventory Files
-Use `ansible-inventory` to check the validity of inventory, `group_vars` and `host_vars` files. The `--vars` flag produces a neat graph that depicts the variables that are applied to the defined hosts.
+
+Use `ansible-inventory` to check the validity of inventory, `group_vars` and
+`host_vars` files. The `--vars` flag produces a neat graph that depicts the
+variables that are applied to the defined hosts.
 
 ```bash
 $ ansible-inventory --graph --vars
@@ -53,6 +56,7 @@ the following patterns:
 These can be used within a playbook, or on the command line with the `--limit` flag or `-i`
 flag.
 
-# References
+## References
+
 - [Ansible - Targeting hosts and groups](https://docs.ansible.com/ansible/latest/user_guide/intro_patterns.html#using-patterns)
 - [Override hosts variable of Ansible playbook](https://stackoverflow.com/questions/33222641/override-hosts-variable-of-ansible-playbook-from-the-command-line)

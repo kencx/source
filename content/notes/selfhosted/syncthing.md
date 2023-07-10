@@ -43,16 +43,18 @@ The first, crucial thing to do is to turn on GUI authentication. This prevents o
 
 Although Syncthing does not store data in the cloud, it does safeguard against accidental deletion or change with file versioning. This is turned off by default. A good practice would be to enable simple file versioning with 5 copies for at least 30 days.
 
->When used with Traefik, accessing the Web GUI results in a redirect loop. Solve this by opening the port to the Web GUI, accessing it via `IP:PORT` and turning off TLS:
->
->```
->Actions -> Advanced -> GUI -> Use TLS (ensure it is unchecked)
->```
->
->As Traefik ensures HTTPS, this is no longer necessary.
+{{< alert type="note" >}}
+When used with Traefik, accessing the Web GUI results in a redirect loop. Solve this by opening the port to the Web GUI, accessing it via `IP:PORT` and turning off TLS:
+
+```
+Actions -> Advanced -> GUI -> Use TLS (ensure it is unchecked)
+```
+
+As Traefik ensures HTTPS, this is no longer necessary.
+{{< /alert >}}
 
 
-# References
+## References
 - [theselfhostingblog - How to set up a headless syncthing network](https://theselfhostingblog.com/posts/how-to-set-up-a-headless-syncthing-network/)
 
 

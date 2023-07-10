@@ -6,6 +6,7 @@ draft: false
 toc: false
 tags:
 - ansible
+- snippet
 ---
 
 `changed_when` and `failed_when` are useful in *validation* tasks in order to
@@ -36,5 +37,5 @@ tasks:
     changed_when: false
 ```
 
-# References
+## References
 - [Validating Ansible Changes](https://adamj.eu/tech/2014/10/31/validating-ansible-changes/)

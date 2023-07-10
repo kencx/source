@@ -42,6 +42,11 @@ A number of changes have been implemented to provide some measure of security:
 - From Vagrant 1.7.0, Vagrant replaces the default insecure SSH key pair with a
   randomly generated key pair on the first `vagrant up`.
 
+{{< alert type="note" >}}
+To use a custom SSH key pair, see
+[Add custom SSH key pair]({{< ref "notes/vagrant/custom-key-pair.md" >}}).
+{{< /alert >}}
+
 ## Using a Different Username
 
 Most Vagrant base boxes have only 2 users with SSH access: `root` and `vagrant`.
@@ -80,3 +85,7 @@ $ sudo chmod 0440 /etc/sudoers.d/foo
 
 Steps 1-3 can be condensed into a shell script/Ansible playbook and passed to
 the Vagrantfile's provisioner.
+
+## References
+
+- [Vagrant docs - Creating a base box](https://developer.hashicorp.com/vagrant/docs/boxes/base)

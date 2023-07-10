@@ -26,26 +26,26 @@ source data directly to `src/`. Custom paths can be configured with:
 `makepkg` **cannot** be run as root. A dedicated user or the `nobody` user should be used to run `makepkg` if necessary.
 {{< /alert >}}
 
-0. Install the required dependencies:
+1. Install the required dependencies:
 
 ```bash
 $ pacman -S --needed base-devel
 ```
 
-1. Acquire the build files from the AUR
+2. Acquire the build files from the AUR
 
 ```bash
 $ git clone https://aur.archlinux.org/[package].git
 ```
 
-2. View the contents of [[PKGBUILD]]
+3. View the contents of PKGBUILD:
 
 ```bash
 $ cd [package]
 $ less PKGBUILD
 ```
 
-3. Build the package with `makepkg`
+4. Build the package with `makepkg`
 
 ```bash
 $ makepkg [-sci]
@@ -56,6 +56,7 @@ $ makepkg [-sci]
 - `-c` cleans up leftover files and directories
 
 ### Update Files
+
 To upgrade the same package, update the files in the package's directory
 
 ```bash

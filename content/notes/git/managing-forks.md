@@ -36,7 +36,7 @@ $ git merge upstream/master
 If the local master branch does not have any unique commits, Git will perform a
 fast-forward. Otherwise, we must take extra steps to resolve merge conflicts.
 
-### Maintaining a Custom Fork
+## Maintaining a Custom Fork
 
 Alternatively, we may fork a repository to maintain a custom fork of the
 repository. In this case, we would make changes that might not be merged into

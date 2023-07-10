@@ -29,7 +29,7 @@ spoofing an IP. To run multiple commands, use a script (within the server)
 instead. This restricts the attacker greatly if the key pair were to be
 compromised.
 
-### Note
+## Note
 For the above to be useful, a second key pair has to be generated for the same host. To
 add another public key without overwriting the first, use
 
@@ -40,5 +40,5 @@ $ cat ~/.ssh/newkey.pub | ssh -l user host "cat >> .ssh/authorized_keys"
 or you can create a new user for this task. It is also useful to tag the keys with
 comments `-C "comment"` to easily identify them.
 
-# References
+## References
 - [Managing SSH for Scripts and Cron Jobs](https://www.linuxjournal.com/article/8257)

@@ -1,5 +1,5 @@
 ---
-title: "User module always changed"
+title: "Make user module idempotent"
 date: 2022-12-30
 lastmod: 2022-12-30
 draft: false
@@ -19,7 +19,16 @@ When creating a user with Ansible's [user](https://docs.ansible.com/ansible/late
     state: present
 ```
 
-This is the case become setting a password with `password | password_hash('sha512')` is not idempotent. The salt of the hash changes with every run of `password_hash`.
+This is the case because setting a password with the `password_hash` filter:
+
+```
+{{ password | password_hash('sha512') }}
+```
+
+is not idempotent - the hash's salt changes with every
+run of `password_hash`.
+
+## Solution
 
 There are two ways to make it idempotent:
 1. Run with specific salt

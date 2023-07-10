@@ -34,15 +34,30 @@ It must satisfy the `ServeHTTP` method and is responsible for executing
 application logic and writing HTTP response headers and bodies.
 
 ## Handle
-To map a specific route (url pattern) to a handler, we can use a `ServeMux` router
-and its `Handle` method
+To map a specific route (url pattern) to a handler, we must create a custom handler that satisfies the `Handler` interface and pass it into `http.Handle`:
 
 ```go
-func (mux *ServeMux) Handle(pattern string, handler Handler)
+type fooHandler struct{}
+
+func (f *fooHandler) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+	log.Println("hello world!")
+}
+
+func main() {
+	http.Handle("/foo", &fooHandler{})
+	http.ListenAndServe(":9090", nil)
+}
+```
+
+Alternatively, we can use a `ServeMux` and its `Handle` method:
+
+```go
+func fooHandler(rw http.ResponseWriter, r *http.Request) {
+	log.Println("hello world!")
+}
 
 func main() {
 	mux := http.NewServeMux()
-
 	mux.Handle("/foo", fooHandler)
 
 	http.ListenAndServe(":5000", mux)

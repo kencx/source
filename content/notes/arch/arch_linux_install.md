@@ -10,17 +10,16 @@ tags:
 ---
 
 ## Pre-Installation
-### Prepare Installation Medium
-Copy the Arch Linux ISO to a USB flash drive
+
+1. Copy the Arch Linux ISO to a USB flash drive:
 
 ```bash
 $ dd bs=4M if=path/to/iso of=/dev/sdX conv=fsync oflag=direct status=progress
 ```
 
-Plug the flash drive into your device and select it at boot.
+2. Proceed to boot into the live USB.
 
-### Verify the boot mode
-Check if your system is booted in BIOS or UEFI mode.
+3. Verify the system's boot mode:
 
 ```bash
 $ ls /sys/firmware/efi/efivars
@@ -29,66 +28,35 @@ $ ls /sys/firmware/efi/efivars
 If the command lists the directory's contents without error, the system is booted in
 UEFI mode. Otherwise, the system may be booted in BIOS mode.
 
-### Connect to Internet
-1. Ensure the network interface is listed and enabled
+4. Ensure the system is connected to the Internet.
 
-```bash
-$ ip link
-$ ip link set eth0 up
-```
+5. Update the system clock:
 
-2. If using wireless, ensure your wireless card is [not blocked](https://wiki.archlinux.org/title/Network_configuration/Wireless#Rfkill_caveat).
-
-```bash
-$ rfkill list
-$ rfkill unblock wifi
-```
-
-3. Connect to the network. If using Wifi, authenticate using
-   [iwctl](https://wiki.archlinux.org/title/Iwd#iwctl)
-
-4. Configure your network connection. DHCP should work out of the box, managed by `systemd-networkd` and `systemd-resolved`.
-
-For static IPs, add an IP address, set up your routing table and configure DNS servers:
-
-```bash
-# add IP address
-$ ip address add 10.10.10.100/24 dev eth0
-
-# add route
-$ ip route add default via 10.10.10.1 dev eth0
-```
-
-5. Verify the connection
-
-```bash
-$ ping archlinux.org
-```
-
-### Update system clock
 ```bash
 $ timedatectl set-ntp true
 $ timedatectl set-timezone Asia/Singapore
 $ timedatectl status
 ```
 
-### Partitions
-Partition the base disk based on the boot type:
+6. Partition the base disk based on the boot type:
 
-#### BIOS/MBR
+**BIOS/MBR**
+
 | Mount point | Partition           | Type         | Size      |
 | ----------- | ------------------- | ------------ | --------- |
 | `[SWAP]`    | /dev/swap_partition | Linux swap   | >512MiB   |
 | `/mnt`      | /dev/root_partition | Linux x86-64 | Remainder |
 
-#### BIOS/GPT
+**BIOS/GPT**
+
 | Mount point | Partition           | Type                | Size      |
 | ----------- | ------------------- | ------------------- | --------- |
 | None        | /dev/sdX1           | BIOS boot partition | 1MB       |
 | `[SWAP]`    | /dev/swap_partition | Linux swap          | >512MiB   |
 | `/mnt`      | /dev/root_partition | Linux x86-64        | Remainder |
 
-#### UEFI
+**UEFI**
+
 | Mount point | Partition                 | Type                  | Size                 |
 | ----------- | ------------------------- | --------------------- | -------------------- |
 | `/mnt/boot` | /dev/efi_system_partition | EFI system partition | >300 MiB             |
@@ -147,16 +115,16 @@ Consider updating the keyring first with `pacman -Sy archlinux-keyring`.
 
 
 ## Configuration
-### Fstab and Chroot
-Generate an fstab file, then chroot into the new system
+
+1. Generate an fstab file, then chroot into the new system
 
 ```bash
 $ genfstab -U /mnt >> /mnt/etc/fstab
 $ arch-chroot /mnt
 ```
 
-### GRUB
-Install and configure [grub](https://wiki.archlinux.org/title/GRUB):
+2. Install and configure [grub](https://wiki.archlinux.org/title/GRUB) (or your
+   bootloader of choice):
 
 ```bash
 $ pacman -S grub efibootmgr
@@ -172,13 +140,15 @@ $ grub-install --target=i386-pc /dev/sda
 $ grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-### Timezone
+3. Set the system's timezone
+
 ```bash
 $ ln -s /usr/share/zoneinfo/Asia/Singapore /etc/localtime
 $ hwclock --systohc
 ```
 
-### Localization
+4. Set the system's locales
+
 ```bash
 $ vim /etc/locale.gen
 # uncomment en_US.UTF-8 UTF-8
@@ -190,47 +160,52 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "hostname" > /etc/hostname
 ```
 
-### Create non-root user
+5. Create a non-root user
+
 ```bash
 $ passwd
 $ useradd -m [username]
 $ passwd [username]
 ```
 
-Install and configure sudo
+6. Install and configure sudo:
 
 ```bash
 $ pacman -S sudo
-$ export EDITOR=vim
-$ visudo
+$ export EDITOR=vim visudo
+
 # uncomment wheel ALL(ALL:)=ALL
 ```
 
-Add user to wheel group (sudo). Logout and login again for changes to take effect.
+7. Add the user to the wheel group:
 
 ```bash
-$ usermod -aG wheel kenc
+$ usermod -aG wheel [username]
 ```
 
-### Network Configuration
-Install the necessary networking packages now.
+8. Set up networking:
 
 ```bash
 $ pacman -S networkmanager iwd
 ```
 
-If you forget to install and configure networking during the installation, and only realise after reboot, you can boot into the live USB again and perform the installation without re-installing the entire Arch system. Simply remount the drives and `arch-chroot /mnt` again.
+If you forget to install and configure networking during the installation, and
+only realise after reboot, you can boot into the live USB again and perform the
+installation without re-installing the entire Arch system. Simply remount the
+drives and `arch-chroot /mnt` again.
 
-### Reboot
+9. Finally, exit the chroot environment and reboot:
+
 ```bash
-# exit the chroot env
 $ exit
 $ umount -R /mnt
 $ reboot
 ```
 
-#### Alternative Methods
-- Run [archinstall](https://github.com/archlinux/archinstall) for a quick, guided installation
+## Alternative Methods
+
+- Run [archinstall](https://github.com/archlinux/archinstall) for a quick,
+  guided installation
 - Arch Linux on USB
 
 ## References

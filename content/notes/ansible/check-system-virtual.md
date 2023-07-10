@@ -6,7 +6,11 @@ draft: false
 toc: false
 tags:
 - ansible
+- snippet
 ---
+
+This is useful for running tasks that are specific to physical or virtual hosts
+(e.g. bluetooth and power management on a laptop host).
 
 ```yml
 - name: Check if system is virtual
@@ -39,12 +43,10 @@ tags:
 - name: Run when virtual
   debug:
     msg: System is virtual!
-  when: virtaul
+  when: virtual
 ```
 
 - Replace `QEMU` with the virtualization tool used (`KVM`, `VirtualBox`, `VMware. Inc.` etc.)
-
-This is useful for running tasks that are specific to physical or virtual hosts. For example, bluetooth and power management on a laptop host.
 
 ## References
 - [How to check if a system is virtual](https://iranzo.io/blog/2021/05/10/how-to-check-if-a-system-is-virtual/)

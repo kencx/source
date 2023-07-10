@@ -170,7 +170,7 @@ Once you have performed the basic security hardening, its good to look at
 network management to ensure all web connections are secured as well. More info
 at [network management](/notes/selfhosted/network-management).
 
-# References
+## References
 - [How to Secure a Linux Server](https://github.com/imthenachoman/How-To-Secure-A-Linux-Server)
 - [Best way to add user to sudoer group](https://unix.stackexchange.com/questions/122087/what-is-the-best-way-to-add-a-user-to-the-sudoer-group)
 - [ufw-docker](https://github.com/chaifeng/ufw-docker).

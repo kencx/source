@@ -134,5 +134,5 @@ contact_details = {
 user_dict = {'username': 'bas', **social_media_details, **contact_details}
 ```
 
-# References
+## References
 - [All you need to know about asterisks in Python](https://bas.codes/posts/python-asterisks)

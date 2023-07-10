@@ -10,7 +10,7 @@ tags:
 
 There are three components to packaging a Vagrant box:
 
-1. Box File
+1. Box File (mandatory)
 2. Box Catalog Metadata
 3. Box Information
 
@@ -22,8 +22,6 @@ There are three components to packaging a Vagrant box:
 ├─ catalog.json                       (2)
 └─ info.json                          (3)
 ```
-
-Only the box file is compulsory.
 
 ## Box File
 

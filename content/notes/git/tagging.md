@@ -15,7 +15,7 @@ $ git tag
 $ git tag -l [regex]
 ```
 
-### Creating Tags
+## Creating Tags
 Git supports two types of tags: lightweight & annotated.
 
 1. Lightweight tags are pointers to a specific commit.
@@ -31,9 +31,11 @@ $ git tag -a [tagname] [-m message]
 
 If `-m` is not given when creating an annotated tag, an editor will be opened to enter your tag message.
 
->To tag a past commit, we have to specify the commit checksum `git tag -a v1.2 9fceb02`
+{{< alert type="note" >}}
+To tag a past commit, we have to specify the commit checksum `git tag -a v1.2 9fceb02`.
+{{< /alert >}}
 
-### Deleting tags
+## Deleting tags
 To delete tags locally and remotely,
 
 ```bash
@@ -41,7 +43,7 @@ $ git tag -d [tagname]  # local
 $ git push origin --delete [tagname]  # remote
 ```
 
-### Pushing tags
+## Pushing tags
 To explicitly push tags to a remote
 
 ```bash
@@ -49,7 +51,7 @@ $ git push origin [tagname]
 $ git push origin --tags  # pushes all tags
 ```
 
-### Checkout tags
+## Checkout tags
 
 To view the versions of files a tag is pointing to, we can `git checkout` a tag.
 This puts the repository into a "detached `HEAD`" state which may have some side

@@ -227,6 +227,6 @@ venvs/
 |- prod/
 ```
 
-# References
+## References
 
 - [Python Virtual Environments - A Primer](https://realpython.com/python-virtual-environments-a-primer/)

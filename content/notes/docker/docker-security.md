@@ -165,5 +165,5 @@ ensure all public network access is blocked.
 ## Docker Traefik Security
 TODO
 
-# References
+## References
 - [Docker Security Best Practices](https://www.smarthomebeginner.com/traefik-docker-security-best-practices)

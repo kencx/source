@@ -79,15 +79,6 @@ root /#
 # /bin/sh -c bash
 ```
 
-## Summary
-
-`ENTRYPOINT` and `CMD` defines the process that starts running when a container is started.
-
-| ENTRYPOINT                     | CMD                      |
-| ------------------------------ | ------------------------ |
-| Dedicated command for image    | Arguments for ENTRYPOINT |
-| Use container as an executable | Default argument for executable container |
-
 ## Shell & Exec Form
 To make things more confusing, there are 2 different ways to define `ENTRYPOINT` and `CMD` - shell and exec form.
 
@@ -103,6 +94,16 @@ exec form does not invoke the command shell; it cannot evaluate environment vari
 In shell form, all commands are wrapped with `/bin/sh -c` by default. Hence, it can evaluate environment variables.
 
 ## Summary
+
+`ENTRYPOINT` and `CMD` defines the process that starts running when a container is started.
+
+| ENTRYPOINT                     | CMD                      |
+| ------------------------------ | ------------------------ |
+| Dedicated command for image    | Arguments for ENTRYPOINT |
+| Use container as an executable | Default argument for executable container |
+
+They can be represented in shell and exec form.
+
 |   Form     | Dockerfile                       | Command                    |
 | :--------: | -------------------------------- | -------------------------- |
 | shell form | ENTRYPOINT /bin/ping -c 3        | /bin/sh -c 'bin/ping -c 3' |
@@ -110,6 +111,6 @@ In shell form, all commands are wrapped with `/bin/sh -c` by default. Hence, it 
 | exec form  | ENTRYPOINT ["/bin/ping", "-c 3"] | /bin/ping -c 3             |
 | exec form  | CMD ["localhost"]                | localhost                  |
 
-# References
+## References
 - [DevOpswithDocker - Defining Start Conditions](https://devopswithdocker.com/part-1/4-defining-start-conditions)
 - [Difference between CMD and Entrypoint](https://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile)

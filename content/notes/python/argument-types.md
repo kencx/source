@@ -203,6 +203,6 @@ def foo(*args, **kwargs):
 	pass
 ```
 
-# References
+## References
 
 - [All you need to know about asterisks in Python](https://bas.codes/posts/python-asterisks)

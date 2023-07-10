@@ -44,6 +44,6 @@ For SSH to work properly, all files must have the correct permissions:
 | public key  | 0644 |
 | private key | 0600 |
 
-# References
+## References
 - [SSH Crash Course](https://www.youtube.com/watch?v=hQWRp-FdTpc)
 - [OpenSSH Full Guide](https://www.youtube.com/watch?v=YS5Zh7KExvE)

@@ -7,6 +7,7 @@ toc: false
 tags:
 - ansible
 - systemd
+- snippet
 ---
 
 For user systemd to work, the executing user must have its own instance of dbus started

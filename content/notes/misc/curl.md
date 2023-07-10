@@ -136,7 +136,7 @@ $ curl -X POST -F "upload1=<john.json;type=application/json" \
 	http://example.com
 ```
 
-# References
+## References
 
 - [Everything curl](https://everything.curl.dev/)
 - [curl Cookbook](https://catonmat.net/cookbooks/curl)

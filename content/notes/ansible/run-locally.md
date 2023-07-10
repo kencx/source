@@ -8,7 +8,31 @@ tags:
 - ansible
 ---
 
-### Run all tasks locally
+## From the command line
+
+```bash
+$ ansible-playbook --connection=local 127.0.0.1, main.yml
+```
+
+{{< alert type="note" >}}
+The comma is mandatory after `127.0.0.1,`, otherwise `127.0.0.1` is treated
+as a filename.
+{{< /alert >}}
+
+## With an inventory file
+
+```
+[local]
+localhost ansible_connection=local
+```
+
+```
+ansible-playbook -i inventory --limit local main.yml
+```
+
+## Within a playbook
+
+### All tasks
 
 ```yaml
 ---
@@ -19,7 +43,9 @@ tags:
     ...
 ```
 
-### Run a **single** task locally
+### A single task
+
+Using the `local_action` module:
 
 ```yaml
 tasks:
@@ -30,21 +56,18 @@ tasks:
       dest: ...
 ```
 
-### Run playbook locally from the command line
+or using the `delegate_to` keyword:
 
-```bash
-$ ansible-playbook --connection=local 127.0.0.1, main.yml
+```yml
+tasks:
+  - name: Local task
+    git:
+      repo: ...
+      dest: ...
+    delegate_to: localhost
 ```
 
->The comma is mandatory after `127.0.0.1,`, otherwise `127.0.0.1` is treated as a filename.
+## References
 
-or use an inventory file
-
-```
-[local]
-localhost ansible_connection=local
-```
-
-```
-ansible-playbook -i inventory --limit local main.yml
-```
+- [Ansible docs - Local
+  Playbooks](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_delegation.html#local-playbooks)
