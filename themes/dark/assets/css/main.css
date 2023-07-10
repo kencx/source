@@ -75,7 +75,7 @@ h3,
 h4,
 h5,
 h6 {
-	word-break: break-all !important;
+	word-break: break-word
 	line-height: 1.2;
 	text-align: left;
 	font-weight: bold;
