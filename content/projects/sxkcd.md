@@ -2,7 +2,7 @@
 title: "sxkcd"
 date: 2022-07-01T09:55:25+08:00
 lastmod:
-weight: 2
+weight: 3
 draft: false
 repo_url: https://github.com/kencx/sxkcd
 post_url:

@@ -2,7 +2,7 @@
 title: "keyb"
 date: 2022-07-01T09:55:25+08:00
 lastmod:
-weight: 3
+weight: 4
 draft: false
 repo_url: https://github.com/kencx/keyb
 post_url:
