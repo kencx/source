@@ -87,7 +87,7 @@ main > aside.tableOfContents {
 
 .title {
 	color: var(--theme-color);
-	font-size: 2.25rem;
+	font-size: 2.5rem;
 	font-weight: bold;
   line-height: 1.5 !important;
 	display: grid;
