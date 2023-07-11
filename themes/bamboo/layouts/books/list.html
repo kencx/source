@@ -12,7 +12,7 @@
 		{{ range .Sections.ByTitle }}
 			<div>
 				<h3>{{ .Title }}</h3>
-				<ul class="notes list">
+				<ul class="notes">
 					{{ range .Pages.ByTitle }}
 						<li>
 							{{ if .Content  }}

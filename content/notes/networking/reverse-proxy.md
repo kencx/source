@@ -15,8 +15,7 @@ services to:
 - Be configured with TLS encryption.
 
 In home networking or selfhosting, reverse proxies are usually set up in Docker
-containers with docker networks. This is the case of [Nginx Proxy
-Manager]({{< ref "/notes/selfhosted/npm.md" >}}) and
+containers with docker networks. This is the case of Nginx Proxy Manager and
 Traefik.
 
 #### docker networks
@@ -34,6 +33,6 @@ image), they are inaccessible from outside the network.
 
 This way, users are forced to access the services through the reverse proxy.
 
-# References
+## References
 
 - [Docker Docs - Bridge networks](https://docs.docker.com/network/bridge/)

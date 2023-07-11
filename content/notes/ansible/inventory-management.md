@@ -1,5 +1,5 @@
 ---
-title: "Ansible inventory management"
+title: "Ansible Inventory Management"
 date: 2022-10-02T21:21:02+08:00
 lastmod:
 draft: false

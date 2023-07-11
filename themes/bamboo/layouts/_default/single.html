@@ -1,8 +1,8 @@
 {{ define "main" }}
 	<div>
-		<p class="title">
-			{{ .Title }}
-			<span class="meta">
+		<h1>
+			{{ .Title | title }}
+			<div class="meta">
 				{{ $date := .Date.Format "2 Jan 2006" }}
 				{{ $lastmod := .Lastmod.Format "2 Jan 2006" }}
 				{{ $date }}
@@ -12,8 +12,8 @@
 						{{ .Scratch.Set "timeUnit" "min" }}
 					{{ end }}
 					• {{ .ReadingTime }} {{ .Scratch.Get "timeUnit" }}
-			</span>
-		</p>
+			</div>
+		</h1>
 		{{ .Content }}
 		<div class="meta">
         {{ if eq $date $lastmod }}

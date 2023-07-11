@@ -1,0 +1,40 @@
+{{ define "main" }}
+<div>
+	<h1>
+		{{ .Title }}
+	</h1>
+
+	{{ if .Content }}
+		<div>{{ .Content }}</div>
+	{{ end }}
+
+	{{ if (where .Site.Pages "Section" "projects") }}
+		<div>
+			{{ range .Pages.ByWeight }}
+        <div class="projects">
+          <h3>
+            <a href="{{ .Params.repo_url }}">
+              {{ .Title }}
+            </a>
+          </h3>
+          <span>
+            <small class="tools">
+              {{ if .Params.post_url }}
+              <a href="{{ .Params.post_url }}">Blog</a> |
+              {{ end }}
+              Tools:
+              {{ range $i, $tool := .Params.tools -}}
+              {{- if $i -}}, {{ end -}}
+              {{ $tool }}
+              {{- end -}}
+            </small>
+          </span>
+        </div>
+
+
+				<div>{{.Content}}</div>
+			{{ end }}
+		</div>
+	{{ end }}
+</div>
+{{ end }}

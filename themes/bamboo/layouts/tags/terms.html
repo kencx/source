@@ -7,7 +7,7 @@
 	{{ if .Content }}
 		<div>{{ .Content }}</div>
 	{{ end }}
-	<ul class="notes list">
+	<ul class="notes">
 		{{ range .Site.Taxonomies.tags.Alphabetical }}
 			<li>
 				<a href="{{ .Page.Permalink }}">{{ .Page.Title }}</a>

@@ -11,10 +11,10 @@
   {{ if (where .Site.Pages "Section" "notes") }}
     {{ range .Sections.ByTitle }}
       <div>
-        <h4 id="{{ .Title | anchorize }}" class="headings">
-          {{ .Title }}
-        </h4>
-        <ul class="notes list">
+        <h3 id="{{ .Title | anchorize }}" class="headings">
+          {{ .Title | title }}
+        </h3>
+        <ul class="notes">
           {{ range .Pages.ByTitle }}
             <li>
               <a href="{{.Permalink}}">{{.Title}}</a>

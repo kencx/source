@@ -114,7 +114,7 @@ $ mkinitcpio -P
 $ grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-# References
+## References
 - [Install Arch Linux on removable medium](https://wiki.archlinux.org/title/Install_Arch_Linux_on_a_removable_medium)
 - [arch-usb](https://mags.zone/help/arch-usb.html)
 - [Arch Linux on a USB stick](https://www.youtube.com/watch?v=yaThYGr37DI)

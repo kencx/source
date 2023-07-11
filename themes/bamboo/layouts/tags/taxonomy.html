@@ -3,7 +3,7 @@
 	<h1>
 		{{ .Title | title }}
 	</h1>
-	<ul class="notes list">
+	<ul class="notes">
 		{{ range .Pages.ByTitle }}
 			<li>
 				<a href="{{ .Permalink }}">{{ .Title }}</a>

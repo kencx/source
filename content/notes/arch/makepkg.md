@@ -85,7 +85,7 @@ These variables can also be added as environment variables:
 $ PKGEXT=.pkg.tar makepkg
 ```
 
-# References
+## References
 - [Arch Linux Wiki - AUR](https://wiki.archlinux.org/title/Arch_User_Repository)
 - [Arch Linux Wiki - makepkg](https://wiki.archlinux.org/title/Makepkg#Tips_and_tricks)
 - [Arch Linux Wiki - PKGBUILD](https://wiki.archlinux.org/title/PKGBUILD)

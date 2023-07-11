@@ -1,7 +1,7 @@
 baseURL = "https://ken.cheo.dev"
 languageCode = "en-us"
 title = "kencx"
-theme = "dark"
+theme = "bamboo"
 # enableGitInfo = true
 
 [frontmatter]

@@ -7,9 +7,9 @@
 
 	<title>{{ .Title }}</title>
 
-	{{ $base := resources.Get "css/main.css" }}
-	{{ $nav := resources.Get "css/nav.css" }}
-	{{ $custom := resources.Get "css/custom.css" }}
+	{{ $base := resources.Get "css/bamboo.min.css" }}
+  {{ $nav := resources.Get "css/nav.css" }}
+  {{ $custom := resources.Get "css/custom.css" }}
 	{{ $style := slice $base $nav $custom | resources.Concat "assets/css/bundle.css" | minify | fingerprint "sha512" }}
 
 	<link rel="shortcut icon" type="image/png" href="images/favicon.png" />
