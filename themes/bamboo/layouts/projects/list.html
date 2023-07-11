@@ -20,7 +20,7 @@
           <span>
             <small class="tools">
               {{ if .Params.post_url }}
-              <a href="{{ .Params.post_url }}">Blog</a> |
+              <a href="{{ absURL .Params.post_url }}">Blog</a> |
               {{ end }}
               Tools:
               {{ range $i, $tool := .Params.tools -}}
