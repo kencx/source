@@ -3,9 +3,9 @@ title: "calibre-rest"
 date: 2023-07-10
 lastmod: 2023-07-10
 weight: 1
-draft: true
+draft: false
 repo_url: https://github.com/kencx/calibre-rest
-post_url:
+post_url: posts/calibre-rest
 tools:
 - Python
 - Flask
