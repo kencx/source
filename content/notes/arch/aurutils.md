@@ -33,12 +33,6 @@ $ rm -rf /path/to/db/[package]
 $ sudo pacman -Syu
 ```
 
-{{< alert type="info" >}}
-- [aurto](https://github.com/alexheretic/aurto) is a wrapper tool for `aurutils`.
-- [aura](https://github.com/kencx/aura) is my own custom wrapper script for
-  `aurutils`.
-{{< /alert >}}
-
 List all added packages from a database:
 
 ```bash
@@ -56,6 +50,12 @@ Sync and upgrade all packages in database:
 ```bash
 $ aur sync -d [database-name] --no-view --upgrades -k0
 ```
+
+{{< alert type="info" >}}
+- [aurto](https://github.com/alexheretic/aurto) is a wrapper tool for `aurutils`.
+- [aura](https://github.com/kencx/aura) is my own custom wrapper script for
+  `aurutils`.
+{{< /alert >}}
 
 ## References
 - [Arch Linux Wiki - AUR](https://wiki.archlinux.org/title/Arch_User_Repository)
