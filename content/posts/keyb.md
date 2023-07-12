@@ -2,7 +2,7 @@
 title: "keyb - A hotkey cheatsheet in the terminal"
 date: 2023-07-12T00:18:00+08:00
 lastmod: 2023-07-12
-draft: true
+draft: false
 toc: true
 tags:
 - projects
@@ -69,11 +69,6 @@ by prefixing the search input with `h:`.
 
 > For my issues with heading mode, see [here](#heading-mode).
 
-## Bubbletea
-
-`keyb` is built in Go, with the
-[bubbletea](https://github.com/charmbracelet/bubbletea/tree/master) framework.
-
 ## Configuration
 
 `keyb` works by listing all your hotkeys in a `keyb.yml` file. Hotkeys are
@@ -108,7 +103,6 @@ hotkeys into different groups or modes - normal, insert, visual mode in vim.
 > See my
 > [keyb.yml](https://github.com/kencx/dotfiles/blob/master/dots/keyb/.config/keyb/custom.yml)
 > for some examples.
-
 
 ## Improvements
 
