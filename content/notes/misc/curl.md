@@ -2,7 +2,7 @@
 title: "Curl"
 date: 2023-07-07
 lastmod: 2023-07-07
-draft: true
+draft: false
 toc: true
 tags:
 - curl
