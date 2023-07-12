@@ -5,7 +5,7 @@ lastmod:
 weight: 4
 draft: false
 repo_url: https://github.com/kencx/keyb
-post_url: posts/keyb
+post_url: posts/keyb-a-hotkey-cheatsheet-in-the-terminal
 tools:
 - Go
 ---
