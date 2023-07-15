@@ -1,3 +1,6 @@
+build:
+	hugo --buildDrafts --buildFuture -v
+
 serve:
 	hugo serve --disableFastRender --gc --ignoreCache --debug --buildDrafts --buildFuture -v
 
