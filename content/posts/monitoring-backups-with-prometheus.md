@@ -2,7 +2,7 @@
 title: "Monitoring Backups With Prometheus"
 date: 2023-08-10
 lastmod: 2023-08-10
-draft: true
+draft: false
 toc: true
 tags:
   - backups
