@@ -239,21 +239,5 @@ pre, code, kbd, samp, tt, var {
     margin-bottom: 0.2rem;
 }
 
-.tools {
-}
-
-/* image zoom */
-
-input[type=checkbox] {
-  display: none
-}
-
-.click-zoom img {
-  transition: transform 0.25s ease;
-  cursor: zoom-in;
-}
-
-.click-zoom input[type=checkbox]:checked~img {
-  transform: scale(2);
-  cursor: zoom-out;
-}
+/* .tools { */
+/* } */
