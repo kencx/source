@@ -7,7 +7,7 @@ toc: false
 tags:
 - misc
 - makefile
-- snippet
+- snippets
 ---
 
 Two examples of custom `help` targets:

@@ -13,20 +13,25 @@ Modify the last commit with `--amend` if you:
 - Want to amend the commit message
 
 1. Perform and add all necessary changes.
+
 ```bash
 $ git add changes.md
 ```
 
 2. Amend the commit with
+
 ```bash
 $ git commit --amend [--no-edit]
 ```
+
 `--no-edit` is included if you do not wish to replace the commit message
 
 3. If the amended commit has **already been pushed** to your remote, use
+
 ```bash
 $ git push -f <remote-name> <branch_name>
 ```
+
 Note: Ensure no other changes have been made by others before you push.
 
 ## Commit with message file
@@ -35,31 +40,6 @@ commit, pass it to git with
 ```bash
 $ git commit -eF message.txt
 ```
-
-## Split subdirectory into new Git repository
-First, create a new branch in the root directory of your repo.
-
-```bash
-$ cd repo
-$ git checkout -b new_branch
-```
-
-Next, in that new branch, specify the subdirectory to base the new repository
-off
-
-```bash
-$ git filter-branch --prune-empty --subdirectory-filter path/to/subdirectory new_branch
-```
-
-Finally, create a new Github repository and change the remote, before pushing your changes
-
-```bash
-$ git remote set-url origin https://github.com/new/repo.git
-$ git push -u origin new_branch
-```
-
-You can delete the branch after, but note that your original repository in
-`master` is still unchanged.
 
 ## SSH keys
 1. Generate a new [SSH key](/notes/ssh-cheatsheet) and add it to `ssh-agent`

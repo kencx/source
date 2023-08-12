@@ -6,7 +6,7 @@ draft: false
 toc: false
 tags:
 - ansible
-- snippet
+- snippets
 ---
 
 To compare two versions of software, use the `version()` Jinja
@@ -17,7 +17,7 @@ To compare two versions of software, use the `version()` Jinja
 latest_python_version: '1.6.2'
 ```
 
-```yaml {hl_lines=[14]}
+```yaml
 # main.yml
 tasks:
   - name: Check Python version

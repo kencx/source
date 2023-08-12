@@ -6,7 +6,7 @@ draft: false
 toc: false
 tags:
 - bash
-- snippet
+- snippets
 ---
 
 This snippet is useful when checking if a specific command is installed on the

@@ -2,11 +2,12 @@
 title: "Delete Files by Time"
 date: 2023-07-07
 lastmod: 2023-07-07
-draft: true
+draft: false
 toc: false
 tags:
 - bash
 - find
+- snippets
 ---
 
 ### GNU find

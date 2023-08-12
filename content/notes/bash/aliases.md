@@ -18,7 +18,7 @@ hello world
 
 Since aliases are textual substitutions, we can append arguments to them
 
-```
+```bash
 $ hello foo
 hello world foo
 ```

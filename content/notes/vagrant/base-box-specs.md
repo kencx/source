@@ -76,9 +76,9 @@ $ sudo chmod 0440 /etc/sudoers.d/foo
 4. In the Vagrantfile, include:
 
 ```ruby
-	config.ssh.insert_key = false
-	config.ssh.username=foo
-	config.ssh.private_key_path="/path/to/private_key"
+config.ssh.insert_key = false
+config.ssh.username=foo
+config.ssh.private_key_path="/path/to/private_key"
 ```
 
 4. Run `vagrant ssh`

@@ -6,6 +6,7 @@ draft: false
 toc: true
 tags:
 - go
+- http
 ---
 
 Go's `http` package has four different but similar sounding functions and types:

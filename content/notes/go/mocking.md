@@ -6,6 +6,7 @@ draft: false
 toc: false
 tags:
 - go
+- mocking
 ---
 
 When creating mocks, we want the ability to modify the mocked object's methods

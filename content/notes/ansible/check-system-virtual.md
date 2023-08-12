@@ -6,7 +6,7 @@ draft: false
 toc: false
 tags:
 - ansible
-- snippet
+- snippets
 ---
 
 This is useful for running tasks that are specific to physical or virtual hosts

@@ -53,7 +53,7 @@ And pass it into the systemd file `nomad.service` with the `forking` type, which
 starts Nomad as the main process of the script. This is required for reliable
 signal handling.
 
-```
+```text
 [Unit]
 Description=Nomad
 Wants=network-online.target
@@ -88,7 +88,7 @@ This role is created with two policies:
   access to the same policy
 - A new `nomad_startup` policy:
 
-```
+```text
 path "auth/token/create-orphan" {
   capabilities = ["create", "update", "sudo"]
 }

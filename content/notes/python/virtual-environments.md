@@ -35,7 +35,7 @@ Python virtual environments instead.
 
 ## What goes into a venv?
 
-```bash
+```text
 venv/
 |- bin/
 |  |- activate
@@ -182,7 +182,7 @@ venv's `site-packages`.
 
 Oftentimes when creating a new venv, you might encounter the following message:
 
-```
+```text
 WARNING: You are using pip version 21.2.4; however, version 22.0.4 is available.
 You should consider upgrading via the
 '/path/to/venv/python -m pip install --upgrade pip' command.
@@ -210,7 +210,7 @@ In the project folder approach, the venv is created in the root folder of the
 project and lives side-by-side with the code. You can activate your venv quickly
 and you know which venv belongs to which project.
 
-```bash
+```text
 project/
 |- venv/
 |- src/
@@ -221,7 +221,7 @@ environments in a single, centralized location. You can inspect all your venvs
 in one place and manage them appropriately. However, it would be difficult to
 activate them quickly.
 
-```
+```text
 venvs/
 |- dev/
 |- prod/

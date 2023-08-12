@@ -6,7 +6,7 @@ draft: false
 toc: false
 tags:
 - ansible
-- snippet
+- snippets
 ---
 
 `changed_when` and `failed_when` are useful in *validation* tasks in order to

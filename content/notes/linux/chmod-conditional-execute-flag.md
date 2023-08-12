@@ -1,5 +1,5 @@
 ---
-title: "Chmod - Conditional Execute Flag"
+title: "Conditional Execute Flag in chmod"
 date: 2023-07-12
 lastmod: 2023-07-12
 draft: true

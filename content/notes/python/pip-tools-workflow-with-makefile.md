@@ -8,7 +8,7 @@ tags:
 - python
 - pip-tools
 - makefile
-- snippet
+- snippets
 ---
 
 ```make

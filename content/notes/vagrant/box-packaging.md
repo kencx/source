@@ -14,7 +14,7 @@ There are three components to packaging a Vagrant box:
 2. Box Catalog Metadata
 3. Box Information
 
-```
+```text
 ├─ bionic64_libvirt.box (tgz archive) (1)
 |   ├─ ubuntu.img
 |   ├─ metadata.json

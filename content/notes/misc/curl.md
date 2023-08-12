@@ -1,5 +1,5 @@
 ---
-title: "Curl"
+title: "Curl Cookbook"
 date: 2023-07-07
 lastmod: 2023-07-07
 draft: false
