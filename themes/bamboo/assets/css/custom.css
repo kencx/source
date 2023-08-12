@@ -1,6 +1,6 @@
 :root {
-  --b-font-main: "IBM Plex Mono", Courier, monospace;
-  /* --b-font-mono: Consolas, Monaco, monospace; */
+  --b-font-main: "Fira Code Nerd Font Mono", Courier, monospace;
+  --b-font-mono: "Liberation Mono", Courier, monospace;
   --b-font-size: 0.9rem;
 
   --b-txt: hsl(150, 5%, 10%);
