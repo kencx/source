@@ -5,7 +5,7 @@
 	shrink-to-fit=no">
 	<meta name="robots" content="noodp" />
 
-	<title>{{ .Title }}</title>
+	<title>{{ .Title | default "cheo.dev" }}</title>
 
 	{{ $base := resources.Get "css/bamboo.min.css" }}
   {{ $custom := resources.Get "css/custom.css" }}
