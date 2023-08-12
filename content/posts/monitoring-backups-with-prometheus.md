@@ -92,7 +92,7 @@ generate the general metrics.
 
 ## Grafana Dashboard
 
-{{< figure src="/posts/images/backup-grafana-dashboard.png" caption="Grafana dashboard for backups" class="center" >}}
+{{< figure src="/posts/images/backup-grafana-dashboard.png" caption="Grafana dashboard for backups" class="center click-zoom" >}}
 
 ## AlertManager
 

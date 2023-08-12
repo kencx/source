@@ -5,15 +5,14 @@ lastmod:
 weight: 3
 draft: false
 repo_url: https://github.com/kencx/sxkcd
-post_url:
+post_url: posts/sxkcd
 tools:
 - Go
+- Svelte
 - Redis
-- Svelte(-kit)
 - Docker
 ---
 
-A real-time full-text [XKCD](https://xkcd.com) search engine that supports an extensive
-query syntax, and comic number and date filtering. Redis is used as a document indexer
-and database to provide very quick search results. The webapp is hosted on Hetzner at
-[sxkcd.lol](https://sxkcd.lol)
+A full-text search engine for [xkcd](https://xkcd.com) comics supported by
+Redis. It features an extensive query syntax with comic number and date
+filtering. Test it out at [xkcd.cheo.dev](https://xkcd.cheo.dev).

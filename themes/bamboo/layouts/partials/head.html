@@ -11,7 +11,7 @@
   {{ $custom := resources.Get "css/custom.css" }}
 	{{ $style := slice $base $custom | resources.Concat "assets/css/bundle.css" | minify | fingerprint "sha512" }}
 
-	<link rel="shortcut icon" type="image/svg" href="images/favicon.svg" />
+	<link rel="shortcut icon" type="image/svg" href="{{ .Site.BaseURL }}/favicon.svg" />
 	<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
 	<link rel="alternate" type="application/rss+xml" href="{{ .Site.BaseURL }}/feed.xml" title="{{ .Site.Title }}">
 </head>

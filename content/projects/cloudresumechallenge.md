@@ -3,7 +3,7 @@ title: "cloudresumechallenge"
 date: 2022-07-01T09:55:25+08:00
 lastmod:
 weight: 2
-draft: false
+draft: true
 repo_url: https://github.com/kencx/cloudresumechallenge
 post_url:
 tools:
