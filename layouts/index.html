@@ -1,0 +1,20 @@
+{{ define "main" }}
+<div>
+	<h1>About</h1>
+	{{ .Content }}
+
+  <h2>Projects</h2>
+  {{ range .Site.Pages }}
+    {{ if eq .Type "projects" }}
+      <div>
+        {{ range .Pages.ByWeight }}
+          <div class="projects">
+            <a href="{{ .Params.repo_url }}">{{ .Title }}</a>
+            {{.Summary}}
+          </div>
+        {{ end }}
+      </div>
+      {{ end }}
+    {{ end }}
+</div>
+{{ end }}

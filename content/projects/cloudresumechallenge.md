@@ -13,11 +13,12 @@ tools:
 - Github Actions
 ---
 
-A simple static site hosting a resume and visitor counter. It is hosted entirely
-on AWS and built with AWS services, including DynamoDB, AWS Lambda and API
-Gateway. All cloud services are entirely managed with Terraform. The Lambda code
-is written in Python and code changes are automatically deployed with Github
-Actions.
+A simple static site hosting a resume and visitor counter.
+<!--more-->
+It is hosted entirely on AWS and built with AWS services, including DynamoDB,
+AWS Lambda and API Gateway. All cloud services are entirely managed with
+Terraform. The Lambda code is written in Python and code changes are
+automatically deployed with Github Actions.
 
 This project is inspired entirely by
 [cloudresumechallenge](https://cloudresumechallenge.dev/) and was a great

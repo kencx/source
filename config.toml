@@ -1,7 +1,9 @@
 baseURL = "https://ken.cheo.dev"
 languageCode = "en-us"
-title = "kencx"
+title = "cheo.dev"
 theme = "bamboo"
+rssLimit = 20
+copyright = "2021—{year}"
 # enableGitInfo = true
 
 [frontmatter]
@@ -42,12 +44,6 @@ theme = "bamboo"
     name       = "Notes"
     url        = "notes/"
     weight     = 2
-
-  [[menu.main]]
-    identifier = "projects"
-    name       = "Projects"
-    url        = "projects/"
-    weight     = 3
 
   # [[menu.main]]
   #   identifier = "books"

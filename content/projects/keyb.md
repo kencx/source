@@ -10,6 +10,7 @@ tools:
 - Go
 ---
 
-A lightweight hotkey cheatsheet in the terminal. `keyb` can create and view
-custom hotkey cheatsheets in a nice TUI. It supports fuzzy filtering, vim key
-bindings and is fully customizable.
+A lightweight and fully customizable hotkey cheatsheet in the terminal.
+<!--more-->
+`keyb` can create and view custom hotkey cheatsheets in a nice TUI. It supports
+fuzzy filtering and vim key bindings.

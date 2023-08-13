@@ -1,10 +1,10 @@
 <footer>
   <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank"
-    rel="noopener"> &copy; {{ now.Format "2006" }}</a>  |
+    rel="noopener">&copy; {{ replace .Site.Copyright "{year}" now.Year }}</a>  |
   <span class="icons">
     <a href="{{.Site.Params.github}}">{{ partial "svg/icons" "github" }}</a>
     <a href="mailto:{{.Site.Params.email}}">{{ partial "svg/icons" "email" }}</a>
-    <a href="/index.xml" target="_blank">{{ partial "svg/icons" "rss" }}</a>
+    <a href="/posts/index.xml" target="_blank">{{ partial "svg/icons" "rss" }}</a>
   </span>
 
   <div class="icons" style="float: right;">
