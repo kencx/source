@@ -1,14 +1,8 @@
 build:
-	hugo --buildDrafts --buildFuture -v
+	hugo --buildDrafts --buildFuture --gc --minify --enableGitInfo
 
 serve:
-	hugo serve --disableFastRender --gc --ignoreCache --debug --buildDrafts --buildFuture -v
-
-test:
-	hugo --gc --minify --enableGitInfo
-
-docker-build:
-	docker build . -t site
+	hugo serve --buildDrafts --buildFuture --gc --enableGitInfo --ignoreCache --debug --disableFastRender
 
 clean:
 	rm -rf public/
