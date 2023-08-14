@@ -11,7 +11,8 @@ tags:
 By default, Ansible returns an output in json format when running playbooks.
 This makes it very hard to debug long errors. We can change its output to a more
 human readable yaml format by including this in your global or local `ansible.cfg`.
-```
+
+```text
 # ansible.cfg
 [default]
 stdout_callback=yaml

@@ -21,13 +21,13 @@ as a filename.
 
 ## With an inventory file
 
-```
+```conf
 [local]
 localhost ansible_connection=local
 ```
 
-```
-ansible-playbook -i inventory --limit local main.yml
+```bash
+$ ansible-playbook -i inventory --limit local main.yml
 ```
 
 ## Within a playbook
