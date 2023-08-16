@@ -8,6 +8,7 @@ tags:
 - neovim
 - lua
 - ansible
+- snippet
 ---
 
 This function navigates to the `tasks/main.yml` file of the Ansible role that is under the cursor.
