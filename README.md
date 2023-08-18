@@ -1,5 +1,5 @@
 # Source
-Source for my [blog](https://ken.cheo.dev). Hosted on Netlify.
+Source for [blog](https://ken.cheo.dev). Hosted on Hetzner behind Nginx.
 
 ## New Content
 To quickly create new content, use the following `hugo new` commands.

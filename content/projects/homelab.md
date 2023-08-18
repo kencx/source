@@ -12,5 +12,6 @@ tools:
 - Packer
 ---
 
-A Nomad, Consul and Vault cluster hosted on Proxmox.
+A Nomad, Consul and Vault cluster hosted on Proxmox. Documentation
+[here](https://kencx.github.io/homelab).
 <!--more-->
