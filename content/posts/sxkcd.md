@@ -1,7 +1,7 @@
 ---
 title: "sxkcd"
-date: 2023-08-10
-lastmod: 2023-08-10
+date: 2023-08-22
+lastmod: 2023-08-22
 draft: true
 toc: true
 tags:
@@ -15,14 +15,14 @@ search and an extensive query syntax. It is built with Go, Svelte and the data
 is stored and indexed in Redis.
 
 {{< alert type="note" >}}
-You can try it out [here](xkcd.cheo.dev) and find the source code at
-[kencx/sxkcd](https://github.com/kencx/sxkcd) on Github.
+Try it out [here](xkcd.cheo.dev) or find the source code on
+[Github](https://github.com/kencx/sxkcd).
 {{< /alert >}}
 
 In this post, I will be writing about some things I learnt while building
 `sxkcd` including:
 
-- Handling concurrency and signals in Go
+- Handling concurrency and signals in Go with `sync.ErrGroup`
 - Using Redis Stack's features
 - Decoding a JSON stream in Go
 - Handling root processes in Docker
@@ -45,7 +45,7 @@ later).
 ### Concurrency
 
 When downloading the data, all requests are performed concurrently with
-Goroutines. My first implementation of this was a simple [counting
+goroutines. My first implementation of this was a simple [counting
 semaphore](https://en.wikipedia.org/wiki/Semaphore_(programming)) using
 `sync.WaitGroup`:
 
@@ -92,19 +92,19 @@ effectively making them distinct variables.
 >that may be addressed individually. Each such element acts like a variable.
 >
 >-- [The Go Programming Language
->Specification#Variables](https://go.dev/ref/spec#Variables)
+>Specification](https://go.dev/ref/spec#Variables)
 
 The function above creates a fixed size array `comics` and each goroutine
 indexes a comic into a different element. It does not write to the same
 element more than once nor does it read the `comics` slice until after
 `wg.Wait()` is called, making the function concurrency-safe.
 
-However, the function didn't allow the user to gracefully cancel the process or
-handle signals in a clean way.
+However, the function does not handle signals cleanly and lacks graceful
+termination.
 
 ### ErrGroup
 
-The second implementation aimed to tackle these issues with `sync.errgroup`:
+The second implementation aimed to tackle signal handling with `sync.Errgroup`:
 
 ```go
 func (c *Client) RetrieveAllComics(latest int) (map[int]*Comic, error) {
@@ -156,7 +156,7 @@ Because I switched `comics` to being a map, mutexes are required.
 {{< /alert >}}
 
 The experimental [errgroup
-package](https://pkg.go.dev/golang.org/x/sync/errgroup) offers the `Group` type
+package](https://pkg.go.dev/golang.org/x/sync/errgroup) offers the `Group` type,
 which is functionally equivalent to `WaitGroup`, except that it offers an
 idiomatic way to handle errors and context cancellations in a group of
 goroutines.
@@ -272,7 +272,7 @@ Showing nodes accounting for 15.20MB, 100% of 15.20MB total
          0     0%   100%    15.20MB   100%  runtime.main
 ```
 
-To optimize this, I decode the streamed JSON body instead of unmarshaling the
+To optimize this, I decode the JSON as a stream instead of reading the
 entire file at once:
 
 ```go
