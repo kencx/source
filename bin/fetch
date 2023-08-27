@@ -99,7 +99,7 @@ if [[ ${#books[@]} != 0 ]]; then
         FINAL=$(<"$OUTPUT")
         # append to existing json
         for b in "${books[@]}"; do
-            FINAL="$(jq --argjson new "$b" '. += [$new]' <<<"$FINAL")"
+            FINAL="$(jq --argjson new "$b" '[$new] + .' <<<"$FINAL")"
         done
     else
         FINAL="$(echo "${books[@]}" | jq -s '.')"
