@@ -45,14 +45,8 @@ copyright = "2021—{year}"
     url        = "notes/"
     weight     = 2
 
-  # [[menu.main]]
-  #   identifier = "books"
-  #   name       = "Books"
-  #   url        = "books/"
-  #   weight     = 4
-
   [[menu.main]]
     identifier = "tags"
     name       = "Tags"
     url        = "tags/"
-    weight     = 5
+    weight     = 3

@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+function help() {
+    cat <<EOF
+usage: ./$(basename $0) /path/to/isbns output.json
+EOF
+}
+
+if [[ $# -lt 2 ]]; then
+    help
+    exit 1
+fi
+
+FILE="$1"
+OUTPUT="$2"
+COVERS_DIR="content/books/covers"
+URL="https://openlibrary.org/api/books?format=json&jscmd=data&bibkeys=ISBN:"
+
+covers=0
+isbns=()
+books=()
+
+if [[ ! -d $COVERS_DIR ]]; then
+    mkdir -p $COVERS_DIR
+fi
+
+if [[ ! -f $FILE ]]; then
+    echo "ERROR: \"$FILE\" does not exist"
+    exit 1
+fi
+
+if [[ -f $OUTPUT ]]; then
+    if ! jq '.' "$OUTPUT" >/dev/null 2>&1; then
+        echo "ERROR: \"$OUTPUT\" not a valid JSON file"
+        exit 1
+    fi
+
+    # check if isbn already exists
+    while read -r line; do
+        if grep -Fq "$line" "$OUTPUT"; then
+            continue
+        else
+            isbns+=("$line")
+        fi
+    done <"$FILE"
+else
+    # fetch all
+    isbns+=(cat "$FILE")
+fi
+
+count=${#isbns[@]}
+if [[ $count -eq 0 ]]; then
+    echo "No books and covers added"
+    exit 0
+fi
+
+echo "Adding $count books"
+
+for i in "${isbns[@]}"; do
+    # echo "Adding $i"
+
+    book=$(curl -s "$URL$i" | jq --arg isbn "$i" '.[] | {
+        title: .title,
+        isbn: $isbn,
+        authors: (.authors | map(.name) | join(", ")),
+        url: .url,
+        cover_url: .cover.medium,
+    }')
+
+    # download cover images
+    IFS=$'\t'
+    while read -r title cover; do
+        if [[ -n $cover ]]; then
+            # strip chars
+            # [',', '.', ':', '\', '/', '@', '#']
+
+            sanitized=$(echo "${title// /_}" | tr '[:upper:]' '[:lower:]')
+            path="$COVERS_DIR/$sanitized.jpg"
+
+            if [[ ! -f $path ]]; then
+                wget -q -O "$path" "$cover"
+                ((covers += 1))
+            fi
+
+            # add cover key to $book
+            book=$(jq --arg path "$sanitized.jpg" '. += {cover: $path}' <<<"$book")
+        fi
+    done < <(jq -r '. | [.title,(.cover_url | select (. != null))] | @tsv' <<<"$book")
+
+    books+=("$book")
+    # echo "${books[@]}" >"int.json"
+done
+
+if [[ ${#books[@]} != 0 ]]; then
+    FINAL=""
+    if [[ -f $OUTPUT ]]; then
+        FINAL=$(<"$OUTPUT")
+        # append to existing json
+        for b in "${books[@]}"; do
+            FINAL="$(jq --argjson new "$b" '. += [$new]' <<<"$FINAL")"
+        done
+    else
+        FINAL="$(echo "${books[@]}" | jq -s '.')"
+    fi
+
+    if [[ -n $FINAL ]]; then
+        echo "$FINAL" >"$OUTPUT"
+    fi
+
+    echo "Books added: $count"
+    echo "Covers downloaded: $covers"
+fi

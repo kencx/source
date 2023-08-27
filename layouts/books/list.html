@@ -1,31 +1,17 @@
 {{ define "main" }}
 <div>
-	<p class="title">
-		{{ .Title }}
-	</p>
+  <h1>
+    {{ .Title }} ({{ .Site.Data.books | len }})
+  </h1>
 
 	{{ if .Content }}
 		<div>{{ .Content }}</div>
 	{{ end }}
 
-	{{ if (where .Site.Pages "Section" "books") }}
-		{{ range .Sections.ByTitle }}
-			<div>
-				<h3>{{ .Title }}</h3>
-				<ul class="notes">
-					{{ range .Pages.ByTitle }}
-						<li>
-							{{ if .Content  }}
-								<a href="{{.Permalink}}">{{.Title}}</a>
-							{{ else }}
-								{{ .Title }}
-							{{ end }}
-
-						</li>
-					{{ end }}
-				</ul>
-			</div>
-		{{ end }}
-	{{ end }}
+  <div class="card-view">
+    {{ range .Site.Data.books }}
+      {{ partial "book-card.html" . }}
+    {{ end }}
+  </div>
 </div>
 {{ end }}
