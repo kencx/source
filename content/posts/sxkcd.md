@@ -1,8 +1,8 @@
 ---
 title: "sxkcd"
-date: 2023-08-22
-lastmod: 2023-08-22
-draft: true
+date: 2023-08-30
+lastmod: 2023-08-30
+draft: false
 toc: true
 tags:
 - projects
@@ -22,7 +22,8 @@ Try it out [here](xkcd.cheo.dev) or find the source code on
 In this post, I will be writing about some things I learnt while building
 `sxkcd` including:
 
-- Handling concurrency and signals in Go with `sync.ErrGroup`
+- Handling errors in goroutines with `sync.ErrGroup`
+- Interrupting goroutines with `context`
 - Using Redis Stack's features
 - Decoding a JSON stream in Go
 - Handling root processes in Docker
@@ -50,7 +51,7 @@ semaphore](https://en.wikipedia.org/wiki/Semaphore_(programming)) using
 `sync.WaitGroup`:
 
 ```go
-func GetAllComics(total int) ([]*XkcdComic, error) {
+func FetchAll(total int) ([]*XkcdComic, error) {
 	var wg sync.WaitGroup
 
     // max number of concurrent requests
@@ -69,7 +70,7 @@ func GetAllComics(total int) ([]*XkcdComic, error) {
 				return
 			}
 
-			comic, err := GetXkcdComic(strconv.Itoa(i))
+			comic, err := GetXkcdComic(i)
 			if err != nil {
 				log.Println(err)
 				return
@@ -99,24 +100,23 @@ indexes a comic into a different element. It does not write to the same
 element more than once nor does it read the `comics` slice until after
 `wg.Wait()` is called, making the function concurrency-safe.
 
-However, the function does not handle signals cleanly and lacks graceful
-termination.
+However, the function does not handle errors properly -- any errors in goroutines
+are logged but not returned.
 
 ### ErrGroup
 
-The second implementation aimed to tackle signal handling with `sync.Errgroup`:
+We can tackle this issue with the experimental [errgroup
+package](https://pkg.go.dev/golang.org/x/sync/errgroup). `sync.errgroup` offers the `Group`
+type, which is functionally equivalent to `WaitGroup`, except that it offers an
+idiomatic way to handle errors in a group of goroutines.
 
 ```go
-func (c *Client) RetrieveAllComics(latest int) (map[int]*Comic, error) {
-
-	var mu sync.Mutex
-	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-	defer cancel()
-
-	g, gtx := errgroup.WithContext(ctx)
+func (c *Client) FetchAll(latest int) (map[int]*Comic, error) {
+	g, gctx := errgroup.WithContext(context.Background())
 	g.SetLimit(60)
 
-	comics := make(map[int]*Comic, latest)
+	comics := make([]*XkcdComic, total)
+
 	for i := 1; i < latest+1; i++ {
 		id := i
 
@@ -124,26 +124,17 @@ func (c *Client) RetrieveAllComics(latest int) (map[int]*Comic, error) {
 			if id == 404 {
 				return nil
 			}
-			comic, err := c.RetrieveComic(id)
+			comic, err := c.GetXkcdComic(i)
 			if err != nil {
-				log.Println(err)
 				return err
 			}
 
-			mu.Lock()
-			defer mu.Unlock()
-			comics[id] = comic
-
-			select {
-			case <-gtx.Done():
-				return gtx.Err()
-			default:
-				return nil
-			}
+			comics[i-1] = comic
+            return nil
 		})
 	}
 
-	if err := g.Wait(); err == nil || err == context.Canceled {
+	if err := g.Wait(); err == nil {
 		return comics, nil
 	} else {
 		return nil, err
@@ -151,29 +142,184 @@ func (c *Client) RetrieveAllComics(latest int) (map[int]*Comic, error) {
 }
 ```
 
+If an error occurs in
+any of the goroutines, `Wait()` will wait for all goroutines to complete and
+return the first non-nil error. We can now properly handle these errors, instead
+of merely logging them.
+
+Still, the function cannot be canceled without killing the entire
+process. We want to be able to interrupt the running download with a `SIGINT` or
+`SIGTERM`.
+
+### Signal Handling
+
+To stop the download, we need a method of stopping all existing goroutines. This
+is not possible from an external function as goroutines are not threads.
+Instead, we look inwards and examine the `GetXkcdComic()` function:
+
+```go
+func (c *Client) GetXkcdComic(num int) (Comic, error) {
+    url := buildXkcdUrl(num)
+
+	resp, err := c.client.Get(url)
+	if err != nil {
+		if os.IsTimeout(err) {
+			return fmt.Errorf("request to %v timed out", url)
+		}
+		return fmt.Errorf("request to failed: %w", err)
+	}
+
+    // handle marshalling of resp...
+}
+```
+
+The client performs a GET request to the xkcd site and marshals the response
+into a `Comic` struct. Simple enough.
+
+We can tweak this to let the request be cancelled with signals with
+`http.NewRequestWithContext`:
+
+```go
+func (c *Client) GetXkcdComic(num int) (Comic, error) {
+    url := buildXkcdUrl(num)
+
+	req, err := http.NewRequestWithContext(c.ctx, "GET", url, nil)
+	if err != nil {
+		return err
+	}
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		if os.IsTimeout(err) {
+			return fmt.Errorf("request to %v timed out", url)
+		}
+		return fmt.Errorf("request to failed: %w", err)
+	}
+
+    // handle marshalling of resp...
+}
+```
+
+When the given context is cancelled, the resultant request will be cancelled. If
+all goroutines share the same context, all of them will be cancelled together.
+
+We initialize this common context in the previous `FetchAll()` function and
+pass it to the `Client` struct:
+
+```go
+func (c *Client) FetchAll(latest int) (map[int]*Comic, error) {
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer cancel()
+
+	g, gctx := errgroup.WithContext(ctx)
+    c.ctx = gctx
+	g.SetLimit(60)
+
+    // ...
+}
+```
+
+We create a context that can be interrupted with signals using
+`signal.NotifyContext` and pass this to the `errgroup`. The resultant context
+`gctx` is then shared by all goroutines (through the `Client` struct), allowing
+all of them to be cancelled when the appropriate signal is received.
+
+There's still one last issue: requests to the xkcd sites sometimes fail due to
+rate limiting. In these cases, we want to retry the failed request at a
+responsible rate.
+
+### Retries
+
+We implement this with a `Retry()` function that recursively executes the same
+function if there is a non-nil error. It executes the retries with an
+exponential backoff, and some random jitter to avoid the [Thundering Herd
+Problem](https://en.wikipedia.org/wiki/Thundering_herd_problem).
+
+```go
+func Retry(attempts int, sleep time.Duration, f func() error) error {
+	if err := f(); err != nil {
+		// skip retry when canceled
+		if errors.Is(err, context.Canceled) {
+			return err
+		}
+
+		if attempts--; attempts > 0 {
+			log.Printf("retrying due to err: %v", err)
+
+			jitter := time.Duration((rand.Int63n(int64(sleep))))
+			sleep += jitter / 2
+
+			time.Sleep(sleep)
+			return Retry(attempts, 2*sleep, f)
+		}
+		return err
+	}
+	return nil
+}
+```
+
 {{< alert type="note" >}}
-Because I switched `comics` to being a map, mutexes are required.
+This function skips the recursive cycle when it encounters a
+`context.Canceled` error, as any context cancellations are from signal
+interrupts and should not be retried.
 {{< /alert >}}
 
-The experimental [errgroup
-package](https://pkg.go.dev/golang.org/x/sync/errgroup) offers the `Group` type,
-which is functionally equivalent to `WaitGroup`, except that it offers an
-idiomatic way to handle errors and context cancellations in a group of
-goroutines.
+You should note also that the retry function requires a closure that only
+returns an `error` interface. As such, the `GetXkcdComic` function must be
+refactored to accept the destination struct as an argument instead of a returned
+value.
 
-In our case, I wanted to cancel the task when a `SIGINT` or `SIGTERM` signal is
-given. A new `Group` is created with `errgroup.WithContext` that holds a context
-created with `NotifyContext`. This context will be cancelled when any of the
-given signals are passed to the process. In that event, the cancellation is
-broadcasted to all running goroutines, which are polling for cancellations in
-the `select` block.
+```go
+func (c *Client) FetchAll(latest int) (map[int]*Comic, error) {
+	g, gctx := errgroup.WithContext(context.Background())
+	g.SetLimit(60)
 
-At the end, there is a `g.Wait()` that behaves like `wg.Wait()` and ensures all
-goroutines are done or cancelled before handling any errors.
+	comics := make([]*XkcdComic, total)
 
-This method is probably a bit overkill since a channel would have worked just as
-well, but I enjoyed learning about `sync.ErrGroup` and this seemed like a great
-opportunity to incorporate it.
+	for i := 1; i < latest+1; i++ {
+		id := i
+
+		g.Go(func() error {
+			if id == 404 {
+				return nil
+			}
+
+            var comic Comic
+            err := util.Retry(3, 30*time.Second, func() error {
+                return c.GetXkcdComic(i, &comic)
+            })
+            if err != nil {
+                return fmt.Errorf("failed to retry: %w", err)
+            }
+
+			comics[i-1] = comic
+            return nil
+		})
+	}
+
+	if err := g.Wait(); err == nil {
+		return comics, nil
+	} else {
+		return nil, err
+	}
+}
+```
+
+Finally, we have a `FetchAll()` function that supports:
+
+- Proper error handling in all goroutines
+- Early termination of all requests with signals
+- Retries with exponential backoff
+
+Whew, that was a lot.
+
+{{< alert type="note" >}}
+If you're referring to the code in the repository, you should notice that the
+code is a little different from that in this post. That's because some of the
+code has been simplified and shortened to fit into a blog post. For example, the
+actual `FetchAll()` function writes all the comics to a JSON file, but that was
+not included in the code above as it is not relevant to the discussed topics.
+{{< /alert >}}
 
 ## Indexing the Data
 
@@ -222,8 +368,8 @@ translates to about 41MB or about 2-3% of memory on a system with 2GB of RAM.
 In addition to Redis' memory use, there are also the resources used by `sxkcd`
 when it first reads the given JSON file and indexes the data into Redis.
 
-My initial implementation was how I usually handled JSON data: reading the file
-and unmarshaling the data into a map:
+My initial implementation for reading the data was how I usually handled JSON
+data: reading the file and unmarshaling the data into a map:
 
 ```go
 func (s *Server) ReadFile(filename string) error {
@@ -350,8 +496,6 @@ Showing nodes accounting for 9934.30kB, 100% of 9934.30kB total
          0     0%   100%  9934.30kB   100%  runtime.main
 ```
 
-Saving 5MB seems a little tiny, but it was a good learning experience.
-
 ## Updating the Dataset Regularly
 
 Randall uploads new comics every Monday, Wednesday and Friday (usually), and I
@@ -364,7 +508,7 @@ I quickly scraped that.
 
 This is now replaced with a background worker that regularly checks for new
 comics. The new comics are downloaded and added to the existing dataset, without
-needed to re-index the data or restart the application.
+the need to re-index the data or restart the application.
 
 ```go
 // Add document if not already exists
@@ -475,7 +619,7 @@ The root process in the container is now `sxkcd` and stopping the container
 takes less than a second.
 
 {{< alert type="note" >}}
-I wrote about more signal handling in Docker in my [notes]({{< ref
+I wrote more about signal handling in Docker in my [notes]({{< ref
 "notes/docker/signal-handling.md" >}}).
 {{< /alert >}}
 
