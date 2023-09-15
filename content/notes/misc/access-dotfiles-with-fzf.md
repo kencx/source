@@ -73,4 +73,3 @@ syntax highlighting.
  super + z
  	$TERMINAL $HOME/bin/configs
  ```
-
