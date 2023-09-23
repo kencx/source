@@ -1,5 +1,21 @@
 [
   {
+    "title": "Judas Unchained",
+    "isbn": "9780345461674",
+    "authors": "Peter F. Hamilton",
+    "url": "https://openlibrary.org/books/OL25612667M/Judas_Unchained",
+    "cover_url": null,
+    "cover": "judas_unchained.jpg"
+  },
+  {
+    "title": "Pandora's Star",
+    "isbn": "9780345479211",
+    "authors": "Peter F. Hamilton",
+    "url": "https://openlibrary.org/books/OL20239201M/Pandora's_Star",
+    "cover_url": "https://covers.openlibrary.org/b/id/10294867-M.jpg",
+    "cover": "pandora's_star.jpg"
+  },
+  {
     "title": "Sixteen Ways to Defend a Walled City",
     "isbn": "9780316270793",
     "authors": "K. J. Parker",
