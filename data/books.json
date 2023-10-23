@@ -1,6 +1,14 @@
 [
   {
-    "title": "We Are Legion (We are Bob)",
+    "title": "The Dispossessed",
+    "isbn": "038051284X",
+    "authors": "Ursula K. Le Guin",
+    "url": "https://openlibrary.org/books/OL1156124M/The_Dispossessed",
+    "cover_url": "https://covers.openlibrary.org/b/id/6492681-M.jpg",
+    "cover": "the_dispossessed.jpg"
+  },
+  {
+    "title": "The Bobiverse Series",
     "isbn": "9781680680324",
     "authors": "Dennis E. Taylor",
     "url": "https://openlibrary.org/books/OL45368649M/We_Are_Legion",
