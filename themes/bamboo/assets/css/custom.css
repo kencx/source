@@ -122,6 +122,10 @@ footer {
   padding-left: 1rem;
 }
 
+.posts li {
+  padding-bottom: 0.75rem;
+}
+
 .notes {
   list-style: none;
   padding-left: 1rem;

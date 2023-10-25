@@ -4,15 +4,10 @@
     {{ .Title }}
   </h1>
 
-	{{ range .Pages.GroupByDate "Jan 2006" }}
-		<div class="post-group-date">
-			<h3>{{ .Key }}</h3>
-			<ul class="posts">
-				{{ range .Pages }}
-					<li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
-				{{ end }}
-			</ul>
-		</div>
-	{{ end }}
+  <ul class="posts">
+    {{ range .Pages }}
+    <li><a href="{{ .Permalink }}">{{ dateFormat "2006-01-02" .PublishDate}} :: {{ .Title }}</a></li>
+    {{ end }}
+  </ul>
 </div>
 {{ end }}
