@@ -18,9 +18,10 @@ will be flagged. Any constructive criticism is welcome.
 
 ### Software
 
-The site is built with [Hugo](https://gohugo.io/) and hosted on
-[Netlify](https://app.netlify.com/). The full source code is available on
-[Github](https://github.com/kencx/source) and DNS is hosted on Cloudflare.
+The site is built with [Hugo](https://gohugo.io/) and hosted on a
+[Hetzner](https://www.hetzner.com/) server behind Nginx. The full source code is
+available on [Github](https://github.com/kencx/source) and DNS is hosted on
+Cloudflare.
 
 The theme is adapted from [Bamboo
 CSS](https://rilwis.github.io/bamboo/) and the font is [IBM Plex
