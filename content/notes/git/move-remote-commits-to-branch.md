@@ -6,6 +6,7 @@ draft: false
 toc: false
 tags:
 - git
+- snippets
 ---
 
 >This action can be potentially destructive!! Take care when performing such commands.

@@ -5,7 +5,8 @@ lastmod: 2023-04-01T00:46:00+08:00
 draft: false
 toc: true
 tags:
-  - sxhkd
+- sxhkd
+- snippets
 ---
 
 ## Context

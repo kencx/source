@@ -8,7 +8,7 @@ tags:
 - neovim
 - python
 - lua
-- snippet
+- snippets
 ---
 
 This snippet dynamically selects the Python interpreter used with
