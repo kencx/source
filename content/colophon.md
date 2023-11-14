@@ -19,7 +19,7 @@ will be flagged. Any constructive criticism is welcome.
 ### Software
 
 The site is built with [Hugo](https://gohugo.io/) and hosted on a
-[Hetzner](https://www.hetzner.com/) server behind Nginx. The full source code is
+[Hetzner](https://www.hetzner.com/) server behind Caddy. The full source code is
 available on [Github](https://github.com/kencx/source) and DNS is hosted on
 Cloudflare.
 
