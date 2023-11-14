@@ -1,7 +1,13 @@
 <div class="book-card">
   <div class="cover">
     <a href="{{ .url }}">
-      <img alt="{{ .title }}" src="covers/{{ .cover }}" loading="lazy" decoding="async"/>
+      <picture>
+        {{ $image := resources.GetMatch (printf "covers/%s" .cover) | default "" }}
+        {{ $image := $image.Resize (printf "%dx%d webp" $image.Width $image.Height) }}
+        <source srcset="{{ $image.RelPermalink }}" type="image/webp">
+        <source srcset="/covers/{{ .cover }}" type="image/jpeg">
+        <img alt="{{ .title }}" src="/covers/{{ .cover }}" loading="lazy" decoding="async"/>
+      </picture>
     </a>
   </div>
 

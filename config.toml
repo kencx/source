@@ -50,3 +50,8 @@ copyright = "2021—{year}"
     name       = "Tags"
     url        = "tags/"
     weight     = 3
+
+[module]
+  [[module.mounts]]
+    source = "assets/covers"
+    target = "static/covers"
