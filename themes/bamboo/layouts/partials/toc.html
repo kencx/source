@@ -10,7 +10,7 @@
       <ul>
         {{ range .Sections.ByTitle }}
           <li>
-            <a href="#{{ .Title | lower }}">{{ .Title }}</a>
+            <a href="#{{ .Title | urlize | lower }}">{{ .Title }}</a>
           </li>
         {{ end }}
       </ul>
