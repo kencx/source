@@ -55,3 +55,6 @@ copyright = "2021—{year}"
   [[module.mounts]]
     source = "assets/covers"
     target = "static/covers"
+  [[module.mounts]]
+    source = "static"
+    target = "static"
