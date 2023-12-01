@@ -79,6 +79,10 @@ footer {
   margin: 4rem 0;
 }
 
+footer a {
+  color: var(--b-fade);
+}
+
 .icons a {
   text-decoration: none;
 }
