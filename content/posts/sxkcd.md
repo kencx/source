@@ -2,7 +2,7 @@
 title: "sxkcd"
 date: 2023-08-30
 lastmod: 2023-08-30
-draft: false
+draft: true
 toc: true
 tags:
 - projects
