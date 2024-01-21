@@ -2,7 +2,7 @@
 title: "A Beginner's Journey in Selfhosting"
 date: 2021-12-31T22:36:13+08:00
 lastmod: 2022-09-01
-draft: false
+draft: true
 toc: true
 images:
 tags:

@@ -1,7 +1,7 @@
 ---
 title: "Hubble Homelab"
 date: 2022-07-25T16:30:00+08:00
-lastmod: 2022-09-01
+lastmod: 2024-01-22
 draft: false
 toc: true
 images:
@@ -9,9 +9,6 @@ tags:
   - homelab
   - selfhosted
 ---
-
-After the [Planck]({{< ref "/posts/selfhosting.md" >}})[^1], I wanted a dedicated
-server for learning and working with DevOps concepts and tools.
 
 ## Hubble
 
@@ -183,7 +180,7 @@ were still ongoing since they began five hours ago. Not good.
 
 Without thinking, I decided to go for the easiest solution: turn it off and on again and
 hope for the best (In hindsight, NEVER DO THIS).  On boot, I checked for data loss.
-Everything seemed normal[^2] and all files were supposedly there. It was then I also
+Everything seemed normal[^1] and all files were supposedly there. It was then I also
 realised I needed a better way to check for data loss and backup integrity.
 
 Next, I tried to identity the root cause:
@@ -241,7 +238,5 @@ Let's see where we'll be in another six months.
 >At the time of writing (Jul 2022), Hubble has remained online and stable for
 >more than two months without maintenance, while I took a break.
 
-[^1]: Not to be confused with the [Planck]({{< ref "/posts/keyboards/planck.md" >}})
-  keyboard that I use.
-[^2]: Except that I discovered that the static route from the Proxmox host to NFS server
+[^1]: Except that I discovered that the static route from the Proxmox host to NFS server
   disappeared on reboot. I had forgotten to set up a permanent route.

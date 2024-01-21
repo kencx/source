@@ -1,6 +1,7 @@
 ---
 title: "Keyboards - Planck"
 date: 2022-01-21T17:10:11+08:00
+lastmod: 2024-01-22
 draft: false
 toc: true
 tags:
@@ -9,16 +10,14 @@ tags:
 
 {{< figure src="https://imgs.xkcd.com/comics/borrow_your_laptop.png" caption="relevant xkcd 1806" link="https://xkcd.com/1806" class="center" >}}
 
-I have been using the Planck keyboard for almost a year now, at this time of writing.
-
-{{< figure src="/posts/keyboards/images/planck.png" caption="The Planck Rev 6" alt="The Planck Rev 6" class="center" width="350px">}}
-
-Specs:
+At the time of writing, I have been using the [Planck
+keyboard](https://olkb.com/collections/planck) for almost a year. Specs ([bill of materials](#bill-of-materials)):
 - 67g Tangerines linear switches
 - Black DSA blank keycaps
 - Lubed and filmed with Krytox 205g0 and Deskeys
 
-A [bill of materials](#bill-of-materials) is included at the end of this post.
+
+{{< figure src="/posts/keyboards/images/planck.png" caption="The Planck Rev 6" alt="The Planck Rev 6" class="center" width="350px">}}
 
 ## Features
 
@@ -26,18 +25,17 @@ I got the Planck because I wanted to try out a 40% ortholinear keyboard. Why? I
 just thought it might be fun.
 
 The Planck has a 4x12 layout with a maximum of just 48 keys. It is fully
-programmable with [QMK firmware](https://github.com/qmk/qmk_firmware) and to top
-it off, its fully hotswappable. Of course, soldering is fun too, but there are
-other opportunities for that.
+programmable with [QMK firmware](https://github.com/qmk/qmk_firmware) and fully
+hotswappable[^1].
 
-As far as 40% keyboards go, the Planck is a classic choice. *Layers*[^1] make up
+As far as 40% keyboards go, the Planck is a classic choice. Layers[^2] make up
 for the lack of number and function rows, and you can create some cool key
 combos based on your workflow.
 
 However, the ortholinear layout does take some time getting used to, as opposed
-to the staggered layout. My WPM fell sharply in my first 3 weeks, but I
-adapted quickly as I was already practicing touch typing. I also switched to
-the Planck around the time I was fully writing my undergraduate thesis helped me
+to the staggered layout. My WPM fell sharply in my first 3 weeks, but I adapted
+quickly as I was already practicing touch typing. I also switched to the Planck
+around the time I was fully writing my undergraduate thesis which helped me
 practice.
 
 {{< figure src="/posts/keyboards/images/monkeytype.png" caption="You can clearly see the steep drop, followed by consistently low tries. From [monkeytype.com](https://monkeytype.com)" alt="My drop in WPM" class="center" >}}
@@ -48,7 +46,7 @@ a little better now - I can pinpoint `$` as the 4th symbol, although I still
 occasionally mix up the positions of `%, ^, &` and `*`.
 
 I also discovered that I use my index finger to hit the spacebar as opposed to
-my thumbs, and this is considered weird. To me, it seems natural, granted I've
+my thumbs and this is considered weird. To me, it seems natural, granted I've
 been doing it all my life. I did consider forcing myself to relearn this but I
 didn't see a point since my keyboard was already so tiny.
 
@@ -124,4 +122,5 @@ You also need the following optional items:
 - Switch puller
 - Switch opener (or use a screwdriver)
 
-[^1]: Layers are activated by holding down the *raise* or *lower* keys and pressing the desired key.
+[^1]: Soldering is fun, but there are other opportunities for that.
+[^2]: Layers are activated by holding down the *raise* or *lower* keys and pressing the desired key.

@@ -1,7 +1,7 @@
 ---
 title: "Automating my Resume"
 date: 2023-08-21
-lastmod: 2023-08-21
+lastmod: 2024-01-22
 draft: false
 toc: true
 tags:
@@ -20,12 +20,12 @@ There's a [bunch](https://github.com/xitanggg/open-resume)
 [of](https://github.com/AmruthPillai/Reactive-Resume)
 [resume](https://github.com/topics/resume-builder) building sites out there,
 mostly catered for people in Tech, but many involve creating an account on their
-sites and using one of their templates. No thank you.
+sites and using one of their templates. That's not really my thing.
 
 I also have an existing resume in LaTeX, which I could just use to build a PDF
 automatically with Github Actions, and call it a day, but there's no fun in
-that. Instead, I *have* to over-engineer an entire resume pipeline that
-automatically builds it in three different formats:
+that. Instead, I wanted to over-engineer a full pipeline that automatically
+builds a resume in three different formats:
 
 1. pdf
 2. html to host a static site (because why not?)
