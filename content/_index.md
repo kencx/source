@@ -3,7 +3,7 @@ include software, automation, keyboards, indie games and science fiction.
 
 - [Colophon](/colophon)
 - [Bookshelf](/books)
-- [Links]()
+- [Links](/links)
 
 ## Contact
 

@@ -6,7 +6,10 @@
 
   <ul class="posts">
     {{ range .Pages }}
-    <li><a href="{{ .Permalink }}">{{ dateFormat "2006-01-02" .PublishDate}} :: {{ .Title }}</a></li>
+      <li>
+        {{ dateFormat "2006-01-02" .PublishDate }} -
+        <a href="{{ .Permalink }}">{{ .Title }}</a>
+      </li>
     {{ end }}
   </ul>
 </div>

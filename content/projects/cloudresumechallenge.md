@@ -5,7 +5,6 @@ lastmod:
 weight: 2
 draft: true
 repo_url: https://github.com/kencx/cloudresumechallenge
-post_url:
 tools:
 - AWS
 - Terraform
