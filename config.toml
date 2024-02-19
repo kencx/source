@@ -40,9 +40,9 @@ copyright = "2021—{year}"
     weight     = 1
 
   [[menu.main]]
-    identifier = "notes"
-    name       = "Notes"
-    url        = "notes/"
+    identifier = "projects"
+    name       = "Projects"
+    url        = "projects/"
     weight     = 2
 
   [[menu.main]]

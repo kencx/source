@@ -5,7 +5,6 @@ lastmod:
 weight: 3
 draft: false
 repo_url: https://github.com/kencx/sxkcd
-post_url: posts/sxkcd
 tools:
 - Go
 - Svelte
@@ -13,8 +12,4 @@ tools:
 - Docker
 ---
 
-A full-text search engine for [xkcd](https://xkcd.com) comics supported by
-Redis. Test it out at [xkcd.cheo.dev](https://xkcd.cheo.dev).
-<!--more-->
-It features an extensive query syntax with comic number and date
-filtering.
+Full-text search engine for [xkcd](https://xkcd.com) built with Go and Redis

@@ -237,16 +237,6 @@ pre, code, kbd, samp, tt, var {
   border-left: 4px solid var(--b-focus);
 }
 
-/* projects */
-
-.projects {
-  margin-bottom: 1rem;
-}
-
-.projects h3 {
-    margin-bottom: 0.2rem;
-}
-
 /* books */
 .card-view {
   /* auto scaling grid with max num of columns and min width*/

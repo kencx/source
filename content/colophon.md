@@ -4,17 +4,15 @@ date: 2022-07-01
 draft: false
 ---
 
-This site is my attempt for [learning in
-public](https://www.swyx.io/learn-in-public/). All information represents
-my knowledge at that time and is not guaranteed to be accurate, but I
-try my best to ensure its researched and referenced. Incomplete documents
-will be flagged. Any constructive criticism is welcome.
+All information represents my knowledge at that time and is not guaranteed to be
+accurate, but I try my best to ensure its researched and referenced. Incomplete
+documents will be flagged. Any constructive criticism is welcome.
 
 - Notes are sorted alphabetically with a "last edited" date
 - Blog posts are sorted chronologically by the date they are first posted and appended
   with a "last edited" date.
 - Some documents are incomplete and will be flagged as such.
-- A site-wide search engine is _coming soon_.
+- A site-wide search engine is probably _coming soon_.
 
 ### Software
 

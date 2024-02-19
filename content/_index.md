@@ -1,7 +1,12 @@
-Hi I'm Ken. I've built some [projects]({{< ref "/projects" >}}), maintain my own
-[homelab]({{< ref "/tags/homelab/" >}}) and occasionally [write about stuff]({{<
-ref "/notes" >}}) I learnt. I also enjoy indie games, [keyboards]({{< ref
-"/tags/keyboards/"
->}}) and filling up my ever-expanding [reading list]({{< ref "/books" >}}).
+Hi I'm Ken. I write about some stuff here when I feel like it. My interests
+include software, automation, keyboards, indie games and science fiction.
 
-[Colophon]({{< ref "colophon.md" >}})
+- [Colophon](/colophon)
+- [Bookshelf](/books)
+- [Links]()
+
+## Contact
+
+- Email: ken at cheo dot dev
+- [Github](https://github.com/kencx)
+- [RSS](/posts/index.xml)

@@ -10,18 +10,17 @@
 
 	{{ if (where .Site.Pages "Section" "projects") }}
 		<div>
-			{{ range .Pages.ByWeight }}
-        <div class="projects">
-          <h3>
-            <a href="{{ .Params.repo_url }}">
-              {{ .Title }}
-            </a>
-          </h3>
-          <span>
-          </span>
-        </div>
-				<div>{{.Content}}</div>
+      <ul>
+			{{ range .Pages.ByTitle }}
+        <li>
+          <a href="{{ .Params.repo_url }}">
+            {{ .Title }}
+          </a>
+        </li>
+        {{ .Summary }}
+
 			{{ end }}
+      </ul>
 		</div>
 	{{ end }}
 </div>
