@@ -13,6 +13,10 @@ toc: false
 - [Maybe you should do less "work"](https://www.johnwhiles.com/posts/work) (2022)
 - [The 300% Production Problem](https://leebriggs.co.uk/blog/2023/09/28/300_percent_problem) (2023)
 
+### Stories
+
+- [mmacevedo](https://qntm.org/mmacevedo)
+
 ### Blogs
 
 - [jvns.ca](https://jvns.ca/)
