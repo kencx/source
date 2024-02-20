@@ -81,6 +81,7 @@ footer {
 
 footer a {
   color: var(--b-fade);
+  font-size: 0.85rem;
 }
 
 .icons a {
@@ -89,7 +90,6 @@ footer a {
 
 .icons a svg {
   position: relative;
-  bottom: -0.5rem;
   height: 1.5rem;
   width: 1.5rem;
   padding-left: 0.5rem;
