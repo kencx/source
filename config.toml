@@ -5,6 +5,7 @@ theme = "bamboo"
 rssLimit = 20
 copyright = "2021—{year}"
 # enableGitInfo = true
+enableRobotsTXT = false
 
 [frontmatter]
   date = ["date", "publishDate", ":filename", ":fileModTime"]
