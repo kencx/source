@@ -11,7 +11,7 @@ tags:
 ---
 
 I previously wrote about [running automated restore tests]({{< ref
-"automated-testing-of-restic-backups.md" >}}) when performing daily restic
+"../automated-testing-restic-backups/index.md" >}}) when performing daily restic
 backups. If the backup script fails, it should send out an alert or
 notification. Some possible methods of alerting include:
 
@@ -103,7 +103,7 @@ ExecStartPost=/usr/bin/backup-exporter -l /var/log/autorestic.log -e restic.prom
 
 ## Grafana Dashboard
 
-{{< figure src="/posts/images/backup-grafana-dashboard.png" caption="Grafana dashboard for backups" class="center" >}}
+{{< figure src="grafana-dashboard.png" caption="Grafana dashboard for backups" class="center" >}}
 
 ## AlertManager
 

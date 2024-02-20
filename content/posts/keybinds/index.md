@@ -2,7 +2,7 @@
 title: "keyb - A hotkey cheatsheet in the terminal"
 date: 2023-07-12T00:18:00+08:00
 lastmod: 2023-07-12
-draft: false
+draft: true
 toc: true
 tags:
 - projects
@@ -11,7 +11,7 @@ tags:
 [`keyb`](https://github.com/kencx/keyb) is a lightweight hotkey cheatsheet in
 the terminal. It can create and view custom hotkey cheatsheets in a nice TUI.
 
-{{< figure src="/posts/images/keyb.gif" caption="keyb demo" class="center" >}}
+{{< figure src="keyb.gif" caption="keyb demo" class="center" >}}
 
 It is *fully* customizable[^1], supports fuzzy filtering, vim keybindings and
 its output can be exported to fzf or rofi.
@@ -45,7 +45,7 @@ awesomewm's shortcut menu came really close to what I really wanted. The only
 problem was that I was locked into using awesomewm, which was a dealbreaker for
 me. I mean, no hate for awesomewm but I just prefer bspwm.
 
-{{< figure src="/posts/images/awesomewm-shortcut-menu.png" caption="awesomewm shortcut menu. [Source](https://stackoverflow.com/questions/73519361/awesome-wm-shortcut-to-toggle-or-make-a-window-sticky-this-shortcut-is-not-show)" class="center" >}}
+{{< figure src="awesomewm-shortcut-menu.png" caption="awesomewm shortcut menu. [Source](https://stackoverflow.com/questions/73519361/awesome-wm-shortcut-to-toggle-or-make-a-window-sticky-this-shortcut-is-not-show)" class="center" >}}
 
 The alternative was a custom script that utilized `fzf` to parse my `bspwm` and
 `sxhkd` bindings. This was good but I wanted to include bindings for other

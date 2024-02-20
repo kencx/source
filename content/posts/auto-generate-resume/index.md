@@ -145,7 +145,7 @@ identical to the HTML version.
 Both methods generated resumes that are very similar, barring some differences
 in font size and margins.
 
-{{< figure src="/posts/images/resume.png" caption="HTML (left) and PDF (right)" >}}
+{{< figure src="resume.png" caption="HTML (left) and PDF (right)" >}}
 
 {{< alert type="note" >}}
 Comparing them made me realize how cluttered the HTML version looks relative to
