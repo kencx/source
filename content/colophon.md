@@ -1,6 +1,7 @@
 ---
 title: "Colophon"
 date: 2022-07-01
+lastmod: 2024-02-20
 draft: false
 ---
 

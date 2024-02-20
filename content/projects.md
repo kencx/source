@@ -1,5 +1,8 @@
 ---
 title: "Projects"
+date: 2022-09-02
+lastmod: 2024-02-21
+draft: false
 ---
 
 - [calibre-rest](https://github.com/kencx/calibre-rest) -
