@@ -7,21 +7,5 @@
 	{{ if .Content }}
 		<div>{{ .Content }}</div>
 	{{ end }}
-
-	{{ if (where .Site.Pages "Section" "projects") }}
-		<div>
-      <ul>
-			{{ range .Pages.ByTitle }}
-        <li>
-          <a href="{{ .Params.repo_url }}">
-            {{ .Title }}
-          </a>
-        </li>
-        {{ .Summary }}
-
-			{{ end }}
-      </ul>
-		</div>
-	{{ end }}
 </div>
 {{ end }}
