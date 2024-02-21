@@ -7,7 +7,7 @@
   <ul class="posts">
     {{ range .Pages }}
       <li>
-        {{ dateFormat "2006-01-02" .PublishDate }} -
+        <span style="padding-right: 1rem;">{{ dateFormat "2006-01-02" .PublishDate }}</span>
         <a href="{{ .Permalink }}">{{ .Title }}</a>
       </li>
     {{ end }}
