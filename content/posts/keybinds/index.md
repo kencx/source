@@ -1,12 +1,21 @@
 ---
 title: "Managing hotkeys in Linux"
-date: 2024-02-20T21:37:00+08:00
+date: 2024-02-22T20:00:00+08:00
 lastmod:
-draft: true
+draft: false
 toc: true
 tags:
 - hotkeys
+- sxhkd
+- keyb
+- tui
 ---
+
+{{< details "Summary" >}}
+I discuss how and why I built my own application
+[keyb](https://github.com/kencx/keyb) to remember
+custom hotkeys in Linux.
+{{< /details >}}
 
 When I first began learning Vim, I also started using tmux and a new window
 manager (bspwm) at the same time. In hindsight, this was a bad idea
@@ -15,26 +24,26 @@ things like:
 
 - Resizing a window in bspwm
 - Resizing a pane in tmux
+- Resizing a split in vim
 - Creating a new split in vim
 - Creating a new pane/window in tmux
 
-If you used any combination of window manager, text editor and terminal
-multiplexer before, I think you can see where I'm going. These are all very
-similar operations in different programs and I mixed up the hotkeys for them ALL
-THE TIME.
+These are all very similar operations in different programs and I mixed them up
+ALL THE TIME.
 
 ## Remembering Hotkeys
 
-Naturally, I looked for methods to quickly reference these hotkey combinations
-in a cheatsheet. Vim has
-plugins like [which-key](https://github.com/liuchengxu/vim-which-key) (or
+I started looking for methods to quickly reference the hotkeys for these
+operations. Vim has plugins like
+[which-key](https://github.com/liuchengxu/vim-which-key) (or
 [which-key.nvim](https://github.com/folke/which-key.nvim)), tmux has the builtin
-`Ctrl+b; ?` and bspwm has well... sxhkd which isn't really helpful by itself.
+`Ctrl+b; ?` and bspwm has well... sxhkd.
 
-### 1. Sxhkd
+## Sxhkd
 
-I set out to create my own sxhkd reference. The `sxhkdrc` configuration file
-looks like this:
+sxhkd (Simple X hotkey daemon) is commonly paired with bspwm as a hotkey manager
+for X. It is configured with a `sxhkdrc` configuration file that looks like
+this:
 
 ```bash
 # floating terminal
@@ -50,14 +59,16 @@ super + space
 	rofi -show drun -width -100
 ```
 
-which can be parsed with `awk`:
+To create a quick reference sheet for `sxhkd`, we can parse the config file with
+`awk`:
 
 ```bash
 awk '/^[a-zA-Z{]/ && last {print $0,"\t",last} {last=""} /^#/{last=$0}' \
-    ~/.config/sxhkd/sxhkdrc | column -t -s $'\t'
+    ~/.config/sxhkd/sxhkdrc | \
+    column -t -s $'\t'
 ```
 
-to generate a list of hotkeys with a description:
+to generate a list of hotkeys with a description like this:
 
 ```bash
 super + Return            # floating terminal
@@ -65,80 +76,131 @@ super + shift + Return    # tiled terminal
 super + space             # rofi
 ```
 
-This can be paired with `fzf` to generate a nice table of hotkeys with a fuzzy
-search:
+We can combine this with `fzf` to generate a table of hotkeys with fuzzy search:
 
-```bash
-fzf --tac --cycle \
-    --layout=reverse \
-    --border=rounded \
-    --margin=1 \
-    --padding=1 \
-    --prompt='keys > ' \
-    --ansi
-```
+{{< figure src="sxhkd_fzf.png" caption="A handy sxhkd cheatsheet" class="center" >}}
 
-Combine the above into a script and assign it a hotkey and you get a quick sxhkd
+{{< details "Full script" >}}
+Use a hotkey to activate the script and you got an quick reference
 cheatsheet!
 
-### 2. Towards A Global Cheatsheet
+```bash
+#!/usr/bin/env bash
 
-These reference sheets are great but I find it annoying to switch between 3
-different cheatsheets.
+awk '/^[a-zA-Z{]/ && last {print $0,"\t",last} {last=""} /^#/{last=$0}' \
+    ~/.config/sxhkd/sxhkdrc | \
+    column -t -s $'\t' | \
+    fzf --tac --cycle \
+        --layout=reverse \
+        --border=rounded \
+        --margin=1 \
+        --padding=1 \
+        --prompt='keys > ' \
+		--ansi
+```
+{{< /details >}}
 
-I wanted a cheatsheet with the following features:
+## Towards A Global Cheatsheet
 
-- All hotkeys, regardless of application or software
-- Fuzzy search
-- Quickly accessible via a hotkey
+This script was really great. In fact, it was so great that I consistently tried
+to look up my Vim and tmux hotkeys on it as well, leading to confusion, then
+frustration.
 
-During research, [awesomewm](https://awesomewm.org/)'s shortcut menu comes
-really close to what I really wanted. The only problem was that it involved
-being locked into awesomewm, which wasn't great.
+What I really wanted was a global cheatsheet that could store all my hotkeys
+(even custom ones). Ideally, it should have fuzzy search and be presented in an
+easy to read format (I've been spoiled by my `sxhkd` + `fzf` script).
 
-{{< figure src="awesomewm-shortcut-menu.png" caption="awesomewm shortcut menu. [Source](https://stackoverflow.com/questions/73519361/awesome-wm-shortcut-to-toggle-or-make-a-window-sticky-this-shortcut-is-not-show)" class="center" >}}
+Looking around, I saw that [awesomewm](https://awesomewm.org/)'s shortcut menu
+comes really close to what I wanted, but there were two problems:
 
-### 3. Building my own solution: keyb
+1. I would be locked into awesomewm. No hate to it, but I was already using
+   bspwm
+2. At a glance, its quite difficult to find the hotkey I want since there's no
+   search function
 
-I built [keyb](https://github.com/kencx/keyb) to fulfil my need for a global
-cheatsheet.
+{{< figure src="awesomewm_shortcut_menu.png" caption="awesomewm shortcut menu. [Source](https://stackoverflow.com/questions/73519361/awesome-wm-shortcut-to-toggle-or-make-a-window-sticky-this-shortcut-is-not-show)" class="center" >}}
 
-It can be used to create and view custom hotkey cheatsheets in a TUI.  `keyb` is
-built in Go, with the
+## Building my own solution
+
+I searched extensively for any customizable hotkey reference tool but couldn't
+find one, so I built my own: [keyb](https://github.com/kencx/keyb). Its built in
+Go and the fantastic
 [bubbletea](https://github.com/charmbracelet/bubbletea/tree/master) framework.
 
 {{< figure src="keyb.gif" caption="keyb demo" class="center" >}}
 
-Features:
-- fully customizable
-- supports fuzzy filtering
-- vim keybindings
-- output can be exported to fzf or rofi
+`keyb` requires you to create a hotkey file (`keyb.yml`) which you populate with
+any keybinds you want to show:
 
-Non-features:
-- Auto-detection of key bindings for applications
-- Setting of key bindings for applications
-- Command selection
+```yml
+- name: bspwm
+  keybinds:
+    - name: terminal
+      key: Super + Return
+```
 
-Its design is heavily inspired by `fzf`, but it presents the hotkeys in a table with headings and two columns - the description and the actual hotkey combination
+From the gif, I think you can tell the design was heavily inspired by the custom
+`sxhkd` + `fzf` script. All hotkeys and their descriptions are presented into a
+two column table, delimited by sections (or groups) and their headers in bold.
 
-<!-- Comparison image between fzf and keyb -->
+The sections were inspired by awesomewm's shortcut menu and help to visually
+split all hotkeys by their applications/software. These section and section
+headers are fully customizable and how you split them is dependent on how you
+wrote the `keyb.yml` file.
 
-The headings help to visually split all hotkeys by their application, and was
-influenced by awesomewm's shortcut menu. These headings are fully customizable
-and how you split them is dependent on how you wrote your `keyb` configuration
-file.
+This allows you to split your hotkeys in any way you like. For example, I split
+my bspwm and tmux hotkeys based on their purpose, and my neovim hotkeys based on
+their plugins.
 
-The fuzzy filtering is similar to that in `fzf` but it offers two modes: normal
-and heading mode. Normal filtering simply filters all rows except the headings,
-while heading filtering filters for heading rows only. Heading mode is activated
-by prefixing the search input with `h:`. However, a modal UX proves to be quite
-cumbersome. My rough thoughts on how it can be improved are
-[here](https://github.com/kencx/keyb/issues/16), although I have not implemented
-any changes yet.
+{{< figure src="keyb_split.png" caption="All hotkeys related to copy and pasting in tmux are in the tmux (copy) section" class="center" >}}
 
-## Running Hotkeys
+The other key feature of `keyb` is its fuzzy search. There are two search modes:
 
-## Remapping Hotkeys
+- Normal search filters all rows except headers
+- Header search filters header rows only
 
-## References
+This means there are three different ways of presenting table rows:
+non-filtered, normal search filtered and header search filtered. These three
+tables must be distinct enough that the user must know which mode they are in,
+but also similar enough to maintain a common UX throughout. This proved to be
+challenging to develop since I'm not a designer or UX expert.
+
+What I went with was this:
+
+- **Non-filtered**: The default table with sections delimited by their headers (in
+  bold)
+- **Normal search filtered**: Table rows are ordered by fuzzy search with no headers
+  shown in the main table. Instead, headers are present just below the search
+  bar for quick reference. Headers are still necessary in the event that there
+  are hotkeys with the same description and/or keybind in different applications
+- **Header search**: Table headers are ordered by fuzzy search with all their
+  corresponding section hotkeys
+
+To me, this UX seems straightforward and I don't get easily lost or forget which
+mode I am in. However, this modal UX is far from perfect.
+
+## Areas of Improvement
+
+Firstly, `keyb` activates header search by checking for the prefix `h:` string
+in the search bar. This proves to be quite cumbersome especially when you use
+this mode often. I have some ideas on how to improve it, but nothing concrete so
+far. My rough thoughts are [here](https://github.com/kencx/keyb/issues/16).
+
+Secondly, it would be fantastic if we can set or rebind hotkeys using `keyb` as
+well. This is entirely outside the scope of `keyb` but there are some tools that
+do this, including [xremap](https://github.com/k0kubun/xremap) and
+[keyd](https://github.com/rvaiya/keyd). One
+[proposal](https://github.com/kencx/keyb/issues/29) I have is to allow `keyb` to
+export a configuration file for these tools with the defined `keyb.yml` file
+that's already present, allowing the user to set a single source of truth.
+
+Lastly, `keyb` does not support command selection or keyboard input. Again, this
+is outside the scope of `keyb` and more suited for tools like
+[xdotool](https://github.com/jordansissel/xdotool). I also have a
+[proposal](https://github.com/kencx/keyb/issues/30) to allow `keyb` to output
+keyboard input that can be piped into `xdotool` when the user selects a given
+row in the table.
+
+I've been dogfooding `keyb` almost daily for more than a year now. There hasn't
+been major bugs or annoyances as far as I'm aware, but please feel free to open
+an issue if you do try it out!
