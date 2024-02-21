@@ -9,19 +9,18 @@ tags:
 - sxhkd
 ---
 
-I use chord chains in [sxhkd](https://github.com/baskerville/sxhkd) to create
-modal hotkeys, similar to those in Vim. This allows the same key combination to
-be reused for different commands by prefixing it with a different chord,
-effectively creating custom "modes".
-
-From the sxhkd manpage:
+In [sxhkd](https://github.com/baskerville/sxhkd), multiple chords can be chained
+to create modal hotkeys. From the sxhkd manpage:
 
 >When multiple chords are separated by semicolons, the hotkey is a chord chain:
 >the command will only be executed after receiving each chord of the chain in
 >consecutive order.
 
+This allows a single key combination to be reused for different commands by
+prefixing it with a different chord, resulting in "modes" like those in Vim.
+
 For example, these are three hotkeys that use `super + h`, each prefixed with a
-different `super + [key]`:
+different `super + [key]` to represent various modes:
 
 ```bash
 # normal mode
