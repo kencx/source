@@ -61,6 +61,10 @@ html {
   scroll-behavior: smooth;
 }
 
+body {
+  line-height: 1.75;
+}
+
 /* nav */
 
 nav {
