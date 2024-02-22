@@ -19,8 +19,7 @@ process, assigned PID 1. The root process is special because of three features:
 3. If the root process dies, every other process in the same namespace will be
    forcibly terminated and the namespace will be cleaned up.
 
-In Docker containers, PID 1 is most commonly defined with the [ENTRYPOINT]({{<
-ref "til/docker/entrypoint-cmd.md" >}}) instruction. This can be the
+In Docker containers, PID 1 is most commonly defined with the ENTRYPOINT instruction. This can be the
 application binary or an entrypoint script:
 
 ```Dockerfile
@@ -86,8 +85,7 @@ process.
 
 If the `ENTRYPOINT` does start the program as PID 1, the problem may lie in the
 `ENTRYPOINT` instruction within the Dockerfile instead. `ENTRYPOINT` can be
-defined in two forms: [shell and exec]({{< relref
-"til/docker/entrypoint-cmd#shell--exec-form" >}}).
+defined in two forms: shell and exec.
 
 When using shell form, the specified command is run within a subshell `sh -c
 "command"` which creates a separate process:

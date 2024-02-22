@@ -10,8 +10,7 @@ tags:
 ---
 
 When a new Vagrant machine is created, it generates a secure SSH key pair to
-replace the existing [insecure key pair]({{< relref
-"til/vagrant/base-box-specs#insecure-by-default" >}}) present in all boxes. In
+replace the existing insecure key pair present in all boxes. In
 some cases, we might wish to use our own custom key pair, which we can add via
 provisioning.
 

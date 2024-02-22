@@ -1,5 +1,5 @@
 ---
-title: "Compose - Environment Variables"
+title: "Environment Variables in Docker Compose"
 date: 2022-02-17T18:33:14+08:00
 lastmod:
 draft: false

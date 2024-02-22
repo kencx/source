@@ -10,7 +10,7 @@ tags:
 ---
 
 This document details some information about hosting a custom Arch repository in
-a S3 bucket with [aurutils]({{< ref "til/arch/aurutils.md" >}}).
+a S3 bucket with aurutils.
 
 A custom repository is useful for hosting ready-built AUR packages that are used
 across multiple Arch systems.
