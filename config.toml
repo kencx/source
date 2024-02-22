@@ -25,7 +25,7 @@ enableRobotsTXT = false
 
 [permalinks]
   posts = "/posts/:title/"
-  notes = "/:sections/:title/"
+  til = "/:sections/:title/"
   projects = "/projects/:title/"
 
 [params]
@@ -41,16 +41,22 @@ enableRobotsTXT = false
     weight     = 1
 
   [[menu.main]]
+    identifier = "til"
+    name       = "TIL"
+    url        = "til/"
+    weight     = 2
+
+  [[menu.main]]
     identifier = "projects"
     name       = "Projects"
     url        = "projects/"
-    weight     = 2
+    weight     = 3
 
   [[menu.main]]
     identifier = "tags"
     name       = "Tags"
     url        = "tags/"
-    weight     = 3
+    weight     = 4
 
 [module]
   [[module.mounts]]

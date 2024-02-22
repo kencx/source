@@ -134,12 +134,12 @@ footer a {
   padding-bottom: 0.75rem;
 }
 
-.notes {
+.til {
   list-style: none;
   padding-left: 1rem;
 }
 
-.posts a, .notes a {
+.posts a, .til a {
   color: var(--b-txt);
 }
 
