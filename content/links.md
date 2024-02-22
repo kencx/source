@@ -19,6 +19,7 @@ toc: false
 ### Stories
 
 - [mmacevedo](https://qntm.org/mmacevedo)
+- [Rabbit Test](https://www.uncannymagazine.com/article/rabbit-test/) (2022)
 
 ### Blogs
 
@@ -27,6 +28,7 @@ toc: false
 - [Eli Bendersky](https://eli.thegreenplace.net/)
 - [matduggan](https://matduggan.com/)
 - [2c.fyi](https://2c.fyi/)
+- [brr.fyi](https://brr.fyi/)
 
 ### Long Form
 - [Longreads](https://longreads.com/)
