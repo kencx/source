@@ -41,22 +41,16 @@ enableRobotsTXT = false
     weight     = 1
 
   [[menu.main]]
-    identifier = "til"
-    name       = "TIL"
-    url        = "til/"
-    weight     = 2
-
-  [[menu.main]]
     identifier = "projects"
     name       = "Projects"
     url        = "projects/"
-    weight     = 3
+    weight     = 2
 
   [[menu.main]]
     identifier = "tags"
     name       = "Tags"
     url        = "tags/"
-    weight     = 4
+    weight     = 3
 
 [module]
   [[module.mounts]]
