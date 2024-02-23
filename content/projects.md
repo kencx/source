@@ -13,6 +13,8 @@ Nomad, Consul and Vault cluster hosted on Proxmox
 Lightweight, fully customizable hotkey cheatsheet in the terminal
 - [sxkcd](https://github.com/kencx/sxkcd) -
 Full-text search engine for xkcd built with Go and Redis
+- [vps](https://github.com/kencx/vps) - The infrastructure as code that hosts
+  this blog and other stuff
 
 ## Proof of Work
 

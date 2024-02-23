@@ -1,5 +1,5 @@
 # Source
-Source for [blog](https://ken.cheo.dev). Hosted on Hetzner behind Nginx.
+Source for [blog](https://ken.cheo.dev). Hosted on Hetzner behind Caddy.
 
 ## New Content
 To quickly create new content, use the following `hugo new` commands.

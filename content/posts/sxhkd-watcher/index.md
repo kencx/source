@@ -43,15 +43,16 @@ super + p : super + {h,j,k,l}
 
 One issue with this workflow is that there is no visual indicator for the
 current activated "mode"; Vim has its status line to tell the user whether they
-are in `NORMAL`, `INSERT` or `VISUAL` mode.
+are in `NORMAL`, `INSERT` or `VISUAL` mode, but sxhkd has nothing since this is
+a custom solution.
 
 I often forget to leave the mode I had temporarily enabled, leading to
 accidental executions of random commands, which can be extremely frustrating.
 
-Thankfully, I discovered that `sxhkd` can output status information via a named
-pipe with the `-s` flag. We can poll this output with a watcher script and pair
-it with our bar of choice (`eww` for me) to show a visual indicator of the
-current sxhkd mode.
+After some research, I discovered that `sxhkd` can output status information via
+a named pipe with the `-s` flag. We can poll this output with a watcher script
+and pair it with our bar of choice (`eww` for me) to show a visual indicator of
+the current sxhkd mode.
 
 ## Implementation
 
@@ -92,7 +93,8 @@ information, we can create a watcher script that reads from the named pipe and
 runs a custom command based on the output.
 
 For example, I would like to show that "node mode" is activated when `Hsuper +
-n` is pressed and deactivated when `EEnd chain` is outputted.
+n` is outputted and deactivated when `EEnd chain` is outputted. This can be done
+with a switch-case statement in Bash:
 
 ```bash
 #!/bin/bash
