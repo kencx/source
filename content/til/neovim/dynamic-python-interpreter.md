@@ -8,6 +8,7 @@ tags:
 - neovim
 - python
 - lua
+- lsp
 - snippets
 ---
 

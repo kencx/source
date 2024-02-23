@@ -8,30 +8,6 @@ tags:
 - bash
 ---
 
-Aliases allow a string to be substituted for a word:
-
-```bash
-$ alias hello="echo hello world"
-$ hello
-hello world
-```
-
-Since aliases are textual substitutions, we can append arguments to them
-
-```bash
-$ hello foo
-hello world foo
-```
-
-## No Recursive Expansion
-When a command is tested for aliases, a word that is identical to the alias being expanded is not expanded recursively. For example, the alias
-
-```bash
-alias ls='ls -F'
-```
-
-is not expanded recursively.
-
 ## Bypassing Aliases
 If we wish to run a command which we have assigned an alias of the same name, we can bypass them in two ways:
 

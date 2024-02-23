@@ -1,5 +1,5 @@
 ---
-title: "Argparse - Boolean Flags"
+title: "Boolean Flags in argparse"
 date: 2023-07-12
 lastmod: 2023-07-12
 draft: false

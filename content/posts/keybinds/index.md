@@ -141,7 +141,8 @@ any keybinds you want to show:
 
 From the gif, I think you can tell the design was heavily inspired by the custom
 `sxhkd` + `fzf` script. All hotkeys and their descriptions are presented into a
-two column table, delimited by sections (or groups) and their headers in bold.
+two column table, separated into sections (or groups) and delimited by their
+headers in bold.
 
 The sections were inspired by awesomewm's shortcut menu and help to visually
 split all hotkeys by their applications/software. These section and section
@@ -156,23 +157,25 @@ their plugins.
 
 The other key feature of `keyb` is its fuzzy search. There are two search modes:
 
-- Normal search filters all rows except headers
-- Header search filters header rows only
+- Normal search: filters all rows except headers
+- Header search: filters header rows only
 
-This means there are three different ways of presenting table rows:
+This means that there are three different ways of presenting table rows:
 non-filtered, normal search filtered and header search filtered. These three
-tables must be distinct enough that the user must know which mode they are in,
-but also similar enough to maintain a common UX throughout. This proved to be
-challenging to develop since I'm not a designer or UX expert.
+tables had to be distinct enough that the user should know which mode they are
+in without getting lost, but also similar enough to maintain a common UX
+throughout. This was challenging to develop since I'm not a designer or UX
+expert.
 
 What I went with was this:
 
-- **Non-filtered**: The default table with sections delimited by their headers (in
-  bold)
-- **Normal search filtered**: Table rows are ordered by fuzzy search with no headers
-  shown in the main table. Instead, headers are present just below the search
-  bar for quick reference. Headers are still necessary in the event that there
-  are hotkeys with the same description and/or keybind in different applications
+- **Non-filtered**: The default table with sections separated by their headers
+  (in bold)
+- **Normal search filtered**: The table is ordered by fuzzy search with no
+  section and headers. Instead, headers are present just below the search bar
+  for quick reference. I found headers to still be necessary to prevent
+  confusion when there are hotkeys with similar descriptions and/or keybinds for
+  different applications
 - **Header search**: Table headers are ordered by fuzzy search with all their
   corresponding section hotkeys
 
@@ -201,6 +204,7 @@ is outside the scope of `keyb` and more suited for tools like
 keyboard input that can be piped into `xdotool` when the user selects a given
 row in the table.
 
-I've been dogfooding `keyb` almost daily for more than a year now. There hasn't
-been major bugs or annoyances as far as I'm aware, but please feel free to open
-an issue if you do try it out!
+I've been dogfooding `keyb` almost daily for more than a year now, so much that
+I rarely need to refer to it now, which was kind of the point I guess? There
+hasn't been major bugs or annoyances as far as I'm aware, but please feel free
+to open an issue if you do try it out!
