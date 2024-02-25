@@ -4,12 +4,12 @@ title = "cheo.dev"
 theme = "bamboo"
 rssLimit = 20
 copyright = "2021—{year}"
-# enableGitInfo = true
+enableGitInfo = true
 enableRobotsTXT = false
 
 [frontmatter]
-  date = ["date", "publishDate", ":filename", ":fileModTime"]
-  # lastmod = ["lastmod", ":git"]
+  date = ["date", "publishDate", ":fileModTime"]
+  lastmod = ["lastmod", ":git"]
 
 [markup]
   [markup.highlight]
