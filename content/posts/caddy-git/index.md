@@ -2,7 +2,7 @@
 title: "Automating blog deployments with my caddy-git fork"
 date: 2024-02-25
 lastmod:
-draft: true
+draft: false
 toc: true
 tags:
 - caddy
@@ -67,7 +67,9 @@ pointing it at the `deploy` branch. Or you can also serve the files through a
 file server on your own server. I serve this site with the file server
 [Caddy](https://caddyserver.com/) on a VPS.
 
->I opted to use Caddy instead of Nginx because it supports automatic HTTPS.
+{{< alert >}}
+I opted to use Caddy instead of Nginx because it supports automatic HTTPS.
+{{< /alert >}}
 
 This is my `Caddyfile` configuration:
 
@@ -100,15 +102,18 @@ I wasn't very satisfied with that. Surely I could have the changes be propagated
 automatically without a cronjob? Okay, let's consider some of the methods that I
 implemented that pull from the repository:
 
-- Running a webhook server on the VPS that listens for webhook requests from the
-  source repository. When a new build is ready, GitHub sends a POST request to
-  the webhook server which runs a shell script to pull the new changes
-- Containerizing the static files into a Nginx container. This Docker image is
-  run on the VPS with a sidecar [Watchtower](https://containrrr.dev/watchtower/)
-  container that listens for new images
+- Running a [webhook](https://github.com/adnanh/webhook) server on the VPS that
+  listens for webhook requests from the source repository. When a new build is
+  ready, [GitHub sends a POST
+  request](https://docs.github.com/en/webhooks/using-webhooks/creating-webhooks)
+  to the webhook server which runs a shell script to pull the new changes
+- Containerizing the static files into a Nginx container. This Docker image
+  built with GitHub Actions and run on the VPS with a sidecar
+  [Watchtower](https://containrrr.dev/watchtower/) container that listens for
+  new images. These new images are automatically pulled by Watchtower
 
-These methods work but aren't they a little complex for something as simple as
-serving static files?
+These methods work but they are way too complex for something as simple as a
+static site.
 
 How about pushing the files to the server? You could opt to `scp` or `rsync` the
 generated static files to the server using GitHub Actions. You would also have
@@ -166,8 +171,10 @@ Okay then, sometimes you just got to
 
 ## Forking caddy-git
 
+{{< alert >}}
 If you're not interested in the implementation details of the fork, please skip
 to the [next section](#success).
+{{< /alert >}}
 
 Taking at look at the [source](https://github.com/greenpau/caddy-git) of
 `caddy-git`, we see that it handles the fetching and pulling of the latest
@@ -238,7 +245,11 @@ func (w *Worktree) PullContext(ctx context.Context, o *PullOptions) error {
 ```
 
 This method merely fetches the references of the repository and doesn't merge
-the two unrelated histories after. Sure enough, we see this in the later part of
+them. Its akin to running `git fetch` instead of `git fetch && git merge
+FETCH_HEAD`. Adding the `Force` boolean allows `go-git` to fetch remote commits
+of unrelated histories, but it does nothing of merging them.
+
+Sure enough, we see this in the later part of
 `PullContext()`:
 
 ```go
@@ -252,15 +263,21 @@ the two unrelated histories after. Sure enough, we see this in the later part of
     }
 ```
 
-where the error we encountered, `ErrNonFastForwardUpdate` is thrown.
+where the error we encountered, `ErrNonFastForwardUpdate` is thrown with no way
+to bypass it with the `Force` boolean.
 {{< /details >}}
 
 As such, we need to force the repository to destructively rewrite its local
 history using another way. The most destructive action is `git reset --hard`,
-and we can use it to reset the repository HEAD to the latest remote reference.
+and we can use it to reset the repository HEAD to the latest remote reference:
 
-To do so, first, we have to add an additional conditional that handles the
-`ErrNonFastForwardUpdate` error when we encounter it:
+```bash
+$ git fetch origin
+$ git reset --hard origin/deploy
+```
+
+To do so, first, we have to add an additional conditional in `caddy-git`'s
+`runUpdate()` method that handles the `ErrNonFastForwardUpdate` error:
 
 ```go
 func (r *Repository) runUpdate() error {
@@ -330,9 +347,8 @@ rewriting all local history to match the remote reference's history.
 All that's left now is to build a custom Caddy image with our fork and run it.
 
 {{< details "Building the custom Caddy image" >}}
-I should also mention: in order to use Caddy with plugins, you must build a new
-Caddy Docker image from the base image. Thankfully, we can use `xcaddy` to do
-this simply. It also supports forks and branches:
+[xcaddy](https://github.com/caddyserver/xcaddy) can do this very simply
+as it supports forks and branches:
 
 ```Dockerfile
 FROM caddy:2.7.5-builder-alpine AS builder
@@ -394,7 +410,7 @@ of a static site from GitHub to a VPS server, in increasing complexity:
 
 I must emphasize that I really do believe in simple implementations of software
 and [reducing complexity](https://grugbrain.dev/#grug-on-complexity), especially
-at work. But the reasons why I opted to stick with the last method were because:
+at work. But the reasons why I opted for the last method now were because:
 
 - I was already using Caddy as a reverse proxy for some other sites hosted on
   the same VPS
