@@ -8,9 +8,11 @@ tags:
 - ansible
 ---
 
->TLDR: See
->[here](https://github.com/kencx/dotfiles/blob/master/dots/bin/bin/install-ansible)
->for the full script.
+{{< alert >}}
+TLDR: See
+[here](https://github.com/kencx/dotfiles/blob/master/dots/bin/bin/install-ansible)
+for the full script.
+{{< /alert >}}
 
 Ansible's release history is [really confusing](https://docs.ansible.com/ansible/devel/reference_appendices/release_and_maintenance.html). Ansible's core package has taken on a number of names:
 - ansible (pre 2.9)

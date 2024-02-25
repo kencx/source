@@ -10,11 +10,13 @@ tags:
 ---
 
 In [sxhkd](https://github.com/baskerville/sxhkd), multiple chords can be chained
-to create modal hotkeys. From the sxhkd manpage:
+to create modal hotkeys.
 
->When multiple chords are separated by semicolons, the hotkey is a chord chain:
->the command will only be executed after receiving each chord of the chain in
->consecutive order.
+{{< quote source="[sxhkd](https://www.mankier.com/1/sxhkd)" >}}
+When multiple chords are separated by semicolons, the hotkey is a chord chain:
+the command will only be executed after receiving each chord of the chain in
+consecutive order.
+{{< /quote >}}
 
 This allows a single key combination to be reused for different commands by
 prefixing it with a different chord, resulting in "modes" like those in Vim.

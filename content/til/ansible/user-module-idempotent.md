@@ -21,8 +21,8 @@ When creating a user with Ansible's [user](https://docs.ansible.com/ansible/late
 
 This is the case because setting a password with the `password_hash` filter:
 
-```
-{{ password | password_hash('sha512') }}
+```yml
+"{{ password | password_hash('sha512') }}"
 ```
 
 is not idempotent - the hash's salt changes with every

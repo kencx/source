@@ -1,4 +1,4 @@
 <div class="alert alert-{{ with .Get "type" }}{{.}}{{end}}">
-  <span style="font-weight: bold">{{ with .Get "type" }}{{ . | humanize }}{{end}}</span>:
+  <span style="font-weight: bold">{{ with .Get "type" }}{{ . | humanize }}:{{end}}</span>
   {{ .Inner | markdownify }}
 </div>

@@ -21,7 +21,7 @@ as a filename.
 
 ## With an inventory file
 
-```conf
+```text
 [local]
 localhost ansible_connection=local
 ```
@@ -35,7 +35,6 @@ $ ansible-playbook -i inventory --limit local main.yml
 ### All tasks
 
 ```yaml
----
 - name: Playbook example
   hosts: 127.0.0.1
   connection: local

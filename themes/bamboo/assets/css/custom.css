@@ -63,6 +63,11 @@ html {
 
 body {
   line-height: 1.75;
+  max-width: 80ch;
+}
+
+details {
+  background: var(--b-btn-bg);
 }
 
 /* nav */
@@ -227,18 +232,34 @@ pre, code, kbd, samp, tt, var {
 /* alert  */
 
 .alert {
-  padding: .5rem 0 .5rem 1.5rem;
+  padding: .5rem 1rem;
   margin-left: 0;
   margin-bottom: 1.5rem;
-  border-left: .25rem solid var(--b-txt);
+  background: var(--b-btn-bg);
+  border: 1px solid var(--b-line);
+  border-radius: .25rem;
 }
 
-.alert-warning {
-  border-left: 4px solid #C34043;
+.quote {
+  margin: 1.5rem;
+  padding: .5rem 1rem;
+  background: var(--b-btn-bg);
+  border: 1px solid var(--b-line);
+  border-radius: .25rem;
 }
 
-.alert-example {
-  border-left: 4px solid var(--b-focus);
+.quote-source {
+  margin: 0;
+  text-align: right;
+  font-weight: bold;
+
+  a {
+    color: var(--b-txt) !important;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
 }
 
 /* books */
