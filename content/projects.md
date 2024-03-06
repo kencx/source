@@ -16,7 +16,7 @@ Full-text search engine for xkcd built with Go and Redis
 - [vps](https://github.com/kencx/vps) - The infrastructure as code that hosts
   this blog and other stuff
 
-## Proof of Work
+## Proof of Concept
 
 - [exportsg](https://github.com/kencx/exportsg) - Export Singapore bank PDF
   statements to CSV
