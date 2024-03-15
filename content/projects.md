@@ -1,7 +1,7 @@
 ---
 title: "Projects"
 date: 2022-09-02
-lastmod: 2024-02-21
+lastmod: 2024-03-15
 draft: false
 ---
 
@@ -18,6 +18,7 @@ Full-text search engine for xkcd built with Go and Redis
 
 ## Proof of Concept
 
+- [clp](https://github.com/kencx/clp) - Caddy access log analytics
 - [exportsg](https://github.com/kencx/exportsg) - Export Singapore bank PDF
   statements to CSV
 - [flax](https://github.com/kencx/flax) - Wrapper script for Hugo notes
