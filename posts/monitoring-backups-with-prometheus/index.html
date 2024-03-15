@@ -1,0 +1,76 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Monitoring Backups With Prometheus</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Monitoring Backups With Prometheus<div class=meta>10 Aug 2023
+• 3 mins</div></h1><p>I previously wrote about <a href=https://ken.cheo.dev/posts/automated-testing-of-restic-backups/>running automated restore tests</a> when performing daily restic
+backups. If the backup script fails, it should send out an alert or
+notification. Some possible methods of alerting include:</p><ul><li>systemd&rsquo;s <code>OnFailure</code> key to run a script on failure</li><li>webhooks (eg. with <a href=https://github.com/louislam/uptime-kuma target=_blank rel=noopener>uptime-kuma</a> or
+Gotify)</li><li>Prometheus and AlertManager</li></ul><p>I decided to go with the last option because I&rsquo;ve never written a Prometheus
+exporter before and wanted to try it out. It would also provide some backup
+metrics that might be useful.</p><h2 class=headings id=prometheus-exporter><a class=heading-anchor href=#prometheus-exporter>##</a>
+Prometheus Exporter</h2><p>My Prometheus exporter is a Python
+<a href=https://github.com/kencx/homelab/blob/master/ansible/roles/autorestic/files/backup-exporter target=_blank rel=noopener>script</a>
+that generates text metrics which are then consumed by <a href=https://github.com/prometheus/node_exporter#textfile-collector target=_blank rel=noopener>Node exporter&rsquo;s
+textfile-collector</a>.
+These metrics are exposed to Prometheus, where they are then consumed by Grafana
+and AlertManager.</p><p>Because restic does not output any metrics or logs in a machine-readable format
+(AKA <code>json</code>), the script reads and parses the log output of restic directly:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># autorestic.log</span>
+</span></span><span style=display:flex><span>Files:           <span style=color:#ae81ff>0</span> new,     <span style=color:#ae81ff>0</span> changed, <span style=color:#ae81ff>11621</span> unmodified
+</span></span><span style=display:flex><span>Dirs:            <span style=color:#ae81ff>0</span> new,     <span style=color:#ae81ff>2</span> changed,  <span style=color:#ae81ff>1338</span> unmodified
+</span></span><span style=display:flex><span>Added to the repository: <span style=color:#ae81ff>724</span> B <span style=color:#f92672>(</span><span style=color:#ae81ff>862</span> B stored<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>processed <span style=color:#ae81ff>11621</span> files, 14.647 GiB in 0:02
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>files <span style=color:#f92672>=</span> re<span style=color:#f92672>.</span>compile(<span style=color:#e6db74>r</span><span style=color:#e6db74>&#34;Files:.*?(\d+) new.*?(\d+) changed.*?(\d+) unmodified&#34;</span>)
+</span></span><span style=display:flex><span>dirs <span style=color:#f92672>=</span> re<span style=color:#f92672>.</span>compile(<span style=color:#e6db74>r</span><span style=color:#e6db74>&#34;Dirs:.*?(\d+) new.*?(\d+) changed.*?(\d+) unmodified&#34;</span>)
+</span></span><span style=display:flex><span>added <span style=color:#f92672>=</span> re<span style=color:#f92672>.</span>compile(<span style=color:#e6db74>r</span><span style=color:#e6db74>&#34;Added to the repository: (\d+(\.\d*)?|\.\d+) ([G|T|M|K]?i?B)&#34;</span>)
+</span></span><span style=display:flex><span>total <span style=color:#f92672>=</span> re<span style=color:#f92672>.</span>compile(<span style=color:#e6db74>r</span><span style=color:#e6db74>&#34;processed (\d+) files, (\d+(\.\d*)?|\.\d+) ([G|T|M|K]?i?B) in ((\d+:)?\d+:\d+)&#34;</span>)
+</span></span></code></pre></div><p>It generates the raw metrics:</p><pre tabindex=0><code>restic_repo_files{location=&#34;archives&#34;,backend=&#34;remote&#34;,state=&#34;new&#34;} 0
+restic_repo_files{location=&#34;archives&#34;,backend=&#34;remote&#34;,state=&#34;changed&#34;} 0
+restic_repo_files{location=&#34;archives&#34;,backend=&#34;remote&#34;,state=&#34;unmodified&#34;} 11621
+restic_repo_dirs{location=&#34;archives&#34;,backend=&#34;remote&#34;,state=&#34;new&#34;} 0
+restic_repo_dirs{location=&#34;archives&#34;,backend=&#34;remote&#34;,state=&#34;changed&#34;} 0
+restic_repo_dirs{location=&#34;archives&#34;,backend=&#34;remote&#34;,state=&#34;unmodified&#34;} 1340
+restic_repo_bytes_added{location=&#34;archives&#34;,backend=&#34;remote&#34;} 0.0
+restic_repo_bytes_total{location=&#34;archives&#34;,backend=&#34;remote&#34;} 15727096496.128
+restic_repo_total_files{location=&#34;archives&#34;,backend=&#34;remote&#34;} 11621
+restic_repo_duration_seconds{location=&#34;archives&#34;,backend=&#34;remote&#34;} 355
+</code></pre><p>These generated metrics are repeated for each separate autorestic location and
+backend. With these repository specific metrics, there are also two general
+metrics that indicate if the backup passed and when the backup was last ran:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>add_general_metrics</span>(success):
+</span></span><span style=display:flex><span>    num <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span> <span style=color:#66d9ef>if</span> success <span style=color:#66d9ef>else</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>    m <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;&#34;&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>restic_backup_success </span><span style=color:#e6db74>{num}</span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>restic_backup_latest_datetime </span><span style=color:#e6db74>{timestamp}</span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;&#34;&#34;</span><span style=color:#f92672>.</span>format(num<span style=color:#f92672>=</span>num, timestamp<span style=color:#f92672>=</span>datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>now()<span style=color:#f92672>.</span>timestamp())
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> m<span style=color:#f92672>.</span>strip()
+</span></span></code></pre></div><pre tabindex=0><code>restic_backup_success 0
+restic_backup_latest_datetime 1691533984.343583
+</code></pre><p>Should a backup fail without any logs/stats to parse, the script will only
+generate the general metrics.</p><h2 class=headings id=systemd><a class=heading-anchor href=#systemd>##</a>
+Systemd</h2><p>This custom script is run after a backup by extending <code>backup.service</code> to
+include <code>ExecStartPost</code></p><pre tabindex=0><code># /etc/systemd/system/backup.service
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/generate-restore-test-files.sh
+ExecStart=/usr/bin/autorestic-backup.sh
+ExecStartPost=/usr/bin/backup-exporter -l /var/log/autorestic.log -e restic.prom
+</code></pre><h2 class=headings id=grafana-dashboard><a class=heading-anchor href=#grafana-dashboard>##</a>
+Grafana Dashboard</h2><figure class=center><img src=grafana-dashboard.png alt="Grafana dashboard for backups"><figcaption><p>Grafana dashboard for backups</p></figcaption></figure><h2 class=headings id=alertmanager><a class=heading-anchor href=#alertmanager>##</a>
+AlertManager</h2><p>Finally, we configure AlertManager to send a Telegram notification if:</p><ul><li>A backup fails</li><li>A backup has not been successfully completed in the past 26 hours (i.e. timestamp
+metric is too old).</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#75715e># prometheus/rules.yml</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>groups</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Backup</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>rules</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>backup_failed</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>restic_backup_success == 0 or restic_backup_latest_datetime &lt; time() - 60*60*26</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>for</span>: <span style=color:#ae81ff>1m</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>critical</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#39;Backup failed at {{ with query &#34;restic_backup_latest_datetime&#34; }}{{ . | first | value | humanizeTimestamp }}{{ end }}&#39;</span>
+</span></span></code></pre></div><p>A 2 hour grace period is given to account for a scenario where a backup might
+take longer than the previous day, resulting in a false-negative.</p><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://blog.cubieserver.de/2021/restic-backups-with-systemd-and-prometheus-exporter/ target=_blank rel=noopener>Restic backups with systemd and prometheus
+exporter</a></li></ul><div class=meta>Edited: 22 Jan 2024<div class=tags><a href=https://ken.cheo.dev/tags/backups/>#backups</a>
+<a href=https://ken.cheo.dev/tags/prometheus/>#prometheus</a>
+<a href=https://ken.cheo.dev/tags/restic/>#restic</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#prometheus-exporter>Prometheus Exporter</a></li><li><a href=#systemd>Systemd</a></li><li><a href=#grafana-dashboard>Grafana Dashboard</a></li><li><a href=#alertmanager>AlertManager</a></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2024</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

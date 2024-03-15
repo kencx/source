@@ -1,0 +1,160 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Automating my Resume</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Automating My Resume<div class=meta>21 Aug 2023
+• 6 mins</div></h1><p>I recently started job hunting again and had to update my resume. As an excuse
+to procrastinate sending out applications, I decided that this was the best time
+to automate the generation of my resume: something I do perhaps once a year.</p><figure class=center><a href=https://xkcd.com/1205><img src=https://imgs.xkcd.com/comics/is_it_worth_the_time.png alt="relevant xkcd #1205"></a><figcaption><p>relevant xkcd #1205</p></figcaption></figure><p>There&rsquo;s a <a href=https://github.com/xitanggg/open-resume target=_blank rel=noopener>bunch</a>
+<a href=https://github.com/AmruthPillai/Reactive-Resume target=_blank rel=noopener>of</a>
+<a href=https://github.com/topics/resume-builder target=_blank rel=noopener>resume</a> building sites out there,
+mostly catered for people in Tech, but many involve creating an account on their
+sites and using one of their templates. That&rsquo;s not really my thing.</p><p>I also have an existing resume in LaTeX, which I could just use to build a PDF
+automatically with Github Actions, and call it a day, but there&rsquo;s no fun in
+that. Instead, I wanted to over-engineer a full pipeline that automatically
+builds a resume in three different formats:</p><ol><li>pdf</li><li>html to host a static site (because why not?)</li><li>docx for the occasional recruiter that <em>only</em> accepts Word documents</li></ol><p>All formats should be identical (in content and design) and bonus points if they
+all come from a single template. To implement this, we turn to
+<a href=https://pandoc.org/ target=_blank rel=noopener>Pandoc</a> and <a href=https://jsonresume.org/ target=_blank rel=noopener>jsonresume</a> which
+consume a version-controlled, declarative and machine-readable schema and
+outputs the formats above.</p><blockquote><p>The code for this project can be found at
+<a href=https://github.com/kencx/resume target=_blank rel=noopener>kencx/resume</a>.</p></blockquote><h2 class=headings id=pandoc><a class=heading-anchor href=#pandoc>##</a>
+Pandoc</h2><p>Pandoc can be used to generate dynamic documents with
+<a href=https://pandoc.org/MANUAL.html#templates target=_blank rel=noopener>templates</a> and
+<a href=https://pandoc.org/MANUAL.html#interpolated-variables target=_blank rel=noopener>variables</a> provided via
+a <a href=https://pandoc.org/MANUAL.html#option--metadata-file target=_blank rel=noopener>metadata file</a>. In our
+use case, we will be passing our resume content to Pandoc templates via a JSON
+file with jsonresume&rsquo;s schema:</p><div class="goat svg-container"><svg xmlns="http://www.w3.org/2000/svg" font-family="Menlo,Lucida Console,monospace" viewBox="0 0 616 89"><g transform="translate(8,16)"><path d="M112 0h24" fill="none" stroke="currentcolor"/><path d="M280 0h24" fill="none" stroke="currentcolor"/><path d="M64 32H96" fill="none" stroke="currentcolor"/><path d="M112 64h24" fill="none" stroke="currentcolor"/><path d="M304 64h24" fill="none" stroke="currentcolor"/><path d="M528 64h24" fill="none" stroke="currentcolor"/><path d="M96 32 112 0" fill="none" stroke="currentcolor"/><path d="M96 32l16 32" fill="none" stroke="currentcolor"/><polygon points="144.000000,0.000000 132.000000,-5.600000 132.000000,5.600000" fill="currentcolor" transform="rotate(0.000000, 136.000000, 0.000000)"/><polygon points="144.000000,64.000000 132.000000,58.400002 132.000000,69.599998" fill="currentcolor" transform="rotate(0.000000, 136.000000, 64.000000)"/><polygon points="312.000000,0.000000 300.000000,-5.600000 300.000000,5.600000" fill="currentcolor" transform="rotate(0.000000, 304.000000, 0.000000)"/><polygon points="336.000000,64.000000 324.000000,58.400002 324.000000,69.599998" fill="currentcolor" transform="rotate(0.000000, 328.000000, 64.000000)"/><polygon points="560.000000,64.000000 548.000000,58.400002 548.000000,69.599998" fill="currentcolor" transform="rotate(0.000000, 552.000000, 64.000000)"/><text text-anchor="middle" x="0" y="36" fill="currentcolor" style="font-size:1em">c</text><text text-anchor="middle" x="8" y="20" fill="currentcolor" style="font-size:1em">j</text><text text-anchor="middle" x="8" y="36" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="16" y="20" fill="currentcolor" style="font-size:1em">s</text><text text-anchor="middle" x="16" y="36" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="24" y="20" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="24" y="36" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="32" y="20" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="32" y="36" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="40" y="36" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="48" y="36" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="160" y="4" fill="currentcolor" style="font-size:1em">L</text><text text-anchor="middle" x="160" y="68" fill="currentcolor" style="font-size:1em">M</text><text text-anchor="middle" x="168" y="4" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="168" y="68" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="176" y="4" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="176" y="68" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="184" y="4" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="184" y="68" fill="currentcolor" style="font-size:1em">k</text><text text-anchor="middle" x="192" y="4" fill="currentcolor" style="font-size:1em">x</text><text text-anchor="middle" x="192" y="68" fill="currentcolor" style="font-size:1em">d</text><text text-anchor="middle" x="200" y="68" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="208" y="4" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="208" y="68" fill="currentcolor" style="font-size:1em">w</text><text text-anchor="middle" x="216" y="4" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="216" y="68" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="224" y="4" fill="currentcolor" style="font-size:1em">m</text><text text-anchor="middle" x="232" y="4" fill="currentcolor" style="font-size:1em">p</text><text text-anchor="middle" x="232" y="68" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="240" y="4" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="240" y="68" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="248" y="4" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="248" y="68" fill="currentcolor" style="font-size:1em">m</text><text text-anchor="middle" x="256" y="4" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="256" y="68" fill="currentcolor" style="font-size:1em">p</text><text text-anchor="middle" x="264" y="4" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="264" y="68" fill="currentcolor" style="font-size:1em">l</text><text text-anchor="middle" x="272" y="68" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="280" y="68" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="288" y="68" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="328" y="4" fill="currentcolor" style="font-size:1em">P</text><text text-anchor="middle" x="336" y="4" fill="currentcolor" style="font-size:1em">D</text><text text-anchor="middle" x="344" y="4" fill="currentcolor" style="font-size:1em">F</text><text text-anchor="middle" x="352" y="68" fill="currentcolor" style="font-size:1em">I</text><text text-anchor="middle" x="360" y="68" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="368" y="68" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="376" y="68" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="384" y="68" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="392" y="68" fill="currentcolor" style="font-size:1em">m</text><text text-anchor="middle" x="400" y="68" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="408" y="68" fill="currentcolor" style="font-size:1em">d</text><text text-anchor="middle" x="416" y="68" fill="currentcolor" style="font-size:1em">i</text><text text-anchor="middle" x="424" y="68" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="432" y="68" fill="currentcolor" style="font-size:1em">t</text><text text-anchor="middle" x="440" y="68" fill="currentcolor" style="font-size:1em">e</text><text text-anchor="middle" x="456" y="68" fill="currentcolor" style="font-size:1em">M</text><text text-anchor="middle" x="464" y="68" fill="currentcolor" style="font-size:1em">a</text><text text-anchor="middle" x="472" y="68" fill="currentcolor" style="font-size:1em">r</text><text text-anchor="middle" x="480" y="68" fill="currentcolor" style="font-size:1em">k</text><text text-anchor="middle" x="488" y="68" fill="currentcolor" style="font-size:1em">d</text><text text-anchor="middle" x="496" y="68" fill="currentcolor" style="font-size:1em">o</text><text text-anchor="middle" x="504" y="68" fill="currentcolor" style="font-size:1em">w</text><text text-anchor="middle" x="512" y="68" fill="currentcolor" style="font-size:1em">n</text><text text-anchor="middle" x="576" y="68" fill="currentcolor" style="font-size:1em">H</text><text text-anchor="middle" x="584" y="68" fill="currentcolor" style="font-size:1em">T</text><text text-anchor="middle" x="592" y="68" fill="currentcolor" style="font-size:1em">M</text><text text-anchor="middle" x="600" y="68" fill="currentcolor" style="font-size:1em">L</text></g></svg></div><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+Building <code>docx</code> files are more complex than I expected, and they are still a
+WIP.</div><h3 class=headings id=latex-to-pdf><a class=heading-anchor href=#latex-to-pdf>###</a>
+LaTeX to PDF</h3><p>This method was the most straightforward as I simply turned my existing LaTeX
+document into a template:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ pandoc --defaults defaults.yml <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --template templates/resume.pandoc.tex <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --metadata-file<span style=color:#f92672>=</span>schema.json <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --output<span style=color:#f92672>=</span>outputs/resume.pdf README.md
+</span></span></code></pre></div><h3 class=headings id=markdown-to-html><a class=heading-anchor href=#markdown-to-html>###</a>
+Markdown to HTML</h3><p>This was a bit more challenging. Firstly, I tried to generate HTML from the
+LaTeX template above, but the results were undesirable without writing custom
+Pandoc filters. Next, I turned to converting Markdown to HTML, which I
+found to be more flexible as it allowed for more control over the generated
+elements.</p><p>However, I also wanted to recreate the LaTeX layout with HTML tables. While
+Pandoc does support 4 different types of Markdown tables, none support all the
+features I required (colspan, column-specific alightment and multiline rows).</p><p>I found that <a href=https://docutils.sourceforge.io/docs/ref/rst/directives.html#list-table target=_blank rel=noopener>RST-style list
+tables</a>
+supported all these features, but they were unsupported in native Pandoc.
+Fortunately, I discovered a <a href=https://github.com/pandoc-ext/list-table target=_blank rel=noopener>Lua
+filter</a> that allowed their use in
+Pandoc Markdown.</p><p>As an example, here is a <code>Experience</code> section of the Markdown resume template in
+the form of a RST-style list table and Pandoc variables:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-markdown data-lang=markdown><span style=display:flex><span>$for(work)$
+</span></span><span style=display:flex><span>:::{.list-table aligns=l,r header-rows=0}
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>*</span> - <span style=font-style:italic>**</span>$it.name$**
+</span></span><span style=display:flex><span>     <span style=color:#66d9ef>-</span> **$it.startDate$ — $it.endDate$**
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>*</span> - $it.position$
+</span></span><span style=display:flex><span>     <span style=color:#66d9ef>-</span> $it.location$
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>*</span> - []{colspan=2}
+</span></span><span style=display:flex><span>   &lt;<span style=color:#f92672>ul</span>&gt;
+</span></span><span style=display:flex><span>$for(it.highlights)$
+</span></span><span style=display:flex><span>     &lt;<span style=color:#f92672>li</span>&gt;$it$&lt;/<span style=color:#f92672>li</span>&gt;
+</span></span><span style=display:flex><span>$endfor$
+</span></span><span style=display:flex><span>   &lt;/<span style=color:#f92672>ul</span>&gt;
+</span></span><span style=display:flex><span>:::
+</span></span><span style=display:flex><span>$endfor$
+</span></span></code></pre></div><ul><li>The list tables must be wrapped in Pandoc&rsquo;s <a href=https://pandoc.org/MANUAL#extension-fenced_divs target=_blank rel=noopener>fenced
+divs</a>, represented by <code>:::</code></li><li>We also nest HTML lists (<code>&lt;ul></code> and <code>&lt;li></code>) within the final list table row
+and allow them to span both columns with <code>[]{colspan=2}</code>. These correspond to
+the entry&rsquo;s list of points.</li></ul><p>This method requires two steps:</p><ol><li>Build an intermediate Markdown file with the metadata variables</li><li>Converting the intermediate Markdown into our final HTML file</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ pandoc --defaults defaults.yml <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --template templates/resume.pandoc.md <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --metadata-file<span style=color:#f92672>=</span>schema.json <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --output<span style=color:#f92672>=</span>outputs/intermediate.md README.md
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ pandoc --defaults defaults.yml <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --output<span style=color:#f92672>=</span>outputs/resume.html outputs/intermediate.md
+</span></span></code></pre></div><p>Pairing this with <a href=https://latex.vercel.app/ target=_blank rel=noopener>latex.css</a> and some custom style
+tweaks, the result is a fully-responsive, print-friendly HTML resume that&rsquo;s
+identical to the HTML version.</p><h2 class=headings id=screenshots><a class=heading-anchor href=#screenshots>##</a>
+Screenshots</h2><p>Both methods generated resumes that are very similar, barring some differences
+in font size and margins.</p><figure><img src=resume.png alt="HTML (left) and PDF (right)"><figcaption><p>HTML (left) and PDF (right)</p></figcaption></figure><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+Comparing them made me realize how cluttered the HTML version looks relative to
+its counterpart. Tweaking the font size to allow for some whitespace would greatly
+improve this.</div><p>The HTML is hosted on <a href=https://resume.cheo.dev target=_blank rel=noopener>resume.cheo.dev</a>, which also
+offers the PDF version for download. I avoided including my mobile number on
+these online versions (for privacy and spam reasons), but I do include it when I
+send them in for job applications. If you would like my unredacted resume, drop
+me an email.</p><h2 class=headings id=build-script><a class=heading-anchor href=#build-script>##</a>
+Build Script</h2><p>While building Pandoc documents are as simple as running the relevant commands,
+I decided to make the build process more robust by writing a build script in
+Python with <a href=https://github.com/JessicaTegner/pypandoc target=_blank rel=noopener>pypandoc</a> and
+containerizing it with
+<a href=https://github.com/kencx/resume/blob/master/Dockerfile target=_blank rel=noopener>Docker</a>. The same could
+be replicated with a local Pandoc installation and a <code>Makefile</code>.</p><h2 class=headings id=cicd><a class=heading-anchor href=#cicd>##</a>
+CI/CD</h2><p>Finally, Github Actions runs the entire pipeline:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>on</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>push</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>branches</span>: [<span style=color:#ae81ff>master]</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>pull_request</span>:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>jobs</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>build</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>runs-on</span>: <span style=color:#ae81ff>ubuntu-latest</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>permissions</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>contents</span>: <span style=color:#ae81ff>write</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>steps</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Checkout codebase</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v3</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Set up Docker Buildx</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>docker/setup-buildx-action@v2</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build custom Pandoc Docker image</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>docker/build-push-action@v4</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>context</span>: <span style=color:#ae81ff>.</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>file</span>: <span style=color:#ae81ff>Dockerfile</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>load</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>tags</span>: <span style=color:#ae81ff>kencx/pandoc:latest</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>cache-from</span>: <span style=color:#ae81ff>type=gha</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>cache-to</span>: <span style=color:#ae81ff>type=gha,mode=max</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build sample resume</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>docker compose run --rm pandoc</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Deploy sample resume to GitHub Pages</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          git worktree add gh-pages
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          git config user.name &#34;Deploy from CI&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          git config user.email &#34;&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          cd gh-pages
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          # Delete the ref to avoid keeping history.
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          git update-ref -d refs/heads/gh-pages
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          rm -rf *
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          mv ../static ../outputs/resume.* .
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          mv resume.html index.html
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          git add .
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          git commit -m &#34;Deploy $GITHUB_SHA to gh-pages&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          git push --force --set-upstream origin gh-pages</span>          
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build resume</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>docker compose run --rm pandoc --metadata custom.json</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>SCP files to server</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>appleboy/scp-action@v0.1.4</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>host</span>: <span style=color:#ae81ff>${{ secrets.HOST }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>username</span>: <span style=color:#ae81ff>${{ secrets.USERNAME }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>key</span>: <span style=color:#ae81ff>${{ secrets.KEY }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>port</span>: <span style=color:#ae81ff>${{ secrets.PORT }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>source</span>: <span style=color:#e6db74>&#34;outputs/resume.*,static&#34;</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>target</span>: <span style=color:#ae81ff>/home/${{ secrets.USERNAME }}/resume</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>strip_components</span>: <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>overwrite</span>: <span style=color:#66d9ef>true</span>
+</span></span></code></pre></div><p>This workflow builds two resumes: a <a href=https://kencx.github.io/resume target=_blank rel=noopener>sample one</a>
+hosted on Github Pages as a demo and my <a href=https://resume.cheo.dev target=_blank rel=noopener>actual resume</a>
+on my webserver.</p><p>The sample was just to test that this actually works, but I
+decided to keep it in.</p><h2 class=headings id=future><a class=heading-anchor href=#future>##</a>
+Future</h2><p>There&rsquo;s still much to do but I really have to continue finding a job, so here&rsquo;s
+what is missing or could be improved still:</p><ul><li>Support docx generation</li><li>Use LaTeX to generate HTML resume or use HTML to generate PDF resume</li></ul><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://pandoc.org/ target=_blank rel=noopener>pandoc</a></li><li><a href=https://chainsawonatireswing.com/2013/05/28/how-i-create-manage-my-cv-using-markdown-pandoc/ target=_blank rel=noopener>How I create and manage my CV using Markdown & Pandoc</a></li><li><a href=https://github.com/jacksenechal/resume target=_blank rel=noopener>jacksenechal/resume</a></li><li><a href=https://github.com/samijuvonen/pandoc_resume_template target=_blank rel=noopener>samijuvonen/pandoc_resume_template</a></li></ul><div class=meta>Edited: 22 Jan 2024<div class=tags><a href=https://ken.cheo.dev/tags/automation/>#automation</a>
+<a href=https://ken.cheo.dev/tags/pandoc/>#pandoc</a>
+<a href=https://ken.cheo.dev/tags/resume/>#resume</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#pandoc>Pandoc</a><ul><li><a href=#latex-to-pdf>LaTeX to PDF</a></li><li><a href=#markdown-to-html>Markdown to HTML</a></li></ul></li><li><a href=#screenshots>Screenshots</a></li><li><a href=#build-script>Build Script</a></li><li><a href=#cicd>CI/CD</a></li><li><a href=#future>Future</a></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2024</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>
