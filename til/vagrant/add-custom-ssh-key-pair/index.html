@@ -1,0 +1,68 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Add custom SSH key pair</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Add Custom SSH Key Pair<div class=meta>2 Feb 2023
+• 2 mins</div></h1><p>When a new Vagrant machine is created, it generates a secure SSH key pair to
+replace the existing insecure key pair present in all boxes. In
+some cases, we might wish to use our own custom key pair, which we can add via
+provisioning.</p><h3 class=headings id=overwrite-generated-key-pair><a class=heading-anchor href=#overwrite-generated-key-pair>###</a>
+Overwrite Generated Key Pair</h3><p>This method overwrites the generated, secure key pair that is generated on
+<code>vagrant up</code> by default. The existing <code>/home/vagrant/.ssh/authorized_keys</code> is
+overwritten with the given public key during provisioning.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby><span style=display:flex><span><span style=color:#66d9ef>VAGRANT_COMMAND</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>ARGV</span><span style=color:#f92672>[</span><span style=color:#ae81ff>0</span><span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>Vagrant</span><span style=color:#f92672>.</span>configure(<span style=color:#e6db74>&#34;2&#34;</span>) <span style=color:#66d9ef>do</span> <span style=color:#f92672>|</span>config<span style=color:#f92672>|</span>
+</span></span><span style=display:flex><span>	config<span style=color:#f92672>.</span>vm<span style=color:#f92672>.</span>provision <span style=color:#e6db74>&#34;file&#34;</span>, <span style=color:#e6db74>source</span>: <span style=color:#e6db74>&#34;/path/to/public/key&#34;</span>, <span style=color:#e6db74>destination</span>: <span style=color:#e6db74>&#34;~/.ssh/authorized_keys&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#66d9ef>VAGRANT_COMMAND</span> <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;ssh&#34;</span>
+</span></span><span style=display:flex><span>		config<span style=color:#f92672>.</span>ssh<span style=color:#f92672>.</span>private_key_path <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;/path/to/private/key&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><p>The conditional block here is important. It allows Vagrant to create the guest
+VM and default, secure key pair on the first <code>vagrant up</code>. It then lets Vagrant
+use the custom key pair to perform <code>vagrant ssh</code>.</p><h3 class=headings id=append-custom-key-pair><a class=heading-anchor href=#append-custom-key-pair>###</a>
+Append Custom Key Pair</h3><p>The alternative is to keep both generated and custom key pairs by not
+overwriting the <code>authorized_keys</code> file. Instead of copying the custom public key
+to <code>authorized_keys</code>, it is written to a temporary file which is appended to the
+existing <code>authorized_keys</code> and later removed.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby><span style=display:flex><span><span style=color:#66d9ef>VAGRANT_COMMAND</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>ARGV</span><span style=color:#f92672>[</span><span style=color:#ae81ff>0</span><span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>Vagrant</span><span style=color:#f92672>.</span>configure(<span style=color:#e6db74>&#34;2&#34;</span>) <span style=color:#66d9ef>do</span> <span style=color:#f92672>|</span>config<span style=color:#f92672>|</span>
+</span></span><span style=display:flex><span>	config<span style=color:#f92672>.</span>vm<span style=color:#f92672>.</span>provision <span style=color:#e6db74>&#34;file&#34;</span>, <span style=color:#e6db74>source</span>: <span style=color:#e6db74>&#34;/path/to/public/key&#34;</span>, <span style=color:#e6db74>destination</span>: <span style=color:#e6db74>&#34;~/.ssh/temp&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	$script <span style=color:#f92672>=</span> <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74></span>cat <span style=color:#f92672>~</span><span style=color:#e6db74>/.ssh/</span>temp <span style=color:#f92672>&gt;&gt;</span> <span style=color:#f92672>~</span><span style=color:#e6db74>/.ssh/</span>authorized_keys
+</span></span><span style=display:flex><span>rm <span style=color:#f92672>~</span><span style=color:#e6db74>/.ssh/</span>temp
+</span></span><span style=display:flex><span><span style=color:#66d9ef>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	config<span style=color:#f92672>.</span>vm<span style=color:#f92672>.</span>provision <span style=color:#e6db74>&#34;shell&#34;</span> <span style=color:#66d9ef>do</span> <span style=color:#f92672>|</span>s<span style=color:#f92672>|</span>
+</span></span><span style=display:flex><span>		s<span style=color:#f92672>.</span>inline <span style=color:#f92672>=</span> $script
+</span></span><span style=display:flex><span>		s<span style=color:#f92672>.</span>privileged <span style=color:#f92672>=</span> <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#66d9ef>VAGRANT_COMMAND</span> <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;ssh&#34;</span>
+</span></span><span style=display:flex><span>		config<span style=color:#f92672>.</span>ssh<span style=color:#f92672>.</span>private_key_path <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;/path/to/private/key&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><p>Similarly, a conditional block is used to allow for a successful provisioning
+before the custom key pair is added.</p><h3 class=headings id=adding-key-pair-to-other-user><a class=heading-anchor href=#adding-key-pair-to-other-user>###</a>
+Adding Key Pair to Other User</h3><p>We can extend either of the previous methods to add a key pair to another user,
+instead of <code>vagrant</code>. This user must already exist in the box or must be created
+with a <code>shell</code> provisioner.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby><span style=display:flex><span><span style=color:#66d9ef>VAGRANT_COMMAND</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>ARGV</span><span style=color:#f92672>[</span><span style=color:#ae81ff>0</span><span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>Vagrant</span><span style=color:#f92672>.</span>configure(<span style=color:#e6db74>&#34;2&#34;</span>) <span style=color:#66d9ef>do</span> <span style=color:#f92672>|</span>config<span style=color:#f92672>|</span>
+</span></span><span style=display:flex><span>	config<span style=color:#f92672>.</span>vm<span style=color:#f92672>.</span>provision <span style=color:#e6db74>&#34;shell&#34;</span> <span style=color:#66d9ef>do</span> <span style=color:#f92672>|</span>s<span style=color:#f92672>|</span>
+</span></span><span style=display:flex><span>		s<span style=color:#f92672>.</span>path <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;create_user.sh&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>	config<span style=color:#f92672>.</span>vm<span style=color:#f92672>.</span>provision <span style=color:#e6db74>&#34;file&#34;</span>, <span style=color:#e6db74>source</span>: <span style=color:#e6db74>&#34;/path/to/public/key&#34;</span>, <span style=color:#e6db74>destination</span>: <span style=color:#e6db74>&#34;/home/foo/.ssh/authorized_keys&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#66d9ef>VAGRANT_COMMAND</span> <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;ssh&#34;</span>
+</span></span><span style=display:flex><span>		config<span style=color:#f92672>.</span>ssh<span style=color:#f92672>.</span>username <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;foo&#34;</span>
+</span></span><span style=display:flex><span>		config<span style=color:#f92672>.</span>ssh<span style=color:#f92672>.</span>private_key_path <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;/path/to/private/key&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><p>The <code>create_user.sh</code> script should ensure the user&rsquo;s <code>.ssh</code> directory already
+exists with the appropriate permissions.</p><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://github.com/hashicorp/vagrant/issues/992 target=_blank rel=noopener>hashicorp/vagrant Github Issue - Automating authorized_keys in
+Vagrantfile</a></li><li><a href=https://github.com/hashicorp/vagrant/issues/1753 target=_blank rel=noopener>hashicorp/vagrant Github Issue - Provision as different user than
+config.ssh.username</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/ssh/>#ssh</a>
+<a href=https://ken.cheo.dev/tags/vagrant/>#vagrant</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><ul><li><a href=#overwrite-generated-key-pair>Overwrite Generated Key Pair</a></li><li><a href=#append-custom-key-pair>Append Custom Key Pair</a></li><li><a href=#adding-key-pair-to-other-user>Adding Key Pair to Other User</a></li></ul></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2024</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

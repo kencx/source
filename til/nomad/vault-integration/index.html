@@ -1,0 +1,71 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Vault Integration</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Vault Integration<div class=meta>15 Jul 2023
+• 3 mins</div></h1><p>Nomad can integrate with <a href=https://www.hashicorp.com/products/vault target=_blank rel=noopener>Hashicorp
+Vault</a> to access secrets.</p><p>This requires Nomad to be provided a periodic Vault token with permissions to
+create from a token role. Nomad servers will renew this token automatically.
+Nomad clients do not need to be provided the token. The
+<a href=https://developer.hashicorp.com/nomad/docs/integrations/vault-integration target=_blank rel=noopener>documentation</a>
+provides detailed steps towards the setup.</p><p>An overview of the steps are as follows:</p><ol><li>Create a <code>nomad_cluster</code> policy used by Nomad to create and manage tokens.</li><li>Create a Vault token role that Nomad will use to manage Vault tokens.</li><li>Configure Nomad to use the created token role.</li><li>Give Nomad servers a periodic token with the <code>nomad_cluster</code> policy
+previously.</li></ol><p>When Nomad is given the periodic token, it automatically handles the token&rsquo;s
+renewal. However, there can exist a case where Nomad is forced to restart
+<em>after</em> the original token has expired. Although the token had been renewed, the
+new tokens were never written to disk (because they are only available in
+memory), and Nomad would have no available Vault token when it restarts.</p><h2 class=headings id=automatic-vault-token-retrieval><a class=heading-anchor href=#automatic-vault-token-retrieval>##</a>
+Automatic Vault Token Retrieval</h2><p>For Nomad to fetch its own Vault token on startup, we use a helper script:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/usr/bin/env bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e># nomad-startup.sh</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>NOMAD_TOKEN<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>VAULT_ADDR<span style=color:#f92672>=</span>http://localhost:8200 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    VAULT_TOKEN<span style=color:#f92672>=[</span>token<span style=color:#f92672>]</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    vault write -field<span style=color:#f92672>=</span>token auth/token/create-orphan <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    <span style=color:#e6db74>&#34;policies=nomad_cluster&#34;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    <span style=color:#e6db74>&#34;period=72h&#34;</span><span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>VAULT_TOKEN<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;</span>$NOMAD_TOKEN<span style=color:#e6db74>&#34;</span> /usr/bin/nomad agent -dev -config /etc/nomad.d &amp;
+</span></span></code></pre></div><p>And pass it into the systemd file <code>nomad.service</code> with the <code>forking</code> type, which
+starts Nomad as the main process of the script. This is required for reliable
+signal handling.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>[Unit]
+</span></span><span style=display:flex><span>Description=Nomad
+</span></span><span style=display:flex><span>Wants=network-online.target
+</span></span><span style=display:flex><span>After=network-online.target vault.service
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[Service]
+</span></span><span style=display:flex><span>Type=forking
+</span></span><span style=display:flex><span>ExecStart=/opt/nomad/data/nomad-startup.sh
+</span></span></code></pre></div><p>There is still one major problem with this method - we need an already existing Vault token
+to create this token.</p><h3 class=headings id=authenticating-to-vault><a class=heading-anchor href=#authenticating-to-vault>###</a>
+Authenticating to Vault</h3><p>We can use Vault&rsquo;s certificate auth method to fetch the Vault token to be used
+in the startup script.</p><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+Certificate authentication requires Vault to be started with TLS.</div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ vault write auth/cert/certs/nomad_startup <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>	certificate<span style=color:#f92672>=</span>@/opt/nomad/tls/nomad_startup.crt <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>	<span style=color:#e6db74>&#39;token_policies=nomad_startup, nomad_cluster&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>	token_ttl<span style=color:#f92672>=</span><span style=color:#ae81ff>86400</span>
+</span></span></code></pre></div><p>This role is created with two policies:</p><ul><li>The existing <code>nomad_cluster</code> policy so that any tokens it creates can have
+access to the same policy</li><li>A new <code>nomad_startup</code> policy:</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>path &#34;auth/token/create-orphan&#34; {
+</span></span><span style=display:flex><span>  capabilities = [&#34;create&#34;, &#34;update&#34;, &#34;sudo&#34;]
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>The <code>sudo</code> capability is required for the <code>create-orphan</code> path.</li></ul><p>Finally, we use this cert auth method to authenticate to Vault and create a
+token when Nomad is started:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/usr/bin/env bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>ADDR<span style=color:#f92672>=</span>https://localhost:8200
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>TOKEN<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>VAULT_ADDR<span style=color:#f92672>=</span>$ADDR vault login --token-only -method<span style=color:#f92672>=</span>cert <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -client-cert<span style=color:#f92672>=</span>/opt/nomad/tls/nomad_startup.crt <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -client-cert<span style=color:#f92672>=</span>/opt/nomad/tls/nomad_startup_key.pem<span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>NOMAD_TOKEN<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>VAULT_ADDR<span style=color:#f92672>=</span>$ADDR VAULT_TOKEN<span style=color:#f92672>=</span>$TOKEN <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>	vault write -field<span style=color:#f92672>=</span>token auth/token/create-orphan <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    <span style=color:#e6db74>&#34;policies=nomad_cluster&#34;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    <span style=color:#e6db74>&#34;period=72h&#34;</span><span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>VAULT_TOKEN<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;</span>$NOMAD_TOKEN<span style=color:#e6db74>&#34;</span> /usr/bin/nomad agent -config <span style=color:#f92672>{{</span> nomad_config_dir <span style=color:#f92672>}}</span> &amp;
+</span></span></code></pre></div><h2 class=headings id=alternatives><a class=heading-anchor href=#alternatives>##</a>
+Alternatives</h2><p>There are some alternatives to this convoluted method:</p><ul><li>In Vault 1.14, Vault agent has a new <a href=https://developer.hashicorp.com/vault/docs/agent-and-proxy/agent/process-supervisor target=_blank rel=noopener>Process Supervisor
+Mode</a>
+that can be used to run a command with secrets from Vault.</li><li>There are <a href=https://github.com/hashicorp/nomad/issues/15617 target=_blank rel=noopener>plans</a> to
+streamline the Vault Integration process by removing the need for Vault tokens
+completely. Instead, Nomad would be able to authenticate to Vault with the JWT
+Auth method.</li></ul><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://developer.hashicorp.com/nomad/docs/integrations/vault-integration target=_blank rel=noopener>Nomad docs - Vault integration</a></li><li><a href=https://developer.hashicorp.com/nomad/docs/configuration/vault target=_blank rel=noopener>Nomad docs - Vault stanza</a></li><li><a href=https://developer.hashicorp.com/nomad/docs/job-specification/vault target=_blank rel=noopener>Nomad docs - Vault block in jobspec</a></li><li><a href=https://developer.hashicorp.com/nomad/docs/job-specification/template#vault-kv-api-v2 target=_blank rel=noopener>Hashicorp - template Block</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/nomad/>#nomad</a>
+<a href=https://ken.cheo.dev/tags/vault/>#vault</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#automatic-vault-token-retrieval>Automatic Vault Token Retrieval</a><ul><li><a href=#authenticating-to-vault>Authenticating to Vault</a></li></ul></li><li><a href=#alternatives>Alternatives</a></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2024</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

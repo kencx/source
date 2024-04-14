@@ -1,0 +1,116 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Argument Types</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Argument Types<div class=meta>7 Jul 2023
+• 3 mins</div></h1><p>There are seven types of arguments that can be defined in Python functions:</p><ul><li>Positional</li><li>Keyword</li><li>Default</li><li>Keyword-only</li><li>Positional-only</li><li>Variable positional <code>*args</code></li><li>Variable keyword <code>**kwargs</code></li></ul><h2 class=headings id=positional-arguments><a class=heading-anchor href=#positional-arguments>##</a>
+Positional Arguments</h2><p>Functions are most commonly defined with positional arguments. These can be
+called with or without their keyword (or name) <code>kwarg</code>. If no keywords are
+given, the argument order will default to the order in the function definition.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>add</span>(x, y):
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> x<span style=color:#f92672>+</span>y
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>add(<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>)
+</span></span><span style=display:flex><span>add(x<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>,y<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>)
+</span></span><span style=display:flex><span>add(y<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>,x<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>)
+</span></span><span style=display:flex><span>add(<span style=color:#ae81ff>1</span>, y<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>)
+</span></span></code></pre></div><h2 class=headings id=keyword-arguments><a class=heading-anchor href=#keyword-arguments>##</a>
+Keyword Arguments</h2><p>Functions can also be called with keyword arguments by explicitly specifying
+<code>kwarg=value</code>. These must follow specific rules:</p><ul><li>Keyword arguments can be called in any order</li><li>The function cannot contain any undefined keyword arguments</li><li>The function can be called with a mix of positional and keyword arguments, but
+any keyword arguments MUST follow all positional arguments</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>add</span>(x, y):
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> x<span style=color:#f92672>+</span>y
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>add(x<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>, y<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>)
+</span></span><span style=display:flex><span>add(y<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>, x<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># invalid examples</span>
+</span></span><span style=display:flex><span>add(z<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>,a<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>)  <span style=color:#75715e># unexpected keyword args!</span>
+</span></span><span style=display:flex><span>add(x<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>)
+</span></span></code></pre></div><h2 class=headings id=default-arguments><a class=heading-anchor href=#default-arguments>##</a>
+Default Arguments</h2><p>A function&rsquo;s arguments can be assigned default values when it&rsquo;s defined. If no
+argument is given when the function is called, the default value will be
+adopted. Similarly, all rules for positional and keyword arguments apply.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>add</span>(x, y<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>):
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> x<span style=color:#f92672>+</span>y
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>add(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>4</span>)      <span style=color:#75715e># 5</span>
+</span></span><span style=display:flex><span>add(x<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)       <span style=color:#75715e># 3</span>
+</span></span><span style=display:flex><span>add(x<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>, y<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)  <span style=color:#75715e># 2</span>
+</span></span><span style=display:flex><span>add(<span style=color:#ae81ff>1</span>)         <span style=color:#75715e># 3</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># invalid examples</span>
+</span></span><span style=display:flex><span>add(x<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>5</span>)
+</span></span></code></pre></div><h2 class=headings id=keyword-only-arguments><a class=heading-anchor href=#keyword-only-arguments>##</a>
+Keyword-Only Arguments</h2><p>Function arguments can be defined to be keyword-only by placing it after an <code>*</code>.
+In this case, all arguments defined after must be keyword-only when calling the
+function.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>foo</span>(<span style=color:#f92672>*</span>, x):
+</span></span><span style=display:flex><span>	print(x)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>foo(x<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># invalid</span>
+</span></span><span style=display:flex><span>foo(<span style=color:#ae81ff>1</span>)  <span style=color:#75715e># Missing one required keyword-only argument</span>
+</span></span></code></pre></div><p>This can be further extended to include default arguments</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>add</span>(<span style=color:#f92672>*</span>, x, y<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>):
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> x<span style=color:#f92672>+</span>y
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>add(x<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>, y<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)  <span style=color:#75715e># 2</span>
+</span></span><span style=display:flex><span>add(x<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)       <span style=color:#75715e># 3</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># invalid</span>
+</span></span><span style=display:flex><span>add(<span style=color:#ae81ff>1</span>, y<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>add(<span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>add(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>)
+</span></span></code></pre></div><h2 class=headings id=positional-only-arguments><a class=heading-anchor href=#positional-only-arguments>##</a>
+Positional-Only Arguments</h2><p>There are also positional-only arguments, which are defined by placing them
+before <code>/</code>. These arguments must be positional-only when calling the function.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>foo</span>(x, <span style=color:#f92672>/</span>):
+</span></span><span style=display:flex><span>	print(a)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>foo(<span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># invalid</span>
+</span></span><span style=display:flex><span>foo(x<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
+</span></span></code></pre></div><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+Positional-only arguments are available in Python 3.8.</div><h2 class=headings id=variable-positional-arguments><a class=heading-anchor href=#variable-positional-arguments>##</a>
+Variable Positional Arguments</h2><p>Variable positional arguments are represented in the form <code>*args</code> as a tuple
+with an arbitrary number of arguments. Functions defined with <code>*args</code> can be
+called with an arbitrary number of positional arguments. If no arguments are
+given, <code>*args</code> defaults to an empty tuple.</p><p>The use of <code>*args</code> also forbids the use of any keyword arguments when calling the function.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>add</span>(<span style=color:#f92672>*</span>numbers):
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> sum(int(n) <span style=color:#66d9ef>for</span> n <span style=color:#f92672>in</span> numbers)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>add(<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,<span style=color:#ae81ff>3</span>)  <span style=color:#75715e># 6</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># invalid</span>
+</span></span><span style=display:flex><span>add(<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,x<span style=color:#f92672>=</span><span style=color:#ae81ff>3</span>)
+</span></span></code></pre></div><p>However, <code>*args</code> can be combined with keyword arguments in the function definition:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>foo</span>(<span style=color:#f92672>*</span>x, y):
+</span></span><span style=display:flex><span>	print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;x is: </span><span style=color:#e6db74>{</span>x<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>	print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;y is: </span><span style=color:#e6db74>{</span>y<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>foo(<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,y<span style=color:#f92672>=</span><span style=color:#ae81ff>3</span>)
+</span></span><span style=display:flex><span><span style=color:#75715e># x is (1, 2)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># y is 3</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># invalid</span>
+</span></span><span style=display:flex><span>foo(<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,<span style=color:#ae81ff>3</span>)  <span style=color:#75715e># missing keyword argument</span>
+</span></span></code></pre></div><p>The above example can also include default arguments for <code>y</code>.</p><h2 class=headings id=variable-keyword-arguments><a class=heading-anchor href=#variable-keyword-arguments>##</a>
+Variable Keyword Arguments</h2><p>Variable keyword arguments of the form <code>**kwargs</code> are represented as a
+dictionary with an arbitrary length. Functions defined with <code>**kwargs</code> can be
+called with an arbitrary number of keyword arguments. If no arguments are given,
+<code>**kwargs</code> defaults to an empty dictionary.</p><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+The <code>*</code> and <code>**</code> operators used in function definitions are different from those
+used in <a href=https://ken.cheo.dev/til/python/asterisks/#function-calls target=_blank rel=noopener>function calls</a> or outside of functions
+(<a href=https://ken.cheo.dev/til/python/asterisks/#destructuring target=_blank rel=noopener>Asterisks#Destructuring</a>).</div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>foo</span>(<span style=color:#f92672>**</span>x):
+</span></span><span style=display:flex><span>	print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;x is: </span><span style=color:#e6db74>{</span>x<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>foo(x<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>,y<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>,z<span style=color:#f92672>=</span><span style=color:#ae81ff>3</span>)
+</span></span><span style=display:flex><span><span style=color:#75715e># x is {&#39;x&#39;: 1, &#39;y&#39;: 2, &#39;z&#39;: 3}</span>
+</span></span></code></pre></div><p>Because <code>**kwargs</code> allows any keyword arguments to be passed into the function,
+we must handle them appropriately with <code>get()</code> or <code>pop()</code>. These methods also
+allow us to set a default value for the key if it is absent:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>change_user_details</span>(username, <span style=color:#f92672>**</span>kwargs):
+</span></span><span style=display:flex><span>	<span style=color:#75715e># raise KeyError if arg doesn&#39;t exist</span>
+</span></span><span style=display:flex><span>	foo <span style=color:#f92672>=</span> kwargs<span style=color:#f92672>.</span>pop(<span style=color:#e6db74>&#34;foo&#34;</span>, <span style=color:#66d9ef>None</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e># check for unexpected keyword args and raise TypeError</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> kwargs:
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>raise</span> <span style=color:#a6e22e>TypeError</span>(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#39;unexpected keyword </span><span style=color:#e6db74>{</span><span style=color:#e6db74>&#34;, &#34;</span><span style=color:#f92672>.</span>join(sorted(kwargs))<span style=color:#e6db74>}</span><span style=color:#e6db74>&#39;</span>)
+</span></span></code></pre></div><p><code>*args</code> and <code>**kwargs</code> can be combined to provide variable argument support in functions:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>foo</span>(<span style=color:#f92672>*</span>args, <span style=color:#f92672>**</span>kwargs):
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>pass</span>
+</span></span></code></pre></div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://bas.codes/posts/python-asterisks target=_blank rel=noopener>All you need to know about asterisks in Python</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/python/>#python</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#positional-arguments>Positional Arguments</a></li><li><a href=#keyword-arguments>Keyword Arguments</a></li><li><a href=#default-arguments>Default Arguments</a></li><li><a href=#keyword-only-arguments>Keyword-Only Arguments</a></li><li><a href=#positional-only-arguments>Positional-Only Arguments</a></li><li><a href=#variable-positional-arguments>Variable Positional Arguments</a></li><li><a href=#variable-keyword-arguments>Variable Keyword Arguments</a></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2024</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>
