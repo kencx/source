@@ -8,6 +8,6 @@ include software, automation, keyboards, indie games and science fiction.
 
 ## Contact
 
-- Email: ken at cheo dot dev
+- Email: ken [at] cheo [dot] dev
 - [Github](https://github.com/kencx)
 - [RSS](/posts/index.xml)

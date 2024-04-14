@@ -2,7 +2,7 @@
 title: "Automating my Resume"
 date: 2023-08-21
 lastmod: 2024-01-22
-draft: false
+draft: true
 toc: true
 tags:
 - automation
@@ -10,35 +10,34 @@ tags:
 - pandoc
 ---
 
-I recently started job hunting again and had to update my resume. As an excuse
-to procrastinate sending out applications, I decided that this was the best time
-to automate the generation of my resume: something I do perhaps once a year.
+{{< details "Summary" >}}
+I discuss how I automated the generation of my resume in multiple formats (`.pdf,
+.html, .docx`)
+{{< /details >}}
 
-{{< figure src="https://imgs.xkcd.com/comics/is_it_worth_the_time.png" caption="relevant xkcd #1205" link="https://xkcd.com/1205" class="center" >}}
+{{< details "Edit" >}}
+This post was previously written on 2023-08-21. I have since rewritten it on
+2024-03-01 as I felt that the original was unclear and lacking.
+{{< /details >}}
 
-There's a [bunch](https://github.com/xitanggg/open-resume)
-[of](https://github.com/AmruthPillai/Reactive-Resume)
-[resume](https://github.com/topics/resume-builder) building sites out there,
-mostly catered for people in Tech, but many involve creating an account on their
-sites and using one of their templates. That's not really my thing.
+Recently, I had began job hunting and began the process of updating my resume.
+In the midst of procrastination, I came across
+[jsonresume](https://jsonresume.org/), which gave me the idea of automating the
+generation of my resume. I wasn't the first to have this idea and these projects
+have been an immense help in guiding me as I navigated the deep rabbit hole into
+[pandoc](https://pandoc.org/).
 
-I also have an existing resume in LaTeX, which I could just use to build a PDF
-automatically with Github Actions, and call it a day, but there's no fun in
-that. Instead, I wanted to over-engineer a full pipeline that automatically
-builds a resume in three different formats:
+## Process
 
-1. pdf
-2. html to host a static site (because why not?)
-3. docx for the occasional recruiter that *only* accepts Word documents
+All resume data will be defined in a JSON schema as defined by jsonresume. This
+provides a version-controlled, declarative and machine-readable document that
+will be consumed by the Pandoc.
 
-All formats should be identical (in content and design) and bonus points if they
-all come from a single template. To implement this, we turn to
-[Pandoc](https://pandoc.org/) and [jsonresume](https://jsonresume.org/) which
-consume a version-controlled, declarative and machine-readable schema and
-outputs the formats above.
-
->The code for this project can be found at
->[kencx/resume](https://github.com/kencx/resume).
+I aim to build my resume in three formats: pdf, html and docx. These formats
+will be built with Pandoc automatically with GitHub Actions when there is any
+change to the JSON input. All formats should be identical in content and design
+(the tricky part) and an added bonus would be if they all came from the same
+template.
 
 ## Pandoc
 
@@ -56,11 +55,6 @@ content ----+
              \
               +-->  Markdown template --->  Intermediate Markdown --->  HTML
 ```
-
-{{< alert type="note" >}}
-Building `docx` files are more complex than I expected, and they are still a
-WIP.
-{{< /alert >}}
 
 ### LaTeX to PDF
 
