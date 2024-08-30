@@ -15,6 +15,7 @@ toc: false
 - [David Foster Wallace - This is Water](https://fs.blog/david-foster-wallace-this-is-water/) (2005)
 - [500 miles](https://web.mit.edu/jemorris/humor/500-miles)
 - [A conspiracy to kill IE6](https://blog.chriszacharias.com/a-conspiracy-to-kill-ie6) (2019)
+- [The secret in One Million Checkboxes](https://eieio.games/essays/the-secret-in-one-million-checkboxes/) (2024)
 
 ### Stories
 
