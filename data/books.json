@@ -1,5 +1,21 @@
 [
   {
+    "title": "Ra",
+    "isbn": "9798735007937",
+    "authors": "qntm",
+    "url": "https://openlibrary.org/books/OL32826032M/Ra",
+    "cover_url": "https://covers.openlibrary.org/b/id/11457994-M.jpg",
+    "cover": "ra.jpg"
+  },
+  {
+    "title": "There is No Antimemetics Division",
+    "isbn": "9798721503788",
+    "authors": "qntm",
+    "url": "https://openlibrary.org/books/OL49226440M/There_is_No_Antimemetics_Division",
+    "cover_url": "https://covers.openlibrary.org/b/id/0011457905-M.jpg",
+    "cover": "there_is_no_antimemetics_division.jpg"
+  },
+  {
     "title": "The Dispossessed",
     "isbn": "038051284X",
     "authors": "Ursula K. Le Guin",

@@ -15,7 +15,7 @@ fi
 
 FILE="$1"
 OUTPUT="$2"
-COVERS_DIR="content/books/covers"
+COVERS_DIR="assets/covers"
 URL="https://openlibrary.org/api/books?format=json&jscmd=data&bibkeys=ISBN:"
 
 covers=0
