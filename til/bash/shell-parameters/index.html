@@ -1,0 +1,56 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Shell Parameters</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Shell Parameters<div class=meta>1 Apr 2023
+• 2 mins</div></h1><h2 class=headings id=summary><a class=heading-anchor href=#summary>##</a>
+Summary</h2><table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>$0</code></td><td>Pathname of script</td></tr><tr><td><code>$N</code></td><td>Positional parameter</td></tr><tr><td><code>$#</code></td><td>Number of command line parameters</td></tr><tr><td><code>$*</code></td><td>All command line parameters</td></tr><tr><td><code>$@</code></td><td>All command line arguments</td></tr><tr><td><code>$?</code></td><td>Exit status of most recent executed command</td></tr><tr><td><code>$$</code></td><td>Process ID of shell</td></tr><tr><td><code>$!</code></td><td>Process ID of most recent executed background command</td></tr><tr><td><code>$-</code></td><td>Flags used in current shell</td></tr><tr><td><code>$_</code></td><td>Last argument of previous command</td></tr></tbody></table><h2 class=headings id=positional-parameters><a class=heading-anchor href=#positional-parameters>##</a>
+Positional Parameters</h2><p>A positional parameter is a parameter denoted by one or more digits (except <code>0</code>).
+When calling a script with arguments, these arguments can be referenced with
+positional parameters:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#e6db74>${</span>N<span style=color:#e6db74>}</span>
+</span></span></code></pre></div><p>where <code>N</code> is the single digit.</p><p>If the positional parameter consists of more than one digit, it must be enclosed
+in braces:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#e6db74>${</span>25<span style=color:#e6db74>}</span>
+</span></span></code></pre></div><p>Positional parameters cannot be assigned directly with assignment statements,
+but can be set and unset with <code>set</code> and <code>shift</code> builtins.</p><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+For a script to process multiple arguments separately, use <code>shift</code>.</div><p>Positional parameters are temporarily replaced when a shell function is executed.</p><h2 class=headings id=special-parameters><a class=heading-anchor href=#special-parameters>##</a>
+Special Parameters</h2><p>Certain parameters are treated by the shell specially. These parameters may only
+be referenced and never assigned.</p><h3 class=headings id=heading><a class=heading-anchor href=#heading>###</a>
+$*</h3><p><code>$*</code> expands to a list of positional parameters. When wrapped in double quotes
+<code>""</code>, it expands into a single double-quoted string containing all positional
+parameters, separated by the <code>IFS</code> variable. Without double quotes, each
+positional parameter expands to a separate word.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./foo <span style=color:#e6db74>&#34;foo&#34;</span> <span style=color:#e6db74>&#34;bar baz bin&#34;</span>
+</span></span></code></pre></div><p>With double quotes:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$1 <span style=color:#f92672>=</span> foo bar baz bin
+</span></span><span style=display:flex><span>$2 <span style=color:#f92672>=</span>
+</span></span><span style=display:flex><span>$3 <span style=color:#f92672>=</span>
+</span></span><span style=display:flex><span>$4 <span style=color:#f92672>=</span>
+</span></span></code></pre></div><p>Without double quotes:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$1 <span style=color:#f92672>=</span> foo
+</span></span><span style=display:flex><span>$2 <span style=color:#f92672>=</span> bar
+</span></span><span style=display:flex><span>$3 <span style=color:#f92672>=</span> baz
+</span></span><span style=display:flex><span>$4 <span style=color:#f92672>=</span> bin
+</span></span></code></pre></div><h3 class=headings id=heading-1><a class=heading-anchor href=#heading-1>###</a>
+$@</h3><p><code>$@</code> expands to a list of positional parameters. When surrounded with double
+quotes <code>""</code>, it expands into a separate word.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./foo <span style=color:#e6db74>&#34;foo&#34;</span> <span style=color:#e6db74>&#34;bar baz bin&#34;</span>
+</span></span></code></pre></div><p>With double quotes:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$1 <span style=color:#f92672>=</span> word
+</span></span><span style=display:flex><span>$2 <span style=color:#f92672>=</span> words with spaces
+</span></span><span style=display:flex><span>$3 <span style=color:#f92672>=</span>
+</span></span><span style=display:flex><span>$4 <span style=color:#f92672>=</span>
+</span></span></code></pre></div><p>Without double quotes:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$1 <span style=color:#f92672>=</span> foo
+</span></span><span style=display:flex><span>$2 <span style=color:#f92672>=</span> bar
+</span></span><span style=display:flex><span>$3 <span style=color:#f92672>=</span> baz
+</span></span><span style=display:flex><span>$4 <span style=color:#f92672>=</span> bin
+</span></span></code></pre></div><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+When writing shell scripts, <code>"$@"</code> is the more useful parameter as it preserves
+the integrity of each given argument.</div><h3 class=headings id=_><a class=heading-anchor href=#_>###</a>
+$_</h3><p>In an interactive shell, <code>$_</code> expands to the last argument of the previous
+command.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ echo <span style=color:#e6db74>&#34;test&#34;</span>
+</span></span><span style=display:flex><span>test
+</span></span><span style=display:flex><span>$ echo <span style=color:#e6db74>&#34;</span>$_<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>test
+</span></span></code></pre></div><p>This is useful when working with long file paths:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ cat /long/file/path
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># opens previous long file path</span>
+</span></span><span style=display:flex><span>$ vim $_
+</span></span></code></pre></div><p>or when creating and entering a directory:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ mkdir /path/to/dir
+</span></span><span style=display:flex><span>$ cd $_
+</span></span></code></pre></div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://www.gnu.org/software/bash/manual/html_node/Shell-Parameters.html target=_blank rel=noopener>Bash Manual - Shell Parameters</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/bash/>#bash</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#summary>Summary</a></li><li><a href=#positional-parameters>Positional Parameters</a></li><li><a href=#special-parameters>Special Parameters</a><ul><li><a href=#heading>$*</a></li><li><a href=#heading-1>$@</a></li><li><a href=#_>$_</a></li></ul></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2024</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>
