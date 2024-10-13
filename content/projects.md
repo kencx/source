@@ -16,8 +16,9 @@ Full-text search engine for xkcd built with Go and Redis
 - [vps](https://github.com/kencx/vps) - The infrastructure as code that hosts
   this blog and other stuff
 
-## Proof of Concept
+## For fun
 
+- [gridclock](https://github.com/kencx/gridclock) - Gridclock in the terminal
 - [clp](https://github.com/kencx/clp) - Caddy access log analytics
 - [exportsg](https://github.com/kencx/exportsg) - Export Singapore bank PDF
   statements to CSV
