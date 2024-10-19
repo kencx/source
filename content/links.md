@@ -16,6 +16,7 @@ toc: false
 - [500 miles](https://web.mit.edu/jemorris/humor/500-miles)
 - [A conspiracy to kill IE6](https://blog.chriszacharias.com/a-conspiracy-to-kill-ie6) (2019)
 - [The secret in One Million Checkboxes](https://eieio.games/essays/the-secret-in-one-million-checkboxes/) (2024)
+- [The quiet art of attention](https://billwear.github.io/art-of-attention.html)
 
 ### Stories
 
@@ -26,13 +27,8 @@ toc: false
 
 - [jvns.ca](https://jvns.ca/)
 - [rednafi](https://rednafi.com/about/)
-- [Eli Bendersky](https://eli.thegreenplace.net/)
 - [matduggan](https://matduggan.com/)
-- [2c.fyi](https://2c.fyi/)
 - [brr.fyi](https://brr.fyi/)
-
-### Long Form
-- [Longreads](https://longreads.com/)
 
 ### Videos
 
