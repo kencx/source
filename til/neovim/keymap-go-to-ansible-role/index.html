@@ -1,0 +1,47 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Keymap: Go to Ansible Role</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Keymap: Go to Ansible Role<div class=meta>16 Aug 2023
+• 1 min</div></h1><p>This function navigates to the <code>tasks/main.yml</code> file of the Ansible role that is under the cursor.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-lua data-lang=lua><span style=display:flex><span>ansible_goto_role_paths <span style=color:#f92672>=</span> { <span style=color:#e6db74>&#34;./roles&#34;</span>, <span style=color:#e6db74>&#34;~/.ansible/roles&#34;</span> }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>local</span> <span style=color:#66d9ef>function</span> <span style=color:#a6e22e>gotoRole</span>()
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> ansible_goto_role_paths <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>		role_paths <span style=color:#f92672>=</span> ansible_goto_role_paths
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>		role_paths <span style=color:#f92672>=</span> { <span style=color:#e6db74>&#34;./roles&#34;</span> }
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>local</span> cword <span style=color:#f92672>=</span> vim.fn.expand(<span style=color:#e6db74>&#34;&lt;cWORD&gt;&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>local</span> tasks_dir <span style=color:#f92672>=</span> util.path.join(cword, <span style=color:#e6db74>&#34;tasks&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> _, p <span style=color:#66d9ef>in</span> ipairs(role_paths) <span style=color:#66d9ef>do</span>
+</span></span><span style=display:flex><span>		<span style=color:#75715e>-- check if relative or absolute path</span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> p:match(<span style=color:#e6db74>&#34;^%./&#34;</span>) <span style=color:#f92672>or</span> p:match(<span style=color:#e6db74>&#34;^%.%./&#34;</span>) <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>			full_path <span style=color:#f92672>=</span> util.path.join(util.path.cwd(), p, tasks_dir)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>			full_path <span style=color:#f92672>=</span> util.path.join(vim.fs.dirname(p), vim.fs.basename(p), tasks_dir)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>local</span> match <span style=color:#f92672>=</span> vim.fs.find(<span style=color:#e6db74>&#34;main.yml&#34;</span>, { type <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;file&#34;</span>, path <span style=color:#f92672>=</span> full_path })
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> <span style=color:#f92672>#</span>match <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>and</span> match[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>~=</span> <span style=color:#e6db74>&#34;&#34;</span> <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>			vim.cmd(<span style=color:#e6db74>&#34;e &#34;</span> <span style=color:#f92672>..</span> match[<span style=color:#ae81ff>1</span>])
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>	print(tasks_dir <span style=color:#f92672>..</span> <span style=color:#e6db74>&#34;/main.yml not found&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><ul><li>Vim&rsquo;s <code>expand("&lt;cWORD>")</code> is used to get the word under the cursor. We use
+<code>&lt;cWORD></code> (instead of <code>&lt;cword></code>) to handle fully qualified role names from
+Ansible Galaxy that may be separated by dots <code>.</code> (eg. <code>geerlingguy.docker</code>).</li></ul><p>Finally, bind the above function to a keymap in <code>ansible/*.{yml,yaml}</code> files:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-lua data-lang=lua><span style=display:flex><span>vim.api.nvim_create_autocmd(event <span style=color:#f92672>=</span> { <span style=color:#e6db74>&#34;BufRead&#34;</span>, <span style=color:#e6db74>&#34;BufNewFile&#34;</span> }, {
+</span></span><span style=display:flex><span>    group <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;ansibleGoToRole&#34;</span>,
+</span></span><span style=display:flex><span>    pattern <span style=color:#f92672>=</span> { <span style=color:#e6db74>&#34;*/ansible/*.yml&#34;</span>, <span style=color:#e6db74>&#34;*/ansible/*.yaml&#34;</span> },
+</span></span><span style=display:flex><span>    callback <span style=color:#f92672>=</span> <span style=color:#66d9ef>function</span>()
+</span></span><span style=display:flex><span>        vim.keymap.set({ <span style=color:#e6db74>&#34;n&#34;</span>, <span style=color:#e6db74>&#34;v&#34;</span> }, <span style=color:#e6db74>&#34;&lt;Leader&gt;gar&#34;</span>, gotoRole, {})
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>})
+</span></span></code></pre></div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://gist.github.com/mtyurt/3529a999af675a0aff00eb14ab1fdde3 target=_blank rel=noopener>Relevant Gist</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/ansible/>#ansible</a>
+<a href=https://ken.cheo.dev/tags/lua/>#lua</a>
+<a href=https://ken.cheo.dev/tags/neovim/>#neovim</a>
+<a href=https://ken.cheo.dev/tags/snippets/>#snippets</a></div></div></div></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2024</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

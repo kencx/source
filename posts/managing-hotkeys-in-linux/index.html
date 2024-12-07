@@ -1,0 +1,110 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Managing hotkeys in Linux</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Managing Hotkeys in Linux<div class=meta>22 Feb 2024
+• 6 mins</div></h1><details><summary>Summary</summary>
+I discuss how and why I built my own application
+<a href=https://github.com/kencx/keyb target=_blank rel=noopener>keyb</a> to remember
+custom hotkeys in Linux.</details><p>When I first began learning Vim, I also started using tmux and a new window
+manager (bspwm) at the same time. In hindsight, this was a bad idea
+because I really struggled with remembering the correct hotkey combination for
+things like:</p><ul><li>Resizing a window in bspwm</li><li>Resizing a pane in tmux</li><li>Resizing a split in vim</li><li>Creating a new split in vim</li><li>Creating a new pane/window in tmux</li></ul><p>These are all very similar operations in different programs and I mixed them up
+ALL THE TIME.</p><h2 class=headings id=remembering-hotkeys><a class=heading-anchor href=#remembering-hotkeys>##</a>
+Remembering Hotkeys</h2><p>I started looking for methods to quickly reference the hotkeys for these
+operations. Vim has plugins like
+<a href=https://github.com/liuchengxu/vim-which-key target=_blank rel=noopener>which-key</a> (or
+<a href=https://github.com/folke/which-key.nvim target=_blank rel=noopener>which-key.nvim</a>), tmux has the builtin
+<code>Ctrl+b; ?</code> and bspwm has well&mldr; sxhkd.</p><h2 class=headings id=sxhkd><a class=heading-anchor href=#sxhkd>##</a>
+Sxhkd</h2><p>sxhkd (Simple X hotkey daemon) is commonly paired with bspwm as a hotkey manager
+for X. It is configured with a <code>sxhkdrc</code> configuration file that looks like
+this:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># floating terminal</span>
+</span></span><span style=display:flex><span>super + Return
+</span></span><span style=display:flex><span>	st
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># tiled terminal</span>
+</span></span><span style=display:flex><span>super + shift + Return
+</span></span><span style=display:flex><span>    st -c tiled
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># rofi</span>
+</span></span><span style=display:flex><span>super + space
+</span></span><span style=display:flex><span>	rofi -show drun -width -100
+</span></span></code></pre></div><p>To create a quick reference sheet for <code>sxhkd</code>, we can parse the config file with
+<code>awk</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>awk <span style=color:#e6db74>&#39;/^[a-zA-Z{]/ &amp;&amp; last {print $0,&#34;\t&#34;,last} {last=&#34;&#34;} /^#/{last=$0}&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    ~/.config/sxhkd/sxhkdrc | <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    column -t -s <span style=color:#e6db74>$&#39;\t&#39;</span>
+</span></span></code></pre></div><p>to generate a list of hotkeys with a description like this:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>super + Return            <span style=color:#75715e># floating terminal</span>
+</span></span><span style=display:flex><span>super + shift + Return    <span style=color:#75715e># tiled terminal</span>
+</span></span><span style=display:flex><span>super + space             <span style=color:#75715e># rofi</span>
+</span></span></code></pre></div><p>We can combine this with <code>fzf</code> to generate a table of hotkeys with fuzzy search:</p><figure class=center><img src=sxhkd_fzf.png alt="A handy sxhkd cheatsheet"><figcaption><p>A handy sxhkd cheatsheet</p></figcaption></figure><details><summary>Full script</summary><p>Use a hotkey to activate the script and you got an quick reference
+cheatsheet!</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/usr/bin/env bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>awk <span style=color:#e6db74>&#39;/^[a-zA-Z{]/ &amp;&amp; last {print $0,&#34;\t&#34;,last} {last=&#34;&#34;} /^#/{last=$0}&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    ~/.config/sxhkd/sxhkdrc | <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    column -t -s <span style=color:#e6db74>$&#39;\t&#39;</span> | <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    fzf --tac --cycle <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>        --layout<span style=color:#f92672>=</span>reverse <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>        --border<span style=color:#f92672>=</span>rounded <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>        --margin<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>        --padding<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>        --prompt<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;keys &gt; &#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>		--ansi
+</span></span></code></pre></div></details><h2 class=headings id=towards-a-global-cheatsheet><a class=heading-anchor href=#towards-a-global-cheatsheet>##</a>
+Towards A Global Cheatsheet</h2><p>This script was really great. In fact, it was so great that I consistently tried
+to look up my Vim and tmux hotkeys on it as well, leading to confusion, then
+frustration.</p><p>What I really wanted was a global cheatsheet that could store all my hotkeys
+(even custom ones). Ideally, it should have fuzzy search and be presented in an
+easy to read format (I&rsquo;ve been spoiled by my <code>sxhkd</code> + <code>fzf</code> script).</p><p>Looking around, I saw that <a href=https://awesomewm.org/ target=_blank rel=noopener>awesomewm</a>&rsquo;s shortcut menu
+comes really close to what I wanted, but there were two problems:</p><ol><li>I would be locked into awesomewm. No hate to it, but I was already using
+bspwm</li><li>At a glance, its quite difficult to find the hotkey I want since there&rsquo;s no
+search function</li></ol><figure class=center><img src=awesomewm_shortcut_menu.png alt="awesomewm shortcut menu. Source"><figcaption><p>awesomewm shortcut menu. <a href=https://stackoverflow.com/questions/73519361/awesome-wm-shortcut-to-toggle-or-make-a-window-sticky-this-shortcut-is-not-show target=_blank rel=noopener>Source</a></p></figcaption></figure><h2 class=headings id=building-my-own-solution><a class=heading-anchor href=#building-my-own-solution>##</a>
+Building my own solution</h2><p>I searched extensively for any customizable hotkey reference tool but couldn&rsquo;t
+find one, so I built my own: <a href=https://github.com/kencx/keyb target=_blank rel=noopener>keyb</a>. Its built in
+Go and the fantastic
+<a href=https://github.com/charmbracelet/bubbletea/tree/master target=_blank rel=noopener>bubbletea</a> framework.</p><figure class=center><img src=keyb.gif alt="keyb demo"><figcaption><p>keyb demo</p></figcaption></figure><p><code>keyb</code> requires you to create a hotkey file (<code>keyb.yml</code>) which you populate with
+any keybinds you want to show:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span>- <span style=color:#f92672>name</span>: <span style=color:#ae81ff>bspwm</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>keybinds</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>terminal</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>key</span>: <span style=color:#ae81ff>Super + Return</span>
+</span></span></code></pre></div><p>From the gif, I think you can tell the design was heavily inspired by the custom
+<code>sxhkd</code> + <code>fzf</code> script. All hotkeys and their descriptions are presented into a
+two column table, separated into sections (or groups) and delimited by their
+headers in bold.</p><p>The sections were inspired by awesomewm&rsquo;s shortcut menu and help to visually
+split all hotkeys by their applications/software. These section and section
+headers are fully customizable and how you split them is dependent on how you
+wrote the <code>keyb.yml</code> file.</p><p>This allows you to split your hotkeys in any way you like. For example, I split
+my bspwm and tmux hotkeys based on their purpose, and my neovim hotkeys based on
+their plugins.</p><figure class=center><img src=keyb_split.png alt="All hotkeys related to copy and pasting in tmux are in the tmux (copy) section"><figcaption><p>All hotkeys related to copy and pasting in tmux are in the tmux (copy) section</p></figcaption></figure><p>The other key feature of <code>keyb</code> is its fuzzy search. There are two search modes:</p><ul><li>Normal search: filters all rows except headers</li><li>Header search: filters header rows only</li></ul><p>This means that there are three different ways of presenting table rows:
+non-filtered, normal search filtered and header search filtered. These three
+tables had to be distinct enough that the user should know which mode they are
+in without getting lost, but also similar enough to maintain a common UX
+throughout. This was challenging to develop since I&rsquo;m not a designer or UX
+expert.</p><p>What I went with was this:</p><ul><li><strong>Non-filtered</strong>: The default table with sections separated by their headers
+(in bold)</li><li><strong>Normal search filtered</strong>: The table is ordered by fuzzy search with no
+section and headers. Instead, headers are present just below the search bar
+for quick reference. I found headers to still be necessary to prevent
+confusion when there are hotkeys with similar descriptions and/or keybinds for
+different applications</li><li><strong>Header search</strong>: Table headers are ordered by fuzzy search with all their
+corresponding section hotkeys</li></ul><p>To me, this UX seems straightforward and I don&rsquo;t get easily lost or forget which
+mode I am in. However, this modal UX is far from perfect.</p><h2 class=headings id=areas-of-improvement><a class=heading-anchor href=#areas-of-improvement>##</a>
+Areas of Improvement</h2><p>Firstly, <code>keyb</code> activates header search by checking for the prefix <code>h:</code> string
+in the search bar. This proves to be quite cumbersome especially when you use
+this mode often. I have some ideas on how to improve it, but nothing concrete so
+far. My rough thoughts are <a href=https://github.com/kencx/keyb/issues/16 target=_blank rel=noopener>here</a>.</p><p>Secondly, it would be fantastic if we can set or rebind hotkeys using <code>keyb</code> as
+well. This is entirely outside the scope of <code>keyb</code> but there are some tools that
+do this, including <a href=https://github.com/k0kubun/xremap target=_blank rel=noopener>xremap</a> and
+<a href=https://github.com/rvaiya/keyd target=_blank rel=noopener>keyd</a>. One
+<a href=https://github.com/kencx/keyb/issues/29 target=_blank rel=noopener>proposal</a> I have is to allow <code>keyb</code> to
+export a configuration file for these tools with the defined <code>keyb.yml</code> file
+that&rsquo;s already present, allowing the user to set a single source of truth.</p><p>Lastly, <code>keyb</code> does not support command selection or keyboard input. Again, this
+is outside the scope of <code>keyb</code> and more suited for tools like
+<a href=https://github.com/jordansissel/xdotool target=_blank rel=noopener>xdotool</a>. I also have a
+<a href=https://github.com/kencx/keyb/issues/30 target=_blank rel=noopener>proposal</a> to allow <code>keyb</code> to output
+keyboard input that can be piped into <code>xdotool</code> when the user selects a given
+row in the table.</p><p>I&rsquo;ve been dogfooding <code>keyb</code> almost daily for more than a year now, so much that
+I rarely need to refer to it now, which was kind of the point I guess? There
+hasn&rsquo;t been major bugs or annoyances as far as I&rsquo;m aware, but please feel free
+to open an issue if you do try it out!</p><div class=meta>Edited: 8 Dec 2024<div class=tags><a href=https://ken.cheo.dev/tags/hotkeys/>#hotkeys</a>
+<a href=https://ken.cheo.dev/tags/keyb/>#keyb</a>
+<a href=https://ken.cheo.dev/tags/sxhkd/>#sxhkd</a>
+<a href=https://ken.cheo.dev/tags/tui/>#tui</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#remembering-hotkeys>Remembering Hotkeys</a></li><li><a href=#sxhkd>Sxhkd</a></li><li><a href=#towards-a-global-cheatsheet>Towards A Global Cheatsheet</a></li><li><a href=#building-my-own-solution>Building my own solution</a></li><li><a href=#areas-of-improvement>Areas of Improvement</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2024</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

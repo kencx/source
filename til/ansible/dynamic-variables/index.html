@@ -1,0 +1,35 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Dynamic Variables</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Dynamic Variables<div class=meta>12 Jul 2023
+• 1 min</div></h1><p>Moustaches do not stack in Jinja. The following is <strong>not</strong> valid syntax:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#f92672>debug</span>:
+</span></span><span style=display:flex><span>	<span style=color:#f92672>msg</span>: <span style=color:#e6db74>&#34;{{ {{ application }}.version }}&#34;</span>
+</span></span></code></pre></div><p>To interpolate variables or build dynamic variables, we must use the <code>vars</code>
+dictionary:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span>- <span style=color:#f92672>hosts</span>: <span style=color:#ae81ff>all</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>vars</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>application</span>: <span style=color:#ae81ff>foo</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>foo</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>version</span>: <span style=color:#ae81ff>1.0</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>tasks</span>:
+</span></span><span style=display:flex><span>	<span style=color:#75715e># version=1.0</span>
+</span></span><span style=display:flex><span>	- <span style=color:#f92672>debug</span>:
+</span></span><span style=display:flex><span>		<span style=color:#f92672>msg</span>: <span style=color:#e6db74>&#34;version={{ vars[application].version }}&#34;</span>
+</span></span></code></pre></div><p><code>vars[application].version</code> will be interpolated into <code>foo.version</code>. The above
+can also be represented with the <a href=https://docs.ansible.com/ansible/latest/collections/ansible/builtin/vars_lookup.html#vars-lookup target=_blank rel=noopener>vars lookup
+plugin</a>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#f92672>debug</span>:
+</span></span><span style=display:flex><span>	<span style=color:#f92672>msg</span>: <span style=color:#e6db74>&#34;version={{ lookup(&#39;vars&#39;, application).version }}&#34;</span>
+</span></span></code></pre></div><p>For inventory variables, we must use the <code>hostvars</code> dictionary instead:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#f92672>debug</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>msg</span>: <span style=color:#e6db74>&#34;{{ hostvars[inventory_hostname][bar] }}&#34;</span>
+</span></span></code></pre></div><p>To concatenate variables dynamically, the <code>+</code> operator or the <code>~</code> (tilde)
+operator in Jinja converts all operands into strings and concatenates them:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span>- <span style=color:#f92672>hosts</span>: <span style=color:#ae81ff>all</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>vars</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>region</span>: <span style=color:#e6db74>&#34;east&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>east_ip</span>: [<span style=color:#e6db74>&#34;192.168.86.1&#34;</span>]
+</span></span><span style=display:flex><span>  <span style=color:#f92672>tasks</span>:
+</span></span><span style=display:flex><span>	  <span style=color:#75715e># &#39;east_ip&#39; -&gt; &#39;192.168.86.1&#39;</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>debug</span>:
+</span></span><span style=display:flex><span>        <span style=color:#75715e># msg: &#34;{{ lookup(&#39;vars&#39;, region + &#39;_ip&#39;) }}&#34;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>msg</span>: <span style=color:#e6db74>&#34;{{ lookup(&#39;vars&#39;, region ~ &#39;_ip&#39;) }}&#34;</span>
+</span></span></code></pre></div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#when-should-i-use-also-how-to-interpolate-variables-or-dynamic-variable-names target=_blank rel=noopener>Ansible docs - How to interpolate variables or dynamic variable names</a></li><li><a href=https://stackoverflow.com/questions/46209556/how-can-i-use-ansible-nested-variable target=_blank rel=noopener>How to use Ansible nested variables</a></li><li><a href=https://jinja.palletsprojects.com/en/3.0.x/templates/#other-operators target=_blank rel=noopener>Jinja - Other Operators</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/ansible/>#ansible</a></div></div></div></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2024</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>
