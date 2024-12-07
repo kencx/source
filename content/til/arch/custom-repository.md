@@ -1,5 +1,5 @@
 ---
-title: "Custom Repository"
+title: "Hosting Custom Repository in S3"
 date: 2023-07-07
 lastmod: 2023-07-07
 draft: false
