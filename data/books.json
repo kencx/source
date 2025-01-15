@@ -1,5 +1,45 @@
 [
   {
+    "title": "The Years of Rice and Salt",
+    "isbn": "0553580078",
+    "authors": "Kim Stanley Robinson",
+    "url": "https://openlibrary.org/books/OL24224658M/The_years_of_rice_and_salt",
+    "cover_url": "https://covers.openlibrary.org/b/id/6577355-M.jpg",
+    "cover": "the_years_of_rice_and_salt.jpg"
+  },
+  {
+    "title": "The Andromeda Strain",
+    "isbn": "1101974494",
+    "authors": "Michael Crichton",
+    "url": "https://openlibrary.org/books/OL26824947M/The_Andromeda_Strain",
+    "cover_url": "https://covers.openlibrary.org/b/id/12882897-M.jpg",
+    "cover": "the_andromeda_strain.jpg"
+  },
+  {
+    "title": "Radicalized",
+    "isbn": "1250229251",
+    "authors": "Cory Doctorow",
+    "url": "https://openlibrary.org/books/OL28914815M/Radicalized",
+    "cover_url": "https://covers.openlibrary.org/b/id/10722651-M.jpg",
+    "cover": "radicalized.jpg"
+  },
+  {
+    "title": "Remarkably Bright Creatures",
+    "isbn": "1526649675",
+    "authors": "Shelby Van Pelt",
+    "url": "https://openlibrary.org/books/OL40329349M/Remarkably_Bright_Creatures",
+    "cover_url": "https://covers.openlibrary.org/b/id/14809662-M.jpg",
+    "cover": "remarkably_bright_creatures.jpg"
+  },
+  {
+    "title": "The Player of Games",
+    "isbn": "0316005401",
+    "authors": "Iain M. Banks",
+    "url": "https://openlibrary.org/books/OL10426057M/The_Player_of_Games",
+    "cover_url": "https://covers.openlibrary.org/b/id/2378901-M.jpg",
+    "cover": "the_player_of_games.jpg"
+  },
+  {
     "title": "Ra",
     "isbn": "9798735007937",
     "authors": "qntm",
@@ -22,14 +62,6 @@
     "url": "https://openlibrary.org/books/OL1156124M/The_Dispossessed",
     "cover_url": "https://covers.openlibrary.org/b/id/6492681-M.jpg",
     "cover": "the_dispossessed.jpg"
-  },
-  {
-    "title": "The Bobiverse Series",
-    "isbn": "9781680680324",
-    "authors": "Dennis E. Taylor",
-    "url": "https://openlibrary.org/books/OL45368649M/We_Are_Legion",
-    "cover_url": "https://covers.openlibrary.org/b/id/13130465-M.jpg",
-    "cover": "we_are_legion.jpg"
   },
   {
     "title": "The Left Hand of Darkness",
@@ -126,14 +158,6 @@
     "url": "https://openlibrary.org/books/OL5219384M/Solaris",
     "cover_url": "https://covers.openlibrary.org/b/id/10534855-M.jpg",
     "cover": "solaris.jpg"
-  },
-  {
-    "title": "Dragon's Egg",
-    "isbn": "034543529X",
-    "authors": "Robert L. Forward",
-    "url": "https://openlibrary.org/books/OL60650M/Dragon's_egg",
-    "cover_url": "https://covers.openlibrary.org/b/id/209771-M.jpg",
-    "cover": "dragon's_egg.jpg"
   },
   {
     "title": "Diaspora",
@@ -264,14 +288,6 @@
     "cover": "alex_adventures_in_numberland.jpg"
   },
   {
-    "title": "Nightfall",
-    "isbn": "0553290991",
-    "authors": "Isaac Asimov, Robert Allan Silverberg",
-    "url": "https://openlibrary.org/books/OL25796788M/Nightfall",
-    "cover_url": "https://covers.openlibrary.org/b/id/7375461-M.jpg",
-    "cover": "nightfall.jpg"
-  },
-  {
     "title": "Loneliness",
     "isbn": "0393061701",
     "authors": "John T. Cacioppo",
@@ -326,14 +342,6 @@
     "url": "https://openlibrary.org/books/OL3693769M/Cloud_Atlas",
     "cover_url": "https://covers.openlibrary.org/b/id/228013-M.jpg",
     "cover": "cloud_atlas.jpg"
-  },
-  {
-    "title": "Brave New World",
-    "isbn": "0060929871",
-    "authors": "Aldous Huxley",
-    "url": "https://openlibrary.org/books/OL48122607M/Brave_New_World",
-    "cover_url": "https://covers.openlibrary.org/b/id/14352364-M.jpg",
-    "cover": "brave_new_world.jpg"
   },
   {
     "title": "World War Z",
