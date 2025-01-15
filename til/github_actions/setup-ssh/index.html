@@ -1,0 +1,46 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Setup SSH</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Setup SSH<div class=meta>15 Nov 2023
+• 1 min</div></h1><p>To setup SSH, we need to:</p><ul><li>Create the <code>~/.ssh</code> directory</li><li>Create the private key file with the proper permissions <code>0600</code></li><li>Save the host permanently as a known host to prevent being prompted with <code>ssh-keyscan</code></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#f92672>name</span>: <span style=color:#ae81ff>setup ssh</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>on</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>push</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>branches</span>:
+</span></span><span style=display:flex><span>	  - <span style=color:#e6db74>&#34;master&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>jobs</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>run</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>runs-on</span>: <span style=color:#ae81ff>ubuntu-latest</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>steps</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v4</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Setup SSH</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>shell</span>: <span style=color:#ae81ff>bash</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          eval $(ssh-agent -s)
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          install -m 600 -D /dev/null ~/.ssh/id_ed25519
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          echo &#34;${{secrets.SSH_KEY}}&#34; &gt; ~/.ssh/id_ed25519
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          ssh-keyscan -t rsa,dsa,ecdsa,ed25519 ${{secrets.SSH_HOST}} &gt;&gt; ~/.ssh/known_hosts</span>          
+</span></span></code></pre></div><h3 class=headings id=running-ssh-action><a class=heading-anchor href=#running-ssh-action>###</a>
+Running SSH-Action</h3><p>To execute remote SSH commands, we can opt to use the <a href=https://github.com/appleboy/ssh-action target=_blank rel=noopener>appleboy/ssh-action</a> action as well:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#f92672>name</span>: <span style=color:#ae81ff>remote ssh command</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>on</span>: [<span style=color:#ae81ff>push]</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>jobs</span>:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>build</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>runs-on</span>: <span style=color:#ae81ff>ubuntu-latest</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>steps</span>:
+</span></span><span style=display:flex><span>	  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>executing remote ssh commands using ssh key</span>
+</span></span><span style=display:flex><span>	    <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>appleboy/ssh-action@v1.0.0</span>
+</span></span><span style=display:flex><span>	    <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>	      <span style=color:#f92672>host</span>: <span style=color:#ae81ff>${{ secrets.HOST }}</span>
+</span></span><span style=display:flex><span>	      <span style=color:#f92672>username</span>: <span style=color:#ae81ff>${{ secrets.USERNAME }}</span>
+</span></span><span style=display:flex><span>	      <span style=color:#f92672>key</span>: <span style=color:#ae81ff>${{ secrets.KEY }}</span>
+</span></span><span style=display:flex><span>	      <span style=color:#f92672>port</span>: <span style=color:#ae81ff>${{ secrets.PORT }}</span>
+</span></span><span style=display:flex><span>	      <span style=color:#f92672>script</span>: <span style=color:#ae81ff>|</span>
+</span></span><span style=display:flex><span>		    <span style=color:#ae81ff>whoami</span>
+</span></span><span style=display:flex><span>		    <span style=color:#ae81ff>ls -al</span>
+</span></span></code></pre></div><p>There is also the <a href=https://github.com/appleboy/scp-action target=_blank rel=noopener>appleboy/scp-action</a> action.</p><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://stackoverflow.com/questions/60477061/github-actions-how-to-deploy-to-remote-server-using-ssh target=_blank rel=noopener>Github Actions - How to deploy to remote server using SSH</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/github_actions/>#github_actions</a>
+<a href=https://ken.cheo.dev/tags/ssh/>#ssh</a></div></div></div></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

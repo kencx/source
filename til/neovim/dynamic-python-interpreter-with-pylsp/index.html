@@ -1,0 +1,59 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Dynamic Python Interpreter with pylsp</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Dynamic Python Interpreter With Pylsp<div class=meta>17 Aug 2023
+• 2 mins</div></h1><p>This snippet dynamically selects the Python interpreter used with
+<a href=https://github.com/python-lsp/python-lsp-server target=_blank rel=noopener>pylsp</a> in Neovim. It does so
+by checking for the existence of a Python <a href=https://ken.cheo.dev/til/python/virtual-environments/>virtual environment</a> in the project&rsquo;s root directory. If
+a venv exists, <code>pylsp</code> will use its environment. Otherwise, it will fallback to
+the global interpreter.</p><p>First, we want to retrieve the name of the venv&rsquo;s subdirectory. If the
+venv has been activated, Vim may detect it with <code>$VIRTUAL_ENV</code>. If not, we
+recursively search for a <a href=https://ken.cheo.dev/til/python/virtual-environments/#what-goes-into-a-venv><code>pyvenv.cfg</code></a> from the
+project&rsquo;s root directory</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-lua data-lang=lua><span style=display:flex><span><span style=color:#66d9ef>local</span> <span style=color:#66d9ef>function</span> <span style=color:#a6e22e>get_python_venv</span>(workspace)
+</span></span><span style=display:flex><span>	<span style=color:#75715e>-- use activated venv</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> vim.env.VIRTUAL_ENV <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> path.join(vim.env.VIRTUAL_ENV)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>-- find and use venv</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>local</span> match <span style=color:#f92672>=</span> vim.fs.find(<span style=color:#e6db74>&#34;pyvenv.cfg&#34;</span>, { type <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;file&#34;</span>, path <span style=color:#f92672>=</span> workspace })
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#f92672>#</span>match <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>and</span> match[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>~=</span> <span style=color:#e6db74>&#34;&#34;</span> <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> path.dirname(match[<span style=color:#ae81ff>1</span>])
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><p>If a venv is found, return the local Python interpreter. Otherwise, the global
+interpreter is used</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-lua data-lang=lua><span style=display:flex><span><span style=color:#66d9ef>local</span> <span style=color:#66d9ef>function</span> <span style=color:#a6e22e>get_python_path</span>(workspace)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>local</span> venv <span style=color:#f92672>=</span> get_python_venv(workspace)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> venv <span style=color:#f92672>~=</span> <span style=color:#66d9ef>nil</span> <span style=color:#f92672>and</span> venv <span style=color:#f92672>~=</span> <span style=color:#e6db74>&#34;&#34;</span> <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>		vim.api.nvim_notify(<span style=color:#e6db74>&#34;set venv to&#34;</span> <span style=color:#f92672>..</span> path.join(venv, <span style=color:#e6db74>&#34;bin&#34;</span>, <span style=color:#e6db74>&#34;python&#34;</span>), <span style=color:#ae81ff>1</span>, {})
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> path.join(venv, <span style=color:#e6db74>&#34;bin&#34;</span>, <span style=color:#e6db74>&#34;python&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>-- default to global python</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> vim.fn.exepath(<span style=color:#e6db74>&#34;python3&#34;</span>) <span style=color:#f92672>or</span> vim.fn.exepath(<span style=color:#e6db74>&#34;python&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><p>Finally, we set <code>pylsp</code>&rsquo;s <code>plugins.jedi.environment</code> to the dynamic path with
+the functions above</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-lua data-lang=lua><span style=display:flex><span><span style=color:#66d9ef>local</span> configs <span style=color:#f92672>=</span> require(<span style=color:#e6db74>&#34;lspconfig/configs&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>return</span> {
+</span></span><span style=display:flex><span>	cmd <span style=color:#f92672>=</span> { <span style=color:#e6db74>&#34;pylsp&#34;</span> },
+</span></span><span style=display:flex><span>	filetypes <span style=color:#f92672>=</span> { <span style=color:#e6db74>&#34;python&#34;</span> },
+</span></span><span style=display:flex><span>	settings <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>		pylsp <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>			plugins <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>				jedi <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>					environment <span style=color:#f92672>=</span> get_python_path(configs.root_dir),
+</span></span><span style=display:flex><span>				},
+</span></span><span style=display:flex><span>			},
+</span></span><span style=display:flex><span>		},
+</span></span><span style=display:flex><span>	},
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+<code>lspconfig</code>&rsquo;s <code>root_dir</code> function is used here to fetch the project&rsquo;s root
+directory.</div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://github.com/python-lsp/python-lsp-server/issues/29 target=_blank rel=noopener>pylsp - Virtual Environments?</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/lsp/>#lsp</a>
+<a href=https://ken.cheo.dev/tags/lua/>#lua</a>
+<a href=https://ken.cheo.dev/tags/neovim/>#neovim</a>
+<a href=https://ken.cheo.dev/tags/python/>#python</a>
+<a href=https://ken.cheo.dev/tags/snippets/>#snippets</a></div></div></div></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

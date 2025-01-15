@@ -1,0 +1,32 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Truthy and Falsy</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Truthy and Falsy<div class=meta>12 Jul 2023
+• 2 mins</div></h1><p>In Python, any object can be tested for truth value in an <code>if</code> or <code>while</code>
+condition, or as an operand of the boolean operations:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>x <span style=color:#f92672>or</span> y
+</span></span><span style=display:flex><span>x <span style=color:#f92672>and</span> y
+</span></span><span style=display:flex><span><span style=color:#f92672>not</span> x
+</span></span></code></pre></div><p>Every value in Python, regardless of type, is considered <code>True</code> or truthy,
+unless its class defines a:</p><ul><li><code>__bool__()</code> method that returns <code>False</code></li><li><code>__len__()</code> method that returns <code>0</code></li></ul><p>Examples of falsy values include:</p><ul><li>Constants defined to be false: <code>None</code> and <code>False</code></li><li>Zero of any numeric type</li><li>Empty sequences and collections: <code>'', (), [], {}, set(), range(0)</code></li></ul><p>Therefore, the following <code>if</code> blocks will be functionally equivalent:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>if</span> len(lst) <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>:
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>pass</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#66d9ef>None</span>:
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>pass</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#66d9ef>False</span>:
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>pass</span>
+</span></span></code></pre></div><h2 class=headings id=gotcha---none-is-not-false><a class=heading-anchor href=#gotcha---none-is-not-false>##</a>
+Gotcha - None is not False</h2><p>However, this does not mean <code>None</code> is always interpreted as <code>False</code>. <code>None</code>
+represents the concept of <em>nothing</em> and is not directly equivalent to <code>False</code>:
+<code>None != False</code>. This is important to note when dealing with <a href=/til/python/identity-and-equivalence/>identity and
+equivalence</a>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>if</span> x:
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>pass</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> x <span style=color:#f92672>is</span> <span style=color:#f92672>not</span> <span style=color:#66d9ef>None</span>:
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>pass</span>
+</span></span></code></pre></div><p>These <code>if</code> blocks are not exactly the same. The former is a boolean value test
+while the latter explicitly checks that <code>x</code> is not <code>None</code>.</p><p>For example, when checking that <code>x</code> has been set to some other value instead of
+the default <code>None</code>, the former <code>if</code> block can evaluate to <code>false</code> if it is set
+to an empty container or 0.</p><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://docs.python.org/3/library/stdtypes.html#truth-value-testing target=_blank rel=noopener>Python docs - Truth Value Testing</a></li><li><a href=https://pep8.org/#programming-recommendations target=_blank rel=noopener>PEP8 - Programming Recommendations</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/python/>#python</a></div></div></div></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

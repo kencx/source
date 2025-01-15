@@ -1,0 +1,122 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Virtual Environments</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Virtual Environments<div class=meta>7 Jul 2023
+• 5 mins</div></h1><p>A Python virtual environment is a group of executables and directories that run
+an isolated Python environment. The
+<a href=https://docs.python.org/3.10/library/venv.html target=_blank rel=noopener>venv</a> (or <code>virtualenv</code>)
+module creates an isolated, self-contained directory that contains symlinks to
+our installed Python executables.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># create new venv with name foo</span>
+</span></span><span style=display:flex><span>$ python -m venv foo
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># activate venv</span>
+</span></span><span style=display:flex><span>$ . foo/bin/activate
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># deactivate venv</span>
+</span></span><span style=display:flex><span>$ deactivate
+</span></span></code></pre></div><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+For Windows systems, the command is <code>.venv\Scripts\activate.bat</code>.</div><p>Packages should never be installed into the global Python environment as this
+can and will lead to dependency version conflicts. They should be installed in
+Python virtual environments instead.</p><h2 class=headings id=what-goes-into-a-venv><a class=heading-anchor href=#what-goes-into-a-venv>##</a>
+What goes into a venv?</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>venv/
+</span></span><span style=display:flex><span>|- bin/
+</span></span><span style=display:flex><span>|  |- activate
+</span></span><span style=display:flex><span>|  |- python -&gt; /usr/bin/python
+</span></span><span style=display:flex><span>|  |- pip
+</span></span><span style=display:flex><span>|- lib/
+</span></span><span style=display:flex><span>|  |- site-packages/
+</span></span><span style=display:flex><span>|- include/
+</span></span><span style=display:flex><span>|- share/
+</span></span><span style=display:flex><span>|- pyvenv.cfg
+</span></span></code></pre></div><ul><li><code>bin/</code> (or <code>Scripts\</code> on Windows) contains the executables of the virtual
+environment, including the Python interpreter (symlinked to the global binary),
+<code>pip</code> and <code>activate</code> script.</li><li><code>lib/site-packages/</code> contains all external packages to be used within the
+virtual environment. By default, it comes pre-installed with <code>pip</code> and
+<code>setuptools</code>.</li><li><code>include/</code> (or <code>Include\</code> on Windows) is an empty folder that Python will use
+to include C header files for packages that might depend on C extensions.</li><li><code>pyvenv.cfg</code> contains several variables that Python uses to determine the
+interpreter and <code>site-packages</code> to use in the virtual environment. The virtual
+environment symlinks to the Python binary located at the same path under the
+<code>home</code> key. This file must be present for a virtual environment to work.</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cfg data-lang=cfg><span style=display:flex><span><span style=color:#75715e># pyvenv.cfg</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>home</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>/usr/local/bin</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>include-system-site-packages</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>false</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>version</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>3.10.2</span>
+</span></span></code></pre></div><h2 class=headings id=how-do-venvs-work><a class=heading-anchor href=#how-do-venvs-work>##</a>
+How do venvs work?</h2><p>When a venv is activated, it performs three critical actions:</p><ol><li>Sets the <code>VIRTUAL_ENV</code> variable to the root directory of your virtual
+environment.</li><li>Modifies the <code>PYTHONPATH</code> by prepending the location of the venv&rsquo;s Python
+executable to your <code>PATH</code>. This allows the shell to invoke the internal
+versions of <code>pip</code> and Python.</li><li>Adds venv name to your command prompt (eg. <code>(venv)</code>)</li></ol><h3 class=headings id=modifying-pythonpath><a class=heading-anchor href=#modifying-pythonpath>###</a>
+Modifying PYTHONPATH</h3><p>To see the difference, we compare the output of <code>sys.path</code> which shows the
+default path locations for the Python installation.</p><p>Outside virtual environment:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>&gt;&gt;&gt;</span> <span style=color:#f92672>import</span> sys
+</span></span><span style=display:flex><span><span style=color:#f92672>&gt;&gt;&gt;</span> <span style=color:#f92672>from</span> pprint <span style=color:#f92672>import</span> pp
+</span></span><span style=display:flex><span><span style=color:#f92672>&gt;&gt;&gt;</span> pp(sys<span style=color:#f92672>.</span>path)
+</span></span><span style=display:flex><span>[<span style=color:#e6db74>&#39;&#39;</span>,
+</span></span><span style=display:flex><span> <span style=color:#e6db74>&#39;/usr/lib/python39.zip&#39;</span>,
+</span></span><span style=display:flex><span> <span style=color:#e6db74>&#39;/usr/lib/python3.9&#39;</span>,
+</span></span><span style=display:flex><span> <span style=color:#e6db74>&#39;/usr/lib/python3.9/lib-dynload&#39;</span>,
+</span></span><span style=display:flex><span> <span style=color:#e6db74>&#39;~/.local/lib/python3.9/site-packages&#39;</span>,
+</span></span><span style=display:flex><span> <span style=color:#e6db74>&#39;/usr/local/lib/python3.9/dist-packages&#39;</span>,
+</span></span><span style=display:flex><span> <span style=color:#e6db74>&#39;/usr/lib/python3/dist-packages&#39;</span>]
+</span></span></code></pre></div><p>Inside virtual environment:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>(venv) <span style=color:#f92672>&gt;&gt;&gt;</span> <span style=color:#f92672>import</span> sys
+</span></span><span style=display:flex><span>(venv) <span style=color:#f92672>&gt;&gt;&gt;</span> <span style=color:#f92672>from</span> pprint <span style=color:#f92672>import</span> pp
+</span></span><span style=display:flex><span>(venv) <span style=color:#f92672>&gt;&gt;&gt;</span> pp(sys<span style=color:#f92672>.</span>path)
+</span></span><span style=display:flex><span>[<span style=color:#e6db74>&#39;&#39;</span>,
+</span></span><span style=display:flex><span> <span style=color:#e6db74>&#39;/usr/lib/python39.zip&#39;</span>,
+</span></span><span style=display:flex><span> <span style=color:#e6db74>&#39;/usr/lib/python3.9&#39;</span>,
+</span></span><span style=display:flex><span> <span style=color:#e6db74>&#39;/usr/lib/python3.9/lib-dynload&#39;</span>,
+</span></span><span style=display:flex><span> <span style=color:#e6db74>&#39;~/foo/.venv/lib/python3.9/site-packages&#39;</span>]
+</span></span></code></pre></div><ul><li>Outside the virtual environment, we see the user&rsquo;s <code>site-packages</code> at
+<code>~/.local/lib/</code></li><li>Inside, the <code>site-packages</code> path is replaced with that in the <code>.venv</code> virtual
+environment</li></ul><p>This means the you cannot access any modules from your global Python
+installation within the virtual environment. Optionally, you can get read-only
+access by <a href=#give-venvs-access-to-system-site-packages>giving the virtual environment access</a>.</p><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+You can even use the virtual environment without activating it by simply calling
+the virtual environment&rsquo;s Python interpreter with its absolute path. You can
+test this by including the above <code>pp(sys.path)</code> in a file and running it with
+<code>~/foo/.venv/bin/python path.py</code>.</div><h2 class=headings id=customizing-venvs><a class=heading-anchor href=#customizing-venvs>##</a>
+Customizing venvs</h2><h3 class=headings id=change-command-prompt><a class=heading-anchor href=#change-command-prompt>###</a>
+Change Command Prompt</h3><p>While you can change the name of a venv on creation, you can also pass a desired
+name with the <code>--prompt</code> flag on creation:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ python -m venv venv --prompt<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;dev-venv&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ . venv/bin/activate
+</span></span><span style=display:flex><span><span style=color:#f92672>(</span>dev-env<span style=color:#f92672>)</span>$
+</span></span></code></pre></div><h3 class=headings id=recreate-existing-venvs><a class=heading-anchor href=#recreate-existing-venvs>###</a>
+Recreate existing venvs</h3><p>When <code>venv</code> finds an existing virtual environment with the same name in the same
+directory, it does not notify you that there is an existing venv and does not
+overwrite it with a new one, i.e. it does nothing.</p><p>If you wish to overwrite or clear an existing virtual environment, you must pass
+the <code>--clear</code> flag:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ python -m venv venv
+</span></span><span style=display:flex><span>$ . venv/bin/activate
+</span></span><span style=display:flex><span><span style=color:#f92672>(</span>venv<span style=color:#f92672>)</span> $ pip install requests
+</span></span><span style=display:flex><span><span style=color:#f92672>(</span>venv<span style=color:#f92672>)</span> $ deactivate
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ python -m venv venv --clear
+</span></span><span style=display:flex><span>$ . venv/bin/activate
+</span></span><span style=display:flex><span><span style=color:#f92672>(</span>venv<span style=color:#f92672>)</span> $ pip list <span style=color:#75715e># does not have requests installed</span>
+</span></span></code></pre></div><h3 class=headings id=give-venvs-access-to-system-site-packages><a class=heading-anchor href=#give-venvs-access-to-system-site-packages>###</a>
+Give venvs access to system site packages</h3><p>You can give your venv access to your machine&rsquo;s <code>site-packages</code>
+directory with the <code>--system-site-packages</code> flag when creating the environment:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ python -m venv .venv --system-site-packages
+</span></span></code></pre></div><p>This sets the <code>include-system-site-packages</code> in <code>pyvenv.cfg</code> to <code>true</code> and
+allows the venv to use any external packages installed globally.
+This only works one way and the system cannot source any new packages in your
+venv&rsquo;s <code>site-packages</code>.</p><h3 class=headings id=update-pip><a class=heading-anchor href=#update-pip>###</a>
+Update pip</h3><p>Oftentimes when creating a new venv, you might encounter the following message:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>WARNING: You are using pip version 21.2.4; however, version 22.0.4 is available.
+</span></span><span style=display:flex><span>You should consider upgrading via the
+</span></span><span style=display:flex><span>&#39;/path/to/venv/python -m pip install --upgrade pip&#39; command.
+</span></span></code></pre></div><p>This occurs because <code>venv</code> uses <code>ensurepip</code> to bootstrap pip into the virtual
+environment. <code>ensurepip</code> does not connect to the Internet, but instead uses a
+<code>pip</code> wheel that comes bundled with each new Python release. Therefore, the
+bundled <code>pip</code> has a different update cycle than the independent <code>pip</code> project.</p><p>To prevent this from occurring, specify the <code>--upgrade-deps</code> flag:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ python -m venv venv --upgrade-deps
+</span></span></code></pre></div><h2 class=headings id=managing-venvs><a class=heading-anchor href=#managing-venvs>##</a>
+Managing venvs</h2><p>There are two common locations for creating your virtual environments:</p><ol><li>Inside the project&rsquo;s folder</li><li>In a centralized directory</li></ol><p>In the project folder approach, the venv is created in the root folder of the
+project and lives side-by-side with the code. You can activate your venv quickly
+and you know which venv belongs to which project.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>project/
+</span></span><span style=display:flex><span>|- venv/
+</span></span><span style=display:flex><span>|- src/
+</span></span></code></pre></div><p>In the centralized directory approach, you keep <strong>all</strong> your virtual
+environments in a single, centralized location. You can inspect all your venvs
+in one place and manage them appropriately. However, it would be difficult to
+activate them quickly.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>venvs/
+</span></span><span style=display:flex><span>|- dev/
+</span></span><span style=display:flex><span>|- prod/
+</span></span></code></pre></div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://realpython.com/python-virtual-environments-a-primer/ target=_blank rel=noopener>Python Virtual Environments - A Primer</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/python/>#python</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#what-goes-into-a-venv>What goes into a venv?</a></li><li><a href=#how-do-venvs-work>How do venvs work?</a><ul><li><a href=#modifying-pythonpath>Modifying PYTHONPATH</a></li></ul></li><li><a href=#customizing-venvs>Customizing venvs</a><ul><li><a href=#change-command-prompt>Change Command Prompt</a></li><li><a href=#recreate-existing-venvs>Recreate existing venvs</a></li><li><a href=#give-venvs-access-to-system-site-packages>Give venvs access to system site packages</a></li><li><a href=#update-pip>Update pip</a></li></ul></li><li><a href=#managing-venvs>Managing venvs</a></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

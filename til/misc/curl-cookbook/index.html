@@ -1,0 +1,60 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Curl Cookbook</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Curl Cookbook<div class=meta>7 Jul 2023
+• 3 mins</div></h1><h2 class=headings id=get><a class=heading-anchor href=#get>##</a>
+GET</h2><h3 class=headings id=query-parameters><a class=heading-anchor href=#query-parameters>###</a>
+Query Parameters</h3><p>This sends a GET request with an URL-encoded query. The explicit <code>-G, --get</code>
+flag will take all data from the different <code>-d</code> variants and append that data to
+the url as a query.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ curl --get --data-urlencode <span style=color:#e6db74>&#34;foo=bar&#34;</span> http://example.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># this is similar to</span>
+</span></span><span style=display:flex><span>$ curl http://example.com?foo<span style=color:#f92672>=</span>bar
+</span></span></code></pre></div><h2 class=headings id=post><a class=heading-anchor href=#post>##</a>
+POST</h2><h3 class=headings id=text-data><a class=heading-anchor href=#text-data>###</a>
+Text data</h3><p>This sends a POST request with data in the request body. The <code>-d</code> flag
+automatically sets:</p><ul><li>the header <code>Content-Type: application/x-www-form-urlencoded</code></li><li>the flag <code>-X POST</code></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ curl -X POST -d <span style=color:#e6db74>&#39;login=foo&amp;password=bar&#39;</span> http://example.com
+</span></span></code></pre></div><div class="alert alert-info"><span style=font-weight:700>Info:</span>
+The flags <code>-d, --data</code> and <code>--data-binary</code> are similar except that the latter
+preserves newlines and carriage returns. The default content type for both is
+set to <code>application/x-www-form-urlencoded</code>.</div><h3 class=headings id=json-data><a class=heading-anchor href=#json-data>###</a>
+JSON data</h3><p>This sends a POST request with JSON data. The <code>-H</code> option to set the content
+type is compulsory.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ curl -d <span style=color:#e6db74>&#39;{&#34;login&#34;: &#34;foo&#34;, &#34;password&#34;: &#34;bar&#34;}&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>	-H <span style=color:#e6db74>&#39;Content-Type: application/json&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>	http://example.com
+</span></span></code></pre></div><p>Alternatively, you can use the <code>--json</code> flag as a shortcut. It automatically
+sets:</p><ul><li>The flag <code>--d data</code></li><li>The header <code>--header "Content-Type: application/json"</code></li><li>The header <code>--header "Accept: application/json"</code></li></ul><p>It does not, however verify that the data passed is valid JSON.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl --json <span style=color:#e6db74>&#39;{&#34;login&#34;: &#34;foo&#34;, &#34;password&#34;: &#34;bar&#34;}&#39;</span> http://example.com
+</span></span></code></pre></div><h3 class=headings id=data-from-file><a class=heading-anchor href=#data-from-file>###</a>
+Data from File</h3><p>This sends a POST request with data from a file. The <code>@</code> symbol tells curl that <code>data.txt</code> is a file instead of a string.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ curl -d <span style=color:#e6db74>&#39;@data.txt&#39;</span> http://example.com
+</span></span></code></pre></div><p>The above assumes all data is url-encoded. If the data is not, replace <code>-d</code> with <code>--data-urlencode</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ curl -X POST --data-urlencode <span style=color:#e6db74>&#39;comment=hello world&#39;</span> http://example.com
+</span></span></code></pre></div><h3 class=headings id=data-from-stdin><a class=heading-anchor href=#data-from-stdin>###</a>
+Data from stdin</h3><p>curl can also read data from stdin with <code>@-</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -d @- http://example.com
+</span></span><span style=display:flex><span><span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;foo&#34;</span>: <span style=color:#e6db74>&#34;bar&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># end with ctrl+d</span>
+</span></span></code></pre></div><h3 class=headings id=form><a class=heading-anchor href=#form>###</a>
+Form</h3><p>For HTTP, the <code>-F, --form</code> flag allows curl to emulate a filled-in form where
+the user has pressed the submit button. This forces curl to use the
+<code>Content-Type: multipart/form-data</code> header.</p><p>The form flag enables uploading of binary files in two ways (<code>@</code> and <code>&lt;</code>). The
+<code>@</code> symbol ensures that the file is attached in the POST request as a file
+upload. Conversely, the <code>&lt;</code> symbol creates a text field and adds the contents
+from the file into the text field similar to that in <code>--data</code>.</p><p>This sends a POST request with a binary file.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ curl -F <span style=color:#e6db74>&#39;file=@photo.png&#39;</span> http://example.com
+</span></span></code></pre></div><p>We can also POST the binary file and specify its MIME type. If no type is
+specified, curl defaults it to <code>application/octet-stream</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ curl -F <span style=color:#e6db74>&#39;file=@photo.png;type=image/png&#39;</span> http://example.com
+</span></span></code></pre></div><h3 class=headings id=form-and-json-data><a class=heading-anchor href=#form-and-json-data>###</a>
+Form and JSON Data</h3><p>To send both JSON data (from a file) and a binary file in the same request:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ curl -X POST -H <span style=color:#e6db74>&#34;Content-Type:multipart/form-data&#34;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>	-F <span style=color:#e6db74>&#34;upload1=&lt;john.json&#34;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>	-F <span style=color:#e6db74>&#34;upload2=@john.jpg&#34;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>	http://example.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># or</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ curl -X POST -F <span style=color:#e6db74>&#34;upload1=&lt;john.json;type=application/json&#34;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>	-F <span style=color:#e6db74>&#34;upload2=@john.jpg;type=multipart/form-data&#34;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>	http://example.com
+</span></span></code></pre></div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://everything.curl.dev/ target=_blank rel=noopener>Everything curl</a></li><li><a href=https://catonmat.net/cookbooks/curl target=_blank rel=noopener>curl Cookbook</a></li><li><a href=https://stackoverflow.com/questions/53724134/use-curl-to-post-multipart-form-data-file-and-lots-of-key-value-pairs target=_blank rel=noopener>Use curl to post multipart form data file and json</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/api/>#api</a>
+<a href=https://ken.cheo.dev/tags/curl/>#curl</a>
+<a href=https://ken.cheo.dev/tags/snippets/>#snippets</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#get>GET</a><ul><li><a href=#query-parameters>Query Parameters</a></li></ul></li><li><a href=#post>POST</a><ul><li><a href=#text-data>Text data</a></li><li><a href=#json-data>JSON data</a></li><li><a href=#data-from-file>Data from File</a></li><li><a href=#data-from-stdin>Data from stdin</a></li><li><a href=#form>Form</a></li><li><a href=#form-and-json-data>Form and JSON Data</a></li></ul></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

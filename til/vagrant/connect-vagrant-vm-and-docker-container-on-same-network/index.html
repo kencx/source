@@ -1,0 +1,31 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Connect Vagrant VM and Docker container on same network</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Connect Vagrant VM and Docker Container on Same Network<div class=meta>14 Jul 2023
+• 1 min</div></h1><p>In order to allow a Vagrant VM to be reachable from a Docker container on the
+same host system, and vice versa, we need to create a Docker network and
+configure the Vagrant VM to use the same bridge network.</p><p>Firstly, create a Docker network <code>foo</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ docker network create -d bridge --gateway<span style=color:#f92672>=</span>10.0.0.1 --subnet<span style=color:#f92672>=</span>10.0.0.0/24 foo
+</span></span></code></pre></div><p>or using <code>docker-compose</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#ae81ff>...</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>networks</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>foo</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ipam</span>:
+</span></span><span style=display:flex><span>      <span style=color:#ae81ff>config</span>
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>subnet</span>: <span style=color:#e6db74>&#34;10.0.0.0/24&#34;</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>gateway</span>: <span style=color:#e6db74>&#34;10.0.0.1&#34;</span>
+</span></span></code></pre></div><p>This will create a bridge with name <code>br-[network_id]</code> on the host machine.</p><p>Next, in the <code>Vagrantfile</code>, configure the VM to use the same bridge device on a
+public network:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby><span style=display:flex><span><span style=color:#66d9ef>Vagrant</span><span style=color:#f92672>.</span>configure(<span style=color:#e6db74>&#34;2&#34;</span>) <span style=color:#66d9ef>do</span> <span style=color:#f92672>|</span>config<span style=color:#f92672>|</span>
+</span></span><span style=display:flex><span>  config<span style=color:#f92672>.</span>vm<span style=color:#f92672>.</span>box <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;debian/bullseye64&#34;</span>
+</span></span><span style=display:flex><span>  config<span style=color:#f92672>.</span>vm<span style=color:#f92672>.</span>network <span style=color:#e6db74>&#34;public_network&#34;</span>, <span style=color:#e6db74>ip</span>: <span style=color:#e6db74>&#34;10.0.0.2&#34;</span>, <span style=color:#e6db74>bridge</span>: <span style=color:#e6db74>&#34;br-[network_id]&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><blockquote><p>If you are using the <a href=https://vagrant-libvirt.github.io/vagrant-libvirt/configuration.html target=_blank rel=noopener>libvirt
+provider</a>,
+the <code>:dev</code> clause must be used instead of <code>:bridge</code>.</p></blockquote><p>Finally, start the Vagrant VM and docker container. Ensure that both systems are
+reachable from each other:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ vagrant up
+</span></span><span style=display:flex><span>$ docker run -it --network<span style=color:#f92672>=</span>foo alpine ping -c2 10.0.0.1
+</span></span><span style=display:flex><span><span style=color:#75715e># or docker-compose up -d</span>
+</span></span></code></pre></div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://stackoverflow.com/questions/48507357/access-vagrant-vms-from-inside-docker-container target=_blank rel=noopener>Access Vagrant VMs from Docker container</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/docker/>#docker</a>
+<a href=https://ken.cheo.dev/tags/networking/>#networking</a>
+<a href=https://ken.cheo.dev/tags/vagrant/>#vagrant</a></div></div></div></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

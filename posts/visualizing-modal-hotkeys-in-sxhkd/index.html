@@ -1,0 +1,68 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Visualizing modal hotkeys in sxhkd</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Visualizing Modal Hotkeys in Sxhkd<div class=meta>20 Feb 2024
+• 3 mins</div></h1><p>In <a href=https://github.com/baskerville/sxhkd target=_blank rel=noopener>sxhkd</a>, multiple chords can be chained
+to create modal hotkeys.</p><div class=quote>When multiple chords are separated by semicolons, the hotkey is a chord chain:
+the command will only be executed after receiving each chord of the chain in
+consecutive order.<footer class=quote-source><a href=https://www.mankier.com/1/sxhkd target=_blank rel=noopener>sxhkd</a></footer></div><p>This allows a single key combination to be reused for different commands by
+prefixing it with a different chord, resulting in &ldquo;modes&rdquo; like those in Vim.</p><p>For example, these are three hotkeys that use <code>super + h</code>, each prefixed with a
+different <code>super + [key]</code> to represent various modes:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># normal mode</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># focus the node in the given direction</span>
+</span></span><span style=display:flex><span>super + <span style=color:#f92672>{</span>h,j,k,l<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>    bspc node -f <span style=color:#f92672>{</span>west,south,north,east<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># node mode</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># hide current window</span>
+</span></span><span style=display:flex><span>super + n : super + h
+</span></span><span style=display:flex><span>    bspc node focused.window -g hidden<span style=color:#f92672>=</span>on
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># preselect mode</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># preselect in the given direction</span>
+</span></span><span style=display:flex><span>super + p : super + <span style=color:#f92672>{</span>h,j,k,l<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>    bspc node -p <span style=color:#f92672>{</span>west,south,north,east<span style=color:#f92672>}</span>
+</span></span></code></pre></div><h2 class=headings id=visualizing-custom-modes><a class=heading-anchor href=#visualizing-custom-modes>##</a>
+Visualizing Custom Modes</h2><p>One issue with this workflow is that there is no visual indicator for the
+current activated &ldquo;mode&rdquo;; Vim has its status line to tell the user whether they
+are in <code>NORMAL</code>, <code>INSERT</code> or <code>VISUAL</code> mode, but sxhkd has nothing since this is
+a custom solution.</p><p>I often forget to leave the mode I had temporarily enabled, leading to
+accidental executions of random commands, which can be extremely frustrating.</p><p>After some research, I discovered that <code>sxhkd</code> can output status information via
+a named pipe with the <code>-s</code> flag. We can poll this output with a watcher script
+and pair it with our bar of choice (<code>eww</code> for me) to show a visual indicator of
+the current sxhkd mode.</p><h2 class=headings id=implementation><a class=heading-anchor href=#implementation>##</a>
+Implementation</h2><p>First, create a named pipe at <code>/var/run/user/[uid]/sxhkd.fifo</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ mkfifo /var/run/user/1000/sxhkd.fifo
+</span></span></code></pre></div><p>Start <code>sxhkd</code> with the <code>-s</code> flag pointing at the new named pipe:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ sxhkd -s /var/run/user/1000/sxhkd.fifo &amp;
+</span></span></code></pre></div><p>Restart <code>bspwm</code> and read from the named pipe file to check that it is
+working:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ cat /var/run/user/1000/sxhkd.fifo
+</span></span></code></pre></div><p>Pressing any <code>sxhkd</code> hotkeys will show the status information with this weird
+output:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>Cbspc node -f east
+</span></span><span style=display:flex><span>BBegin chain
+</span></span><span style=display:flex><span>Hsuper + n
+</span></span><span style=display:flex><span>EEnd chain
+</span></span><span style=display:flex><span>BBegin chain
+</span></span><span style=display:flex><span>Hsuper + p
+</span></span><span style=display:flex><span>EEnd chain
+</span></span></code></pre></div><p>A chord chain begins with <code>BBegin chain</code> and ends with <code>EEnd chain</code>. With this
+information, we can create a watcher script that reads from the named pipe and
+runs a custom command based on the output.</p><p>For example, I would like to show that &ldquo;node mode&rdquo; is activated when <code>Hsuper + n</code> is outputted and deactivated when <code>EEnd chain</code> is outputted. This can be done
+with a switch-case statement in Bash:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>SXHKD_FIFO<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/var/run/user/1000/sxhkd.fifo&#34;</span>
+</span></span><span style=display:flex><span>cat $SXHKD_FIFO | <span style=color:#66d9ef>while</span> read line; <span style=color:#66d9ef>do</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>case</span> <span style=color:#e6db74>${</span>line<span style=color:#e6db74>}</span> in
+</span></span><span style=display:flex><span>    <span style=color:#75715e># EEnd chain</span>
+</span></span><span style=display:flex><span>    E*<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;Normal mode&#34;</span> ;;
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;Hsuper + n&#34;</span><span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;Node mode&#34;</span> ;;
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;Hsuper + p&#34;</span><span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;Preselect mode&#34;</span> ;;
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>esac</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>done</span>
+</span></span></code></pre></div><p>Finally, we poll this script with <code>polybar</code> or <code>eww</code> to show a visual
+indicator on the bar.</p><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+To persist the named pipe at startup, initialize it in your <code>.xinitrc</code> file and
+ensure <code>sxhkd</code> starts up with the <code>-s</code> flag.</div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://www.mankier.com/1/sxhkd target=_blank rel=noopener>man - sxhkd</a></li><li><a href=https://github.com/baskerville/sxhkd/issues/140 target=_blank rel=noopener>sxhkd - Allow running a command at start of colon chain</a></li></ul><div class=meta>Edited: 15 Jan 2025<div class=tags><a href=https://ken.cheo.dev/tags/hotkeys/>#hotkeys</a>
+<a href=https://ken.cheo.dev/tags/sxhkd/>#sxhkd</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#visualizing-custom-modes>Visualizing Custom Modes</a></li><li><a href=#implementation>Implementation</a></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

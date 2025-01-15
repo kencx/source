@@ -1,0 +1,16 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Move remote commits to different branch</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Move Remote Commits to Different Branch<div class=meta>29 Dec 2022
+• 1 min</div></h1><blockquote><p>This action can be potentially destructive!! Take care when performing such commands.</p></blockquote><p>Scenario: In the process of making a change, you forked the Git repository and
+committed a change directly on the <code>master</code> branch instead of creating a new
+<code>feature-x</code> branch. You don&rsquo;t realise until after you have pushed the commit to
+remote.</p><p>The following commands create a new branch with the commit and reset the remote
+<code>master</code> branch.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ git branch <span style=color:#f92672>[</span>feature-x<span style=color:#f92672>]</span> master
+</span></span><span style=display:flex><span>$ git reset --hard $PREVIOUS_SHA
+</span></span><span style=display:flex><span>$ git push -f origin master
+</span></span><span style=display:flex><span>$ git push origin <span style=color:#f92672>[</span>feature-x<span style=color:#f92672>]</span>
+</span></span></code></pre></div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://stackoverflow.com/questions/9086886/git-moving-pushed-commits-to-a-different-branch target=_blank rel=noopener>Moving pushed commits to a different branch</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/git/>#git</a>
+<a href=https://ken.cheo.dev/tags/snippets/>#snippets</a></div></div></div></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>
