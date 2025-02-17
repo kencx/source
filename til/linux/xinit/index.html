@@ -1,0 +1,48 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Xinit</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Xinit<div class=meta>29 Dec 2022
+• 2 mins</div></h1><blockquote><p>When debugging GUI issues, you can switch to a different tty with
+<code>Ctrl+Alt+F{1-7}</code>.</p></blockquote><p><a href=https://wiki.archlinux.org/title/Xinit target=_blank rel=noopener>xinit</a> is used to start window managers
+for desktop environments. It starts a
+<a href=https://wiki.archlinux.org/title/Xorg target=_blank rel=noopener>Xorg</a> (or X) display server on Linux
+systems.</p><h2 class=headings id=installation><a class=heading-anchor href=#installation>##</a>
+Installation</h2><ol><li>Install the required packages</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ pacman -S xorg-server xorg-xinit xterm
+</span></span></code></pre></div><blockquote><p><code>xterm</code> is necessary for xorg to work properly on a fresh install.</p></blockquote><ol start=2><li>Install the required <a href=https://wiki.archlinux.org/title/xorg#Driver_installation target=_blank rel=noopener>video
+drivers</a></li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># identity your graphics card</span>
+</span></span><span style=display:flex><span>$ lspci -v | grep -A1 -e VGA -e 3D
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># install appropriate driver</span>
+</span></span><span style=display:flex><span>$ pacman -S xf86-video<span style=color:#f92672>[</span>-intel|-amdgpu<span style=color:#f92672>]</span>
+</span></span></code></pre></div><h2 class=headings id=configuration><a class=heading-anchor href=#configuration>##</a>
+Configuration</h2><ol><li>Copy default <code>xinitrc</code> to home directory</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ cp /etc/X11/xinit/xinitrc ~/.xinitrc
+</span></span></code></pre></div><ol start=2><li>Edit the file by replacing the default programs with your desired startup
+commands</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># .xinitrc</span>
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>sxhkd &amp;
+</span></span><span style=display:flex><span>exec bspwm
+</span></span></code></pre></div><ol start=3><li>Run Xorg with <a href=https://man.archlinux.org/man/startx.1 target=_blank rel=noopener>startx</a>. Do not use
+<code>exec startx</code>.</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ startx
+</span></span></code></pre></div><ol start=4><li>To <a href=https://wiki.archlinux.org/title/Xinit#Autostart_X_at_login target=_blank rel=noopener>autostart X at
+login</a>, include
+the following in the user&rsquo;s <code>.bash_profile</code> (or end of <code>.zshrc</code>),</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># .bash_profile</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#f92672>[[</span> -z $DISPLAY <span style=color:#f92672>]]</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#f92672>[[</span> <span style=color:#66d9ef>$(</span>tty<span style=color:#66d9ef>)</span> <span style=color:#f92672>=</span> /dev/tty1 <span style=color:#f92672>]]</span>; <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>	exec startx
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fi</span>
+</span></span></code></pre></div><p>To <a href=https://wiki.archlinux.org/title/Xorg#Session_log_redirection target=_blank rel=noopener>redirect</a> all
+stdout and stderr output from the Xorg session to a log file <code>.xorg.log</code>, use
+the following <code>startx</code> command instead:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>startx -- -keeptty &gt; ~/.xorg.log 2&gt;&amp;<span style=color:#ae81ff>1</span>
+</span></span></code></pre></div><ol start=5><li>If using a <a href=https://wiki.archlinux.org/title/Display_manager target=_blank rel=noopener>display
+manager</a> like
+<a href=https://wiki.archlinux.org/title/LightDM target=_blank rel=noopener>LightDM</a>, you must manage
+<a href=https://wiki.archlinux.org/title/LightDM#X_session_wrapper target=_blank rel=noopener>sessions
+startup</a> with
+<a href=https://wiki.archlinux.org/title/Xprofile target=_blank rel=noopener><code>~/.xprofile</code></a> or run <a href=https://wiki.archlinux.org/title/Display_manager#Run_~/.xinitrc_as_a_session target=_blank rel=noopener><code>xinitrc</code>
+as a
+session</a></li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># .xprofile</span>
+</span></span><span style=display:flex><span>sxhkd &amp;
+</span></span></code></pre></div><blockquote><p>If using <a href=https://github.com/fairyglade/ly target=_blank rel=noopener><code>ly</code></a>, xinitrc support is enabled
+of out the box.</p></blockquote><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://wiki.archlinux.org/title/xinit target=_blank rel=noopener>Arch Wiki - xinit</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/linux/>#linux</a>
+<a href=https://ken.cheo.dev/tags/xorg/>#xorg</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#installation>Installation</a></li><li><a href=#configuration>Configuration</a></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

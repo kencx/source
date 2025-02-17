@@ -1,0 +1,88 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Environment Variables in Docker Compose</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Environment Variables in Docker Compose<div class=meta>18 Feb 2025
+• 2 mins</div></h1><p>There are 2 types of environment variables in docker-compose:</p><ol><li>Variable substitution in compose files</li><li>Container env variables</li></ol><p>Both have different functions and are configured differently.</p><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+For debugging env variables, use <code>docker-compose config</code>.</div><h2 class=headings id=variable-substitution><a class=heading-anchor href=#variable-substitution>##</a>
+Variable Substitution</h2><p>These environment variables are passed into compose files with variable
+substitution</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># docker-compose.yml</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>portainer</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>portainer:latest</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#e6db74>&#34;${PORTAINER_DATA_DIR}:./data&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#e6db74>&#34;${PORTAINER_PORT:-9443}:9443&#34;</span>
+</span></span></code></pre></div><p>A default value are provided with <code>:-[VALUE]</code> while mandatory values are provided
+with <code>${VAR:?err}</code>.</p><p>These env variables are automatically passed with an <code>.env</code> file in the
+project&rsquo;s directory.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>portainer
+</span></span><span style=display:flex><span>  |
+</span></span><span style=display:flex><span>  |- docker-compose.yml
+</span></span><span style=display:flex><span>  |- .env
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ docker-compose up -d
+</span></span></code></pre></div><p>To specify a <em>different</em> <code>.env</code> file, use the <code>--env-file</code> flag.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>portainer
+</span></span><span style=display:flex><span>  |
+</span></span><span style=display:flex><span>  |- docker-compose.yml
+</span></span><span style=display:flex><span>  |- .env
+</span></span><span style=display:flex><span>  |- .env.prod
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ docker-compose --env-file .env.prod up -d
+</span></span></code></pre></div><h3 class=headings id=precedence><a class=heading-anchor href=#precedence>###</a>
+Precedence</h3><ol><li>Compose file</li><li>Shell environment variables</li><li>Environment file <code>.env</code> or <code>--env-file</code></li><li>Dockerfile</li><li>Not defined</li></ol><h2 class=headings id=container-environment-variables><a class=heading-anchor href=#container-environment-variables>##</a>
+Container Environment Variables</h2><p>These are passed into the container for use <em>within the container</em>. These cannot
+be used for variable substitution directly.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># docker-compose.yml</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>portainer</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>portainer:latest</span>
+</span></span><span style=display:flex><span>	<span style=color:#f92672>environment</span>:
+</span></span><span style=display:flex><span>	  - <span style=color:#e6db74>&#34;INTERNAL=INTERNAL&#34;</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ docker exec -it portainer bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># inside container</span>
+</span></span><span style=display:flex><span>root@server# env
+</span></span><span style=display:flex><span>INTERNAL<span style=color:#f92672>=</span>INTERNAL
+</span></span></code></pre></div><p>To pass a (or multiple) file(s) of env variables, use the <code>env_file:</code> directive.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#ae81ff>portainer</span>
+</span></span><span style=display:flex><span>  |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  |- docker-compose.yml
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  |- portainer.env</span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># docker-compose.yml</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>portainer</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>portainer:latest</span>
+</span></span><span style=display:flex><span>	<span style=color:#f92672>env_file</span>: <span style=color:#e6db74>&#34;portainer.env&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#f92672>environment</span>:
+</span></span><span style=display:flex><span>	  - <span style=color:#e6db74>&#34;INTERNAL=INTERNAL&#34;</span>
+</span></span></code></pre></div><p>If multiple env files are passed in <code>env_file</code>, the <strong>last file</strong> in the list
+takes precedence.</p><p>When both <code>environment:</code> and <code>env_file:</code> directives are set, the <code>environment:</code>
+directive takes
+<a href=https://github.com/docker/docker.github.io/pull/4177 target=_blank rel=noopener>precedence</a> for any
+common variables. This is true even when the values are empty or undefined. To
+prevent confusion and conflict, always set default values in the <code>env_file</code>.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># docker-compose.yml</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>portainer</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>portainer:latest</span>
+</span></span><span style=display:flex><span>	<span style=color:#f92672>env_file</span>: <span style=color:#e6db74>&#34;portainer.env&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#f92672>environment</span>:
+</span></span><span style=display:flex><span>	  - <span style=color:#ae81ff>EDITOR=nano</span>
+</span></span><span style=display:flex><span>	<span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>	  - <span style=color:#e6db74>&#34;${PORTAINER_PORT:-9443}:9443&#34;</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># portainer.env</span>
+</span></span><span style=display:flex><span>PORTAINER_PORT<span style=color:#f92672>=</span><span style=color:#ae81ff>9222</span>
+</span></span><span style=display:flex><span>EDITOR<span style=color:#f92672>=</span>vim
+</span></span><span style=display:flex><span>FILE_ONLY<span style=color:#f92672>=</span>true
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ docker exec -it portainer bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># inside container</span>
+</span></span><span style=display:flex><span>root@server# env
+</span></span><span style=display:flex><span>PORTAINER_PORT<span style=color:#f92672>=</span><span style=color:#ae81ff>9222</span>
+</span></span><span style=display:flex><span>EDITOR<span style=color:#f92672>=</span>nano
+</span></span><span style=display:flex><span>FILE_ONLY<span style=color:#f92672>=</span>true
+</span></span></code></pre></div><p>We observe that</p><ul><li><code>PORTAINER_PORT</code> in <code>portainer.env</code> is not used for variable substitution.
+Instead, it is defined in the container. It is however, useless in the
+container.</li><li>The value of <code>EDITOR=vim</code> in <code>portainer.env</code> is overwritten by the <code>EDITOR=nano</code>.</li><li><code>FILE_ONLY</code> is defined and not overwritten.</li></ul><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://docs.docker.com/compose/environment-variables/#substitute-environment-variables-in-compose-files target=_blank rel=noopener>Compose - Environment Variables</a></li><li><a href=https://docs.docker.com/compose/compose-file/compose-file-v3/#env_file target=_blank rel=noopener>Compose - env_file</a></li><li><a href=https://github.com/docker/compose/issues/6392 target=_blank rel=noopener>Multiple env files in monorepo</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/docker/>#docker</a>
+<a href=https://ken.cheo.dev/tags/docker-compose/>#docker-compose</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#variable-substitution>Variable Substitution</a><ul><li><a href=#precedence>Precedence</a></li></ul></li><li><a href=#container-environment-variables>Container Environment Variables</a></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

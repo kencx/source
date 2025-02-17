@@ -1,0 +1,70 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Hosting Custom Repository in S3</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Hosting Custom Repository in S3<div class=meta>7 Jul 2023
+• 3 mins</div></h1><p>This document details some information about hosting a custom Arch repository in
+a S3 bucket with aurutils.</p><p>A custom repository is useful for hosting ready-built AUR packages that are used
+across multiple Arch systems.</p><h2 class=headings id=architecture><a class=heading-anchor href=#architecture>##</a>
+Architecture</h2><p>To host a custom repository, we require:</p><ul><li>Build Server on an Arch Linux system</li><li>File server (Nginx etc.) or S3 storage server (Minio, Amazon S3 etc.)</li></ul><p>The build server will download the packages from the AUR, built them in a chroot
+environment and add them to the repository database. We then mirror the local
+repository directory to a S3 bucket that can be used to serve the files
+remotely to clients.</p><h2 class=headings id=build-server><a class=heading-anchor href=#build-server>##</a>
+Build Server</h2><p>The build server is where the AUR packages are downloaded and built. It must be
+hosted on an Arch Linux system, or at least a distro with the available tools
+(<code>base-devel</code>, <code>pacman</code>) to build and manage the packages.</p><ol><li>Install <code>base-devel</code> and <a href=https://github.com/AladW/aurutils target=_blank rel=noopener>aurutils</a> (and
+optionally <code>vifm</code>)</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ pacman -S base-devel
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ git clone https://aur.archlinux.org/aurutils.git
+</span></span><span style=display:flex><span>$ cd aurutils
+</span></span><span style=display:flex><span>$ makepkg -si
+</span></span></code></pre></div><ol start=2><li>Create the repository directory. In this example, we will be using
+<code>/var/cache/pacman/custom</code>.</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ mkdir -p /var/cache/pacman/custom
+</span></span></code></pre></div><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+Avoid naming the repository <code>local</code> as this is reserved by <code>pacman</code>.</div><ol start=3><li>Create the repository database in the repository directory</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ repo-add /var/cache/pacman/custom/custom.db.tar.xz
+</span></span><span style=display:flex><span>$ sudo chown -R $USER:$USER /var/cache/pacman/custom
+</span></span></code></pre></div><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+Optionally, you may choose to create a dedicated <code>aur</code> user to manage the
+repository. Be sure to use only this dedicated user to perform operations on the
+repository.</div><ol start=4><li>Add the custom repository to the local <code>pacman.conf</code></li></ol><pre tabindex=0><code class=language-conf data-lang=conf>## /etc/pacman.conf
+[custom]
+SigLevel = Optional TrustAll
+Server = file:///var/cache/pacman/custom
+</code></pre><ol start=5><li>Sync the new repository with <code>pacman</code>:</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ pacman -Syu
+</span></span></code></pre></div><ol start=6><li>Add packages from the AUR with <code>aurutils</code>:</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>## we must specify --root if a remote repository url was given</span>
+</span></span><span style=display:flex><span>$ aur sync --no-view --database custom <span style=color:#f92672>[</span>--root /var/cache/pacman/custom<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>package<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## or manually a package with repo-add</span>
+</span></span><span style=display:flex><span>$ repo-add /var/cache/pacman/custom/custom.db.tar.xz /path/to/<span style=color:#f92672>[</span>package<span style=color:#f92672>]</span>.pkg.tar.zst
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## install package with pacman</span>
+</span></span><span style=display:flex><span>$ sudo pacman -S <span style=color:#f92672>[</span>package<span style=color:#f92672>]</span>
+</span></span></code></pre></div><p>Remove packages with <code>repo-remove</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ repo-remove /var/cache/pacman/custom/custom.db.tar.xz <span style=color:#f92672>[</span>package<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>$ rm -rf /var/cache/pacman/custom/<span style=color:#f92672>[</span>package<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>$ sudo pacman -Syu
+</span></span></code></pre></div><p>List and update packages:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>## list packages</span>
+</span></span><span style=display:flex><span>$ aur repo --list --database custom
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## update installed packages</span>
+</span></span><span style=display:flex><span>$ aur sync -u
+</span></span></code></pre></div><h2 class=headings id=serving-repository-remotely><a class=heading-anchor href=#serving-repository-remotely>##</a>
+Serving Repository Remotely</h2><p>To serve the repository files remotely, we require a traditional file server
+(Nginx etc.) or S3 server (S3, Minio etc.)</p><p>An S3 server like Minio can mirror the repository directory to an initialized S3
+bucket:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ mcli mirror /var/cache/pacman/custom minio/aur --overwrite --remove
+</span></span></code></pre></div><p>Now, we can choose to switch out the local path in the <code>pacman.conf</code> for a
+remote URL to the S3 bucket:</p><pre tabindex=0><code>[custom]
+SigLevel = Optional TrustAll
+Server = https://aur.example.com
+</code></pre><p>The packages can also be accessed via the Minio API:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ curl http://minio.tld:9000/bucket/file -o output
+</span></span></code></pre></div><h2 class=headings id=clients><a class=heading-anchor href=#clients>##</a>
+Clients</h2><p>Any remote clients that wish to use the repository can simply use the S3
+bucket&rsquo;s remote URL:</p><pre tabindex=0><code>[custom]
+SigLevel = Optional TrustAll
+Server = https://aur.example.com
+</code></pre><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://wiki.archlinux.org/title/Pacman/Tips_and_tricks##Custom_local_repository target=_blank rel=noopener>Arch Wiki - pacman/Custom Local
+Repository</a></li><li><a href=https://blog.cavelab.dev/2023/02/arch-linux-local-repo/##aur-build-server target=_blank rel=noopener>Arch Linux Local
+Repo</a></li><li><a href=https://disconnected.systems/blog/archlinux-repo-in-aws-bucket/##dependencies target=_blank rel=noopener>Hosting an Arch Linux Repository in an Amazon S3
+Bucket</a></li><li><a href=https://github.com/AladW/aurutils target=_blank rel=noopener>aurutils</a></li><li><a href=https://gist.github.com/geosharma/afe1ea9ebe58cb67aaaba62a0d47bc7a target=_blank rel=noopener>aurutils installation and
+configuration</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/arch-linux/>#arch-linux</a>
+<a href=https://ken.cheo.dev/tags/aur/>#aur</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#architecture>Architecture</a></li><li><a href=#build-server>Build Server</a></li><li><a href=#serving-repository-remotely>Serving Repository Remotely</a></li><li><a href=#clients>Clients</a></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

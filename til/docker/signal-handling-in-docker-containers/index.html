@@ -1,0 +1,79 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Signal Handling in Docker Containers</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Signal Handling in Docker Containers<div class=meta>19 Feb 2023
+• 4 mins</div></h1><p>The very first process that runs inside a Docker container is the root
+process, assigned PID 1. The root process is special because of three features:</p><ol><li>It does not automatically get default signal handlers. A signal is ignored
+unless the root process registers a signal handler for that signal.</li><li>Any orphaned process is adopted by PID 1.</li><li>If the root process dies, every other process in the same namespace will be
+forcibly terminated and the namespace will be cleaned up.</li></ol><p>In Docker containers, PID 1 is most commonly defined with the ENTRYPOINT instruction. This can be the
+application binary or an entrypoint script:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Dockerfile data-lang=Dockerfile><span style=display:flex><span><span style=color:#66d9ef>ENTRYPOINT</span> [<span style=color:#e6db74>&#34;./foo-example&#34;</span>]<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e># or</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>ENTRYPOINT</span> [<span style=color:#e6db74>&#34;/entrypoint.sh&#34;</span>]<span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div><p>While this is usually fine, two issues may arise that may lead to some
+unexpected problems:</p><ol><li>The application is not suited to be a root process (for example, it does not
+handle <a href=#zombie-processes>zombie processes</a>).</li><li>Signals are not being passed to the root process properly.</li></ol><p>Hence, we discuss some common pitfalls when handling signals in Docker
+containers and some solutions.</p><div class="alert alert-info"><span style=font-weight:700>Info:</span>
+If you&rsquo;re unsure if your container is handling signals appropriately, run
+<code>docker stop</code> on it and observe if it always takes more than 10 seconds to
+shutdown.</div><h2 class=headings id=mistakes><a class=heading-anchor href=#mistakes>##</a>
+Mistakes</h2><h3 class=headings id=no-signal-handling><a class=heading-anchor href=#no-signal-handling>###</a>
+No Signal Handling</h3><p>When we run <code>docker stop</code> on a running container, the root process receives a
+<code>SIGTERM</code>. If the signal is not handled by the process&rsquo; signal handlers, Docker
+will wait for a grace period of 10 seconds before forcibly killing the container
+with <code>SIGKILL</code>.</p><h3 class=headings id=improper-entrypoint-script><a class=heading-anchor href=#improper-entrypoint-script>###</a>
+Improper Entrypoint Script</h3><p>Oftentimes, the container&rsquo;s program implements proper signal handling. However,
+the shutdown signals are not being passed on from Docker to the running program
+due to an inappropriate ENTRYPOINT script:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e># simple entrypoint.sh that runs the application</span>
+</span></span><span style=display:flex><span>foo-example
+</span></span></code></pre></div><p>While the script <em>should</em> work, it starts the container by forking a child
+process of the <code>foo-example</code> program.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># inside container</span>
+</span></span><span style=display:flex><span>$ ps
+</span></span><span style=display:flex><span>PID TIME     CMD
+</span></span><span style=display:flex><span><span style=color:#ae81ff>1</span>   00:00:00 /bin/bash /entrypoint.sh
+</span></span><span style=display:flex><span><span style=color:#ae81ff>7</span>   00:00:00 foo-example
+</span></span></code></pre></div><p>We see that the desired program is not running as PID 1. When Docker receives a
+<code>SIGTERM</code>, it will be sent to the <code>entrypoint.sh</code> (root) process, instead of the
+application. This signal will also never be passed from the parent to the child
+process.</p><h3 class=headings id=improper-entrypoint-instruction><a class=heading-anchor href=#improper-entrypoint-instruction>###</a>
+Improper Entrypoint Instruction</h3><p>If the <code>ENTRYPOINT</code> does start the program as PID 1, the problem may lie in the
+<code>ENTRYPOINT</code> instruction within the Dockerfile instead. <code>ENTRYPOINT</code> can be
+defined in two forms: shell and exec.</p><p>When using shell form, the specified command is run within a subshell <code>sh -c "command"</code> which creates a separate process:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Dockerfile data-lang=Dockerfile><span style=display:flex><span><span style=color:#66d9ef>ENTRYPOINT</span> <span style=color:#e6db74>&#34;/entrypoint.sh&#34;</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># inside container</span>
+</span></span><span style=display:flex><span>$ ps
+</span></span><span style=display:flex><span>PID TIME     CMD
+</span></span><span style=display:flex><span><span style=color:#ae81ff>1</span>   00:00:00 /bin/sh -c /entrypoint.sh
+</span></span><span style=display:flex><span><span style=color:#ae81ff>7</span>   00:00:00 foo-example
+</span></span></code></pre></div><h3 class=headings id=zombie-processes><a class=heading-anchor href=#zombie-processes>###</a>
+Zombie Processes</h3><div class="alert alert-warning"><span style=font-weight:700>Warning:</span>
+This section can be improved.</div><p>If the root process forks a child and dies before any grandchildren exit, zombie
+processes can accumulate in the container. This becomes a problem if the
+container&rsquo;s root process is not meant to be run as PID 1.</p><h2 class=headings id=solution><a class=heading-anchor href=#solution>##</a>
+Solution</h2><h3 class=headings id=init-flag><a class=heading-anchor href=#init-flag>###</a>
+init flag</h3><p>We can specify an init process with the <code>--init</code>
+<a href=https://docs.docker.com/engine/reference/run/#specify-an-init-process target=_blank rel=noopener>flag</a>.
+This creates a container with an init process as PID 1. The init process will
+then ensure the usual responsibilities of an init system, such as reaping zombie
+processes and passing signals to the appropriate processes.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ docker run --init -d --rm ubuntu sh
+</span></span></code></pre></div><p>For <code>docker compose</code>, the equivalent is:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;3.6&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>web</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>alpine:latest</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>init</span>: <span style=color:#66d9ef>true</span>
+</span></span></code></pre></div><p>The default init process is the first <code>docker-init</code> executable found in the
+system path of the Docker daemon process. By default,
+<a href=https://github.com/krallin/tini target=_blank rel=noopener>tini</a> is used.</p><div class="alert alert-info"><span style=font-weight:700>Info:</span>
+For more information about tini, see
+<a href=https://github.com/krallin/tini/issues/8#issuecomment-146135930 target=_blank rel=noopener>this</a>
+incredibly informative comment by its author.</div><h3 class=headings id=passing-signals-to-entrypoint-scripts><a class=heading-anchor href=#passing-signals-to-entrypoint-scripts>###</a>
+Passing Signals to Entrypoint Scripts</h3><p>Another solution to ensure that the entrypoint script runs <code>foo-example</code> as PID 1 is
+to prepend <code>exec</code> to it</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>exec foo-example
+</span></span></code></pre></div><p><code>exec</code> replaces the parent process with the new process, making it run as PID 1.</p><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+Even when running exec, take care to not start the program in a
+subshell with piping.</div><p>We must then use <code>ENTRYPOINT</code> with exec form in the Dockerfile:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Dockerfile data-lang=Dockerfile><span style=display:flex><span><span style=color:#66d9ef>ENTRYPOINT</span> [<span style=color:#e6db74>&#34;/entrypoint.sh&#34;</span>]<span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://docs.docker.com/compose/compose-file/#init target=_blank rel=noopener>Docker compose specification - init</a></li><li><a href=https://madflojo.medium.com/shutdown-signals-with-docker-entry-point-scripts-5e560f4e2d45 target=_blank rel=noopener>Shutdown Signals with Docker Entrypoint Scripts</a></li><li><a href=https://hynek.me/articles/docker-signals/ target=_blank rel=noopener>Why your Dockerized Application isn&rsquo;t receiving signals</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/docker/>#docker</a>
+<a href=https://ken.cheo.dev/tags/processes/>#processes</a>
+<a href=https://ken.cheo.dev/tags/signals/>#signals</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#mistakes>Mistakes</a><ul><li><a href=#no-signal-handling>No Signal Handling</a></li><li><a href=#improper-entrypoint-script>Improper Entrypoint Script</a></li><li><a href=#improper-entrypoint-instruction>Improper Entrypoint Instruction</a></li><li><a href=#zombie-processes>Zombie Processes</a></li></ul></li><li><a href=#solution>Solution</a><ul><li><a href=#init-flag>init flag</a></li><li><a href=#passing-signals-to-entrypoint-scripts>Passing Signals to Entrypoint Scripts</a></li></ul></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

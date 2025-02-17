@@ -1,0 +1,143 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Creating VMs from Cloud Images in Proxmox</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Creating VMs From Cloud Images in Proxmox<div class=meta>3 Nov 2023
+• 5 mins</div></h1><p>Unlike ISOs, Proxmox does not support the creation of VMs directly from imported
+cloud images. Instead, cloud images must be turned into a template to be cloned
+for subsequent use. This document details the steps involved in creating and
+using cloud images in Proxmox with cloud-init.</p><h2 class=headings id=download-cloud-images-to-proxmox><a class=heading-anchor href=#download-cloud-images-to-proxmox>##</a>
+Download Cloud Images to Proxmox</h2><p>Firstly, download your cloud image of choice. The Proxmox GUI does not
+have native support for this, unlike ISOs and LXC container templates, so we can
+opt to do this manually:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ wget https://cloud.debian.org/images/cloud/bullseye/20231013-1532/debian-11-generic-amd64-20231013-1532.qcow2 -O <span style=color:#f92672>[</span>path/to/image<span style=color:#f92672>]</span>
+</span></span></code></pre></div><p>or via the
+<a href=https://registry.terraform.io/providers/bpg/proxmox/latest/docs target=_blank rel=noopener>bpg/proxmox</a>
+Terraform provider which performs uploads using the Proxmox
+API <code>/nodes/{node}/storage/{storage}/upload</code>
+<a href=https://pve.proxmox.com/pve-docs/api-viewer/index.html#/nodes/%7bnode%7d/storage/%7bstorage%7d/upload target=_blank rel=noopener>endpoint</a>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-hcl data-lang=hcl><span style=display:flex><span><span style=color:#66d9ef>resource</span> <span style=color:#e6db74>&#34;proxmox_virtual_environment_file&#34; &#34;cloud_image&#34;</span> {
+</span></span><span style=display:flex><span>  content_type <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;iso&#34;</span>
+</span></span><span style=display:flex><span>  datastore_id <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;local&#34;</span>
+</span></span><span style=display:flex><span>  node_name    <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;pve&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>source_file</span> {
+</span></span><span style=display:flex><span>    path      <span style=color:#f92672>=</span> <span style=color:#66d9ef>var</span>.<span style=color:#66d9ef>image_url</span>
+</span></span><span style=display:flex><span>    file_name <span style=color:#f92672>=</span> <span style=color:#66d9ef>var</span>.<span style=color:#66d9ef>image_filename</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>The <code>file_name</code> attribute is used to override the name of the uploaded file.
+This is required when an unsupported extension is being uploaded (<code>.qcow2, .raw</code>) as Proxmox only supports <code>.img</code> files in the ISO datastore.</p><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+This resource downloads the source file locally before uploading it
+to the Proxmox host. See the provider documentation for more information.</div><h2 class=headings id=qemu-guest-agent><a class=heading-anchor href=#qemu-guest-agent>##</a>
+Qemu-guest-agent</h2><p><code>qemu-guest-agent</code> is a <a href=https://pve.proxmox.com/wiki/Qemu-guest-agent target=_blank rel=noopener>helper
+daemon</a>, installed in the guest,
+used to exchange information between the host and guest machines. When <code>agent=1</code>
+is set for a VM (like below), Proxmox expects the daemon to be installed and
+running inside the VM. Failing to do so will cause the <code>Shutdown</code> and <code>Reboot</code>
+operations to timeout and fail.</p><p>Because cloud images do not usually have <code>qemu-guest-agent</code> installed, it is
+usually recommended to disable it with <code>agent=0</code>. If necessary, we can install
+it directly into the cloud image via <code>virt-customize</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># on Proxmox host</span>
+</span></span><span style=display:flex><span>$ apt install -y libguestfs-tools
+</span></span><span style=display:flex><span>$ virt-customize --install qemu-guest-agent -a <span style=color:#f92672>[</span>/path/to/image<span style=color:#f92672>]</span>
+</span></span></code></pre></div><p>The above should be done <strong>before</strong> the VM template is created.</p><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+Alternatively, we can avoid modifying the cloud image directly by installing the
+agent via <a href=#packer-proxmox-builder>Packer</a>.</div><h2 class=headings id=create-vm-template-from-cloud-image><a class=heading-anchor href=#create-vm-template-from-cloud-image>##</a>
+Create VM Template from Cloud Image</h2><p>Next, we need to create a new VM with the uploaded cloud image. Proxmox has <a href="https://bugzilla.proxmox.com/show_bug.cgi?id=4141" target=_blank rel=noopener>no
+support</a> for doing this with
+the API, so we must do this with <code>qm</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Create the instance</span>
+</span></span><span style=display:flex><span>$ qm create <span style=color:#ae81ff>9000</span> -name <span style=color:#e6db74>&#39;foo&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -memory <span style=color:#ae81ff>1024</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -cores <span style=color:#ae81ff>1</span> -sockets <span style=color:#ae81ff>1</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -net0 virtio,bridge<span style=color:#f92672>=</span>vmbr0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Import the disk image to Proxmox storage</span>
+</span></span><span style=display:flex><span>$ qm importdisk <span style=color:#ae81ff>9000</span> <span style=color:#f92672>[</span>path/to/image<span style=color:#f92672>]</span> local-lvm <span style=color:#f92672>[</span>-format qcow2/raw<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Attach the disk via SCSI to the VM</span>
+</span></span><span style=display:flex><span>$ qm set <span style=color:#ae81ff>9000</span> -scsihw virtio-scsi-pci -scsi0 local-lvm:vm-9000-disk-0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Set the bootdisk to the imported disk</span>
+</span></span><span style=display:flex><span>$ qm set <span style=color:#ae81ff>9000</span> -boot c -bootdisk scsi0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Enable the Qemu agent (see qemu-guest-agent below)</span>
+</span></span><span style=display:flex><span>$ qm set <span style=color:#ae81ff>9000</span> -agent <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Allow hotplugging of network, USB and disks</span>
+</span></span><span style=display:flex><span>$ qm set <span style=color:#ae81ff>9000</span> -hotplug disk,network,usb
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Add a single vCPU (for now)</span>
+</span></span><span style=display:flex><span>$ qm set <span style=color:#ae81ff>9000</span> -vcpus <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Set a second hard drive, using the inbuilt cloudinit drive</span>
+</span></span><span style=display:flex><span>$ qm set <span style=color:#ae81ff>9000</span> -ide2 local-lvm:cloudinit
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Add a serial output and video output</span>
+</span></span><span style=display:flex><span>$ qm set <span style=color:#ae81ff>9000</span> -serial0 socket -vga serial0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Resize the primary boot disk (otherwise it will be around 2G by default)</span>
+</span></span><span style=display:flex><span>$ qm resize <span style=color:#ae81ff>9000</span> scsi0 +3G
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Finally, convert the VM into a template</span>
+</span></span><span style=display:flex><span>$ qm template <span style=color:#ae81ff>9000</span>
+</span></span></code></pre></div><p>It&rsquo;s recommended to turn this VM into a template. The above steps are
+summarized in a Bash script
+<a href=https://github.com/kencx/homelab/blob/master/bin/import-cloud-image target=_blank rel=noopener>here</a>.</p><h2 class=headings id=packer-proxmox-builder><a class=heading-anchor href=#packer-proxmox-builder>##</a>
+Packer Proxmox Builder</h2><p>This step is optional but recommended if you plan on configuring the
+VM.</p><p>Packer&rsquo;s <a href=https://developer.hashicorp.com/packer/integrations/hashicorp/proxmox/latest/components/builder/clone target=_blank rel=noopener>Proxmox Clone
+builder</a>
+can create a VM template by cloning an existing one. At the same time, it can
+run provisioners to bootstrap the template with common configuration, such as:</p><ul><li>Installing common packages (eg. Docker)</li><li>Creating and configuring the default user</li><li>Basic security hardening</li><li>Installing and enabling <code>qemu-guest-agent</code> (as discussed above)</li></ul><p>First, to only install and enable <code>qemu-guest-agent</code>, we use the following
+<code>shell</code> provisioner:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-hcl data-lang=hcl><span style=display:flex><span><span style=color:#66d9ef>provisioner</span> <span style=color:#e6db74>&#34;shell&#34;</span> {
+</span></span><span style=display:flex><span>  execute_command <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;{{ .Vars }} sudo -S -E sh -eux &#39;{{ .Path }}&#39;&#34;</span>
+</span></span><span style=display:flex><span>  inline <span style=color:#f92672>=</span> [<span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>      # wait for cloud-init to complete
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>      <span style=color:#e6db74>&#34;/usr/bin/cloud-init status --wait&#34;</span>,<span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>      # install and start qemu-guest-agent
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>      <span style=color:#e6db74>&#34;apt update &amp;&amp; apt install -y qemu-guest-agent &#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#e6db74>&#34;systemctl enable qemu-guest-agent.service&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#e6db74>&#34;systemctl start --no-block qemu-guest-agent.service&#34;</span>,
+</span></span><span style=display:flex><span>  ]
+</span></span><span style=display:flex><span>  expect_disconnect <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Next, if we want to configure the VM with Ansible, we require two additional
+provisioners:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-hcl data-lang=hcl><span style=display:flex><span><span style=color:#75715e># make user ssh-ready for Ansible
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>provisioner</span> <span style=color:#e6db74>&#34;shell&#34;</span> {
+</span></span><span style=display:flex><span>  execute_command <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;{{ .Vars }} sudo -S -E sh -eux &#39;{{ .Path }}&#39;&#34;</span>
+</span></span><span style=display:flex><span>  inline <span style=color:#f92672>=</span> [
+</span></span><span style=display:flex><span>    &#34;HOME_DIR<span style=color:#f92672>=</span><span style=color:#960050;background-color:#1e0010>/</span><span style=color:#66d9ef>home</span><span style=color:#960050;background-color:#1e0010>/</span><span style=color:#e6db74>${</span><span style=color:#960050;background-color:#1e0010>var</span>.<span style=color:#960050;background-color:#1e0010>ssh_username</span><span style=color:#e6db74>}</span><span style=color:#960050;background-color:#1e0010>/</span>.<span style=color:#66d9ef>ssh</span><span style=color:#960050;background-color:#1e0010>&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;mkdir -m 0700 -p $HOME_DIR&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;echo &#39;${local.ssh_public_key}&#39; &gt;&gt; $HOME_DIR/authorized_keys&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;chown -R ${var.ssh_username}:${var.ssh_username} $HOME_DIR&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;chmod 0600 $HOME_DIR/authorized_keys&#34;</span>,
+</span></span><span style=display:flex><span>    &#34;SUDOERS_FILE<span style=color:#f92672>=</span><span style=color:#960050;background-color:#1e0010>/</span><span style=color:#66d9ef>etc</span><span style=color:#960050;background-color:#1e0010>/</span><span style=color:#66d9ef>sudoers</span>.<span style=color:#66d9ef>d</span><span style=color:#960050;background-color:#1e0010>/</span><span style=color:#ae81ff>80</span><span style=color:#960050;background-color:#1e0010>-</span><span style=color:#66d9ef>packer</span><span style=color:#960050;background-color:#1e0010>-</span><span style=color:#66d9ef>users</span><span style=color:#960050;background-color:#1e0010>&#34;</span>,
+</span></span><span style=display:flex><span>    &#34;echo &#39;${var.ssh_username} ALL<span style=color:#f92672>=</span>(<span style=color:#66d9ef>ALL</span>) <span style=color:#66d9ef>NOPASSWD</span><span style=color:#960050;background-color:#1e0010>:</span> <span style=color:#66d9ef>ALL</span><span style=color:#960050;background-color:#1e0010>&#39;</span> <span style=color:#960050;background-color:#1e0010>&gt;</span> <span style=color:#960050;background-color:#1e0010>$</span><span style=color:#66d9ef>SUDOERS_FILE</span><span style=color:#960050;background-color:#1e0010>&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;chmod 0440 $SUDOERS_FILE&#34;</span>,
+</span></span><span style=display:flex><span>  ]
+</span></span><span style=display:flex><span>}<span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e># inventory file is automatically generated by Packer
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>provisioner</span> <span style=color:#e6db74>&#34;ansible&#34;</span> {
+</span></span><span style=display:flex><span>  playbook_file <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;../ansible/playbooks/common.yml&#34;</span>
+</span></span><span style=display:flex><span>  extra_arguments <span style=color:#f92672>=</span> [
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;--extra-vars&#34;</span>,
+</span></span><span style=display:flex><span>    &#34;user<span style=color:#f92672>=</span><span style=color:#e6db74>${</span><span style=color:#960050;background-color:#1e0010>var</span>.<span style=color:#960050;background-color:#1e0010>ssh_username</span><span style=color:#e6db74>}</span><span style=color:#960050;background-color:#1e0010>&#34;</span>,
+</span></span><span style=display:flex><span>  ]
+</span></span><span style=display:flex><span>  user        <span style=color:#f92672>=</span> <span style=color:#66d9ef>var</span>.<span style=color:#66d9ef>ssh_username</span>
+</span></span><span style=display:flex><span>  galaxy_file <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;../requirements.yml&#34;</span>
+</span></span><span style=display:flex><span>  ansible_env_vars <span style=color:#f92672>=</span> [
+</span></span><span style=display:flex><span>    &#34;ANSIBLE_STDOUT_CALLBACK<span style=color:#f92672>=</span><span style=color:#66d9ef>yaml</span><span style=color:#960050;background-color:#1e0010>&#34;</span>,
+</span></span><span style=display:flex><span>    &#34;ANSIBLE_HOST_KEY_CHECKING<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span><span style=color:#960050;background-color:#1e0010>&#34;</span>,
+</span></span><span style=display:flex><span>  ]
+</span></span><span style=display:flex><span>  pause_before <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;5s&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>The first <code>shell</code> provisioner makes the VM available for Ansible via SSH. The
+next <code>ansible</code> provisioner runs the given playbook.</p><h2 class=headings id=clone-vm><a class=heading-anchor href=#clone-vm>##</a>
+Clone VM</h2><p>Finally, to use the template, we can clone and set custom cloud-init parameters like so:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ qm clone <span style=color:#ae81ff>9000</span> <span style=color:#f92672>[</span>id<span style=color:#f92672>]</span> --name <span style=color:#f92672>[</span>name<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>$ qm set <span style=color:#f92672>[</span>id<span style=color:#f92672>]</span> --sshkey ~/.ssh/id_ed25519.pub
+</span></span><span style=display:flex><span>$ qm set <span style=color:#f92672>[</span>id<span style=color:#f92672>]</span> --ipconfig0 ip<span style=color:#f92672>=[</span>ip<span style=color:#f92672>]</span>,gw<span style=color:#f92672>=[</span>gateway<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>$ qm start <span style=color:#f92672>[</span>id<span style=color:#f92672>]</span>
+</span></span></code></pre></div><p>or we can do the same with Terraform.</p><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://pve.proxmox.com/wiki/Cloud-Init_Support target=_blank rel=noopener>cloud-init Support - Proxmox Docs</a></li><li><a href=https://pve.proxmox.com/wiki/Cloud-Init_FAQ#Usage_in_Proxmox_VE target=_blank rel=noopener>cloud-init FAQ - Proxmox Docs</a></li><li><a href=https://matthewkalnins.com/posts/home-lab-setup-part-1-proxmox-cloud-init/ target=_blank rel=noopener>matthewkalnins - Proxmox & cloud-init</a></li><li><a href=https://gist.github.com/chriswayg/b6421dcc69cb3b7e41f2998f1150e1df target=_blank rel=noopener>chriswayg - Ubuntu & Debian Cloud Images in Proxmox</a></li><li><a href=https://www.apalrd.net/posts/2023/pve_cloud/ target=_blank rel=noopener>Linux VM Templates in Proxmox</a></li><li><a href=https://github.com/UntouchedWagons/Ubuntu-CloudInit-Docs target=_blank rel=noopener>Making Ubuntu 22.04 VM template for Proxmox and cloud-init</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/cloud-init/>#cloud-init</a>
+<a href=https://ken.cheo.dev/tags/proxmox/>#proxmox</a>
+<a href=https://ken.cheo.dev/tags/qemu/>#qemu</a>
+<a href=https://ken.cheo.dev/tags/terraform/>#terraform</a>
+<a href=https://ken.cheo.dev/tags/virtualization/>#virtualization</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#download-cloud-images-to-proxmox>Download Cloud Images to Proxmox</a></li><li><a href=#qemu-guest-agent>Qemu-guest-agent</a></li><li><a href=#create-vm-template-from-cloud-image>Create VM Template from Cloud Image</a></li><li><a href=#packer-proxmox-builder>Packer Proxmox Builder</a></li><li><a href=#clone-vm>Clone VM</a></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

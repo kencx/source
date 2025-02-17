@@ -1,0 +1,44 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Viewing fetched upstream changes</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Viewing Fetched Upstream Changes<div class=meta>19 Apr 2022
+• 2 mins</div></h1><p>Its good practice to run <code>git fetch</code> instead of <code>git pull</code>. This way, we can
+observe the fetched changes before choosing to merge or rebase our local
+changes.</p><h2 class=headings id=upstream-head-ref><a class=heading-anchor href=#upstream-head-ref>##</a>
+Upstream HEAD Ref</h2><p>The special ref <code>@{u}</code> or <code>HEAD@{u}</code> is equivalent to the remote <code>HEAD</code> of the
+current branch&rsquo;s remote-tracking branch. For <code>master</code>, this is <code>origin/master</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># all output the same commit hash</span>
+</span></span><span style=display:flex><span>$ git rev-parse origin/master
+</span></span><span style=display:flex><span>$ git rev-parse HEAD@<span style=color:#f92672>{</span>u<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>$ git rev-parse @<span style=color:#f92672>{</span>u<span style=color:#f92672>}</span>
+</span></span></code></pre></div><h2 class=headings id=viewing-fetched-commits><a class=heading-anchor href=#viewing-fetched-commits>##</a>
+Viewing fetched commits</h2><p>To view all fetched commits from the remote (<code>origin/master</code>) compared to the
+local <code>master</code>, we can use <code>git log</code> in several similar forms</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ git log origin/master ^master
+</span></span><span style=display:flex><span><span style=color:#75715e># equivalent to</span>
+</span></span><span style=display:flex><span>$ git log HEAD@<span style=color:#f92672>{</span>u<span style=color:#f92672>}</span> ^master
+</span></span><span style=display:flex><span><span style=color:#75715e># or</span>
+</span></span><span style=display:flex><span>$ git log master..HEAD@<span style=color:#f92672>{</span>u<span style=color:#f92672>}</span>
+</span></span></code></pre></div><p>Adding the <code>-p</code> to the above would also enable us to see the explicit diffs of
+the fetched commits. Alternatively, we can use <code>git diff</code> as described below.</p><h2 class=headings id=viewing-fetched-diffs><a class=heading-anchor href=#viewing-fetched-diffs>##</a>
+Viewing fetched diffs</h2><p>To show the fetched changes from the remote (<code>origin/master</code>), we can use <code>git diff</code> with three combinations of specifiers to see different diffs:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># show incoming changes as DELETIONS.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># show local (staged and unstaged) changes</span>
+</span></span><span style=display:flex><span>$ git diff origin/master
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># show incoming changes as ADDITIONS.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># DOES NOT show local (staged and unstaged) changes</span>
+</span></span><span style=display:flex><span>$ git diff HEAD..origin/master
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># show incoming changes as ADDITIONS.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># excludes changes committed to local repository</span>
+</span></span><span style=display:flex><span>$ git diff HEAD...origin/master
+</span></span></code></pre></div><p>We can also add the flags <code>--stat</code> and <code>--name-only</code> to show a summary or
+filenames only.</p><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+For a simple fast-forward operation, <code>..</code> and <code>...</code> are equivalent.</div><p>If a remote-tracking branch is configured, we can also use <code>HEAD@{u}</code> or <code>@{u}</code>
+to refer to <code>origin/master</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ git diff ...HEAD@<span style=color:#f92672>{</span>u<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># equivalent to</span>
+</span></span><span style=display:flex><span>$ git diff ...@<span style=color:#f92672>{</span>u<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># or</span>
+</span></span><span style=display:flex><span>$ git checkout master
+</span></span><span style=display:flex><span>$ git diff master...origin/master
+</span></span></code></pre></div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://stackoverflow.com/questions/4944376/how-to-check-real-git-diff-before-merging-from-remote-branch target=_blank rel=noopener>How to check real git diff before merging from remote branch</a></li><li><a href=https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection#Commit-Ranges target=_blank rel=noopener>Git Tools - Revision Selection</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/git/>#git</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#upstream-head-ref>Upstream HEAD Ref</a></li><li><a href=#viewing-fetched-commits>Viewing fetched commits</a></li><li><a href=#viewing-fetched-diffs>Viewing fetched diffs</a></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

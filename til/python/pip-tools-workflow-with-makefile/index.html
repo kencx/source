@@ -1,0 +1,61 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>pip-tools Workflow with Makefile</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Pip-Tools Workflow With Makefile<div class=meta>12 Jul 2023
+• 2 mins</div></h1><h2 class=headings id=tldr><a class=heading-anchor href=#tldr>##</a>
+TLDR</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-make data-lang=make><span style=display:flex><span><span style=color:#a6e22e>.PHONY</span><span style=color:#f92672>:</span> all dev check clean
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>objects <span style=color:#f92672>=</span> <span style=color:#66d9ef>$(</span>wildcard *.in<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>outputs <span style=color:#f92672>:=</span> <span style=color:#66d9ef>$(</span>objects:.in<span style=color:#f92672>=</span>.txt<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>all</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>$(</span>outputs<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>%.txt</span><span style=color:#f92672>:</span> %.in
+</span></span><span style=display:flex><span>	pip-compile --verbose --generate-hashes --output-file $@ $&lt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>dev-requirements.txt</span><span style=color:#f92672>:</span> requirements.txt
+</span></span><span style=display:flex><span><span style=color:#a6e22e>dev</span><span style=color:#f92672>:</span> dev-requirements.txt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>check</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>	@if ! command -v pip-compile &gt; /dev/null; <span style=color:#66d9ef>then</span> echo <span style=color:#e6db74>&#34;pip-tools not installed!&#34;</span>; <span style=color:#66d9ef>fi</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>clean</span><span style=color:#f92672>:</span> check
+</span></span><span style=display:flex><span>	- rm *.txt
+</span></span></code></pre></div><h2 class=headings id=build-requirementstxt-file><a class=heading-anchor href=#build-requirementstxt-file>##</a>
+Build requirements.txt file</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-make data-lang=make><span style=display:flex><span><span style=color:#a6e22e>%.txt</span><span style=color:#f92672>:</span> %.in
+</span></span><span style=display:flex><span>	pip-compile --verbose --generate-hashes --output-file $@ $&lt;
+</span></span></code></pre></div><p>This target will build a <code>.txt</code> file with <code>pip-compile</code> if it is
+older than the corresponding <code>.in</code> or if it does not exist.</p><ul><li>The <code>--output-file $@</code> flag specifies the name of the output <code>.txt</code> file where
+<code>$@</code> represents the target name</li><li><code>$&lt;</code> represents the corresponding <code>.in</code> input file</li></ul><p>For example, this target will create the <code>requirements.txt</code> file from a
+<code>requirements.in</code> file.</p><h2 class=headings id=dev-only-dependencies><a class=heading-anchor href=#dev-only-dependencies>##</a>
+Dev-Only Dependencies</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-make data-lang=make><span style=display:flex><span><span style=color:#a6e22e>dev-requirements.txt</span><span style=color:#f92672>:</span> requirements.txt
+</span></span><span style=display:flex><span><span style=color:#a6e22e>dev</span><span style=color:#f92672>:</span> dev-requirements.txt
+</span></span></code></pre></div><p>This first target creates a dependency between the two requirements files. It
+ensures <code>dev-requirements.txt</code> is updated whenever <code>dev-requirements.in</code> or
+<code>requirements.txt</code> have been updated.</p><p>The second target is a shortcut so we can run <code>make dev</code> instead of <code>make dev-requirements.txt</code>.</p><h2 class=headings id=build-all-files><a class=heading-anchor href=#build-all-files>##</a>
+Build all files</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-make data-lang=make><span style=display:flex><span>objects <span style=color:#f92672>=</span> <span style=color:#66d9ef>$(</span>wildcard *.in<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>outputs <span style=color:#f92672>:=</span> <span style=color:#66d9ef>$(</span>objects:.in<span style=color:#f92672>=</span>.txt<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>all</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>$(</span>outputs<span style=color:#66d9ef>)</span>
+</span></span></code></pre></div><p>Finally, we can define the <code>all</code> target to build all <code>*.txt</code> files by creating
+two variables <code>objects</code> and <code>outputs</code>:</p><ul><li><code>objects</code> is a list containing all <code>*.in</code> files.</li><li><code>outputs</code> is a list of <code>*.txt</code> files for each <code>*.in</code> file in <code>objects</code></li></ul><p><code>all</code> depends on the list of <code>*.txt</code> files in <code>outputs</code>, which is fulfilled by
+the previously discussed <code>%.txt: %.in</code> target. Thus, running <code>make all</code> will
+build all <code>*.in</code> files into their corresponding <code>*.txt</code> files with
+<code>pip-compile</code>.</p><h2 class=headings id=workflow><a class=heading-anchor href=#workflow>##</a>
+Workflow</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># build all requirements files</span>
+</span></span><span style=display:flex><span>$ make all
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># update particular file</span>
+</span></span><span style=display:flex><span>$ make dev
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># force update file</span>
+</span></span><span style=display:flex><span>$ touch requirements.in
+</span></span><span style=display:flex><span>$ make requirements.txt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># add dependency</span>
+</span></span><span style=display:flex><span>$ echo <span style=color:#f92672>[</span>package<span style=color:#f92672>]</span> &gt;&gt; requirements.in
+</span></span><span style=display:flex><span>$ make all
+</span></span></code></pre></div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://pip-tools.readthedocs.io/en/latest/ target=_blank rel=noopener>pip-tools documentation</a></li><li><a href=https://jamescooke.info/a-successful-pip-tools-workflow-for-managing-python-package-requirements.html target=_blank rel=noopener>pip-tools workflow for Makefile</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/makefile/>#makefile</a>
+<a href=https://ken.cheo.dev/tags/pip-tools/>#pip-tools</a>
+<a href=https://ken.cheo.dev/tags/python/>#python</a>
+<a href=https://ken.cheo.dev/tags/snippets/>#snippets</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#tldr>TLDR</a></li><li><a href=#build-requirementstxt-file>Build requirements.txt file</a></li><li><a href=#dev-only-dependencies>Dev-Only Dependencies</a></li><li><a href=#build-all-files>Build all files</a></li><li><a href=#workflow>Workflow</a></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>
