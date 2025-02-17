@@ -17,11 +17,17 @@ toc: false
 - [A conspiracy to kill IE6](https://blog.chriszacharias.com/a-conspiracy-to-kill-ie6) (2019)
 - [The secret in One Million Checkboxes](https://eieio.games/essays/the-secret-in-one-million-checkboxes/) (2024)
 - [The quiet art of attention](https://billwear.github.io/art-of-attention.html)
+- [The man who killed Google Search](https://www.wheresyoured.at/the-men-who-killed-google/) (2024)
+- [Embezzlers are nice people](https://www.stimmel-law.com/en/articles/story-1-embezzlers-are-nice-people)
+- [Simple sabotage for software](https://erikbern.com/2023/12/13/simple-sabotage-for-software.html) (2023)
 
 ### Stories
 
 - [mmacevedo](https://qntm.org/mmacevedo)
 - [Rabbit Test](https://www.uncannymagazine.com/article/rabbit-test/) (2022)
+- [Better Living Through Algorithms](https://clarkesworldmagazine.com/kritzer_05_23/) (2023)
+- [BLIT](https://www.infinityplus.co.uk/stories/blit.htm) and [FAQ](https://ansible.uk/writing/c-b-faq.html)
+- [Nine Tenths of the Law](https://www.beneath-ceaseless-skies.com/stories/nine-tenths-of-the-law/#respond)
 
 ### Blogs
 
