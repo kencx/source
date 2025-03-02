@@ -10,7 +10,7 @@
 
   <ul class="posts">
   {{ if (where .Site.Pages "Section" "til") }}
-    {{ range .Pages.ByDate }}
+    {{ range .Pages.ByDate.Reverse }}
       <li>
         <a href="{{ .Permalink }}">{{ .Title }}</a>
         <span style="padding-right: 5rem; float: right;">{{ dateFormat "2006-01-02" .PublishDate }}</span>
