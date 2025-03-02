@@ -8,24 +8,15 @@
     <div>{{ .Content }}</div>
   {{ end }}
 
+  <ul class="posts">
   {{ if (where .Site.Pages "Section" "til") }}
-    {{ range .Sections.ByTitle }}
-      <div>
-        <h3 id="{{ .Title | anchorize }}" class="headings">
-          {{ .Title | title }}
-        </h3>
-        <ul class="til">
-          {{ range .Pages.ByTitle }}
-            <li>
-              <a href="{{.Permalink}}">{{.Title}}</a>
-            </li>
-          {{ end }}
-        </ul>
-      </div>
+    {{ range .Pages.ByDate }}
+      <li>
+        <a href="{{ .Permalink }}">{{ .Title }}</a>
+        <span style="padding-right: 5rem; float: right;">{{ dateFormat "2006-01-02" .PublishDate }}</span>
+      </li>
     {{ end }}
   {{ end }}
+  </ul>
 </div>
-
-{{ partial "toc.html" . }}
-
 {{ end }}

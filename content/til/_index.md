@@ -1,4 +1,4 @@
 ---
 title: "TIL"
-toc: true
+toc: false
 ---

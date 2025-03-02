@@ -25,7 +25,7 @@ enableRobotsTXT = false
 
 [permalinks]
   posts = "/posts/:title/"
-  til = "/:sections/:title/"
+  til = "/til/:title/"
   projects = "/projects/:title/"
 
 [params]

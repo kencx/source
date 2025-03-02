@@ -27,7 +27,7 @@ toc: false
 - [Rabbit Test](https://www.uncannymagazine.com/article/rabbit-test/) (2022)
 - [Better Living Through Algorithms](https://clarkesworldmagazine.com/kritzer_05_23/) (2023)
 - [BLIT](https://www.infinityplus.co.uk/stories/blit.htm) and [FAQ](https://ansible.uk/writing/c-b-faq.html)
-- [Nine Tenths of the Law](https://www.beneath-ceaseless-skies.com/stories/nine-tenths-of-the-law/#respond)
+- [Nine Tenths of the Law](https://www.beneath-ceaseless-skies.com/stories/nine-tenths-of-the-law/)
 
 ### Blogs
 
@@ -41,3 +41,4 @@ toc: false
 - [Tom Scott](https://www.youtube.com/@TomScottGo)
 - [The Speed of Outrage](https://www.youtube.com/watch?v=jE2PP7EowdM)
 - [Peter Watts - Conscious Ants and Human Hives](https://www.youtube.com/watch?v=v4uwaw_5Q3I)
+- [Beating every possible game of Pokemon Platinum at the same time](https://www.youtube.com/watch?v=jNMWkD5VsZ8)
