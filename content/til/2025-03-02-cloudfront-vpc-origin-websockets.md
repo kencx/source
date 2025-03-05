@@ -4,6 +4,11 @@ date: 2025-03-02
 lastmod: 2025-03-02
 draft: false
 toc: false
+tags:
+- aws
+- alb
+- cloudfront
+- websockets
 ---
 
 CloudFront's [VPC
@@ -16,9 +21,7 @@ Taking a look at the CloudFront logs, we see an unexpected message:
 
 ```json
 {
-    ...
-    "x-edge-detailed-result-type": "OriginDnsError",
-    ...
+    "x-edge-detailed-result-type": "OriginDnsError"
 }
 ```
 
@@ -30,13 +33,13 @@ facing this issue.
 
 For context, this is the architecture that I setup:
 
-```
+```text
 CloudFront --via VPC origin--> internal ALB -> App
 ```
 
 To eliminate all other factors, here's what works:
 
-```
+```text
 # direct connection
 Public ALB -> App
 
