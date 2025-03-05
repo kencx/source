@@ -1,7 +1,7 @@
 {{ define "main" }}
 	<div>
 		<h1>
-			{{ .Title | title }}
+			{{ .Title }}
 			<div class="meta">
 				{{ $date := .Date.Format "2 Jan 2006" }}
 				{{ $lastmod := .Lastmod.Format "2 Jan 2006" }}

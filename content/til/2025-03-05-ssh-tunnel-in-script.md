@@ -4,6 +4,8 @@ date: 2025-03-05
 lastmod: 2025-03-05
 draft: false
 toc: false
+tags:
+- ssh
 ---
 
 To run a SSH tunnel in a Bash script or in a CI/CD job, we can utilize the
