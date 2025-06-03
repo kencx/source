@@ -20,6 +20,7 @@ toc: false
 - [The man who killed Google Search](https://www.wheresyoured.at/the-men-who-killed-google/) (2024)
 - [Embezzlers are nice people](https://www.stimmel-law.com/en/articles/story-1-embezzlers-are-nice-people)
 - [Simple sabotage for software](https://erikbern.com/2023/12/13/simple-sabotage-for-software.html) (2023)
+- [Things could be better](https://www.experimental-history.com/p/things-could-be-better) (2022)
 
 ### Stories
 
@@ -35,6 +36,7 @@ toc: false
 - [rednafi](https://rednafi.com/about/)
 - [matduggan](https://matduggan.com/)
 - [brr.fyi](https://brr.fyi/)
+- [Experimental History](https://www.experimental-history.com)
 
 ### Videos
 
