@@ -1,14 +1,14 @@
 ---
-title: "Running SSH tunnel in script"
+title: "Running SSH tunnels in Bash scripts"
 date: 2025-03-05
-lastmod: 2025-03-05
+lastmod: 2025-06-11
 draft: false
 toc: false
 tags:
 - ssh
 ---
 
-To run a SSH tunnel in a Bash script or in a CI/CD job, we can utilize the
+To run a SSH tunnel in a Bash script or a CI job, we can utilize the
 following command:
 
 ```bash
@@ -43,7 +43,7 @@ ssh -o ExitOnForwardFailure=yes -f -L port:host:5432 user@$ip -i ~/.ssh/key.pub 
 ### Use Cases
 
 Some examples of use cases:
-- Running a long-running SQL query via an SSH tunnel in a CI/CD job
+- Executing a long-running SQL query via a SSH tunnel in a CI job
 
 
 ### References
