@@ -1,0 +1,38 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>CloudFront VPC Origins and Websockets</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.12acf310ab436bf3dccbc2ec3805b89b94c61e1fec20a74fc3f45a58d24a60953eea53b90f72c15e0977f786e95a6b125eb408972bcee796788ce5b20c16a928.css integrity="sha512-EqzzEKtDa/Pcy8LsOAW4m5TGHh/sIKdPw/RaWNJKYJU+6lO5D3LBXgl394bpWmsSXrQIlyvO55Z4jOWyDBapKA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>CloudFront VPC Origins and Websockets<div class=meta>2 Mar 2025
+• 2 mins</div></h1><p>As of Mar 2025, CloudFront&rsquo;s new <a href=https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-vpc-origins.html target=_blank rel=noopener>VPC
+Origins</a>
+does not work with the WebSockets protocol.</p><p>Although AWS claims that CloudFront <a href=https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-working-with.websockets.html target=_blank rel=noopener>natively
+supports</a>
+WebSockets, trying to establish a WebSocket connection with an internal ALB via
+a VPC Origin causes a WebSockets connection error with a 502 status code.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span># the architecture in question
+</span></span><span style=display:flex><span>CloudFront --via VPC origin--&gt; internal ALB -&gt; App
+</span></span></code></pre></div><p>Taking a look at the CloudFront logs, we see an unexpected message:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;x-edge-detailed-result-type&#34;</span>: <span style=color:#e6db74>&#34;OriginDnsError&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Wait&mldr; what, a DNS error? That can&rsquo;t be right&mldr; right? Well, it turns out that
+<a href=https://repost.aws/questions/QU9RNe5fD_SsK7UIGGG26yOA/origindnserror-from-cloudfront-vpc-origin-when-websocket-is-used target=_blank rel=noopener>this issue has already been
+reported</a>.</p><h2 class=headings id=are-you-sure><a class=heading-anchor href=#are-you-sure>##</a>
+Are you sure?</h2><p>To eliminate potential issues with the application, I also tested other setups.
+These are working as expected:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span># direct connection
+</span></span><span style=display:flex><span>Public ALB -&gt; App
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># with ALB target type in the NLB target groups
+</span></span><span style=display:flex><span>Public NLB -&gt; internal ALB -&gt; App
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># with exact same caching and behaviour configuration as the above VPC origin
+</span></span><span style=display:flex><span>CloudFront --via custom origin--&gt; public ALB -&gt; App
+</span></span></code></pre></div><h2 class=headings id=why-is-this-happening><a class=heading-anchor href=#why-is-this-happening>##</a>
+Why is this happening?</h2><p>I have no idea as I don&rsquo;t have any understanding on how VPC origins work with
+the WebSockets protocol.</p><h2 class=headings id=the-workaround><a class=heading-anchor href=#the-workaround>##</a>
+The workaround</h2><p>The workaround is to switch back to a custom origin and a public-facing ALB:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>
+</span></span><span style=display:flex><span>CloudFront --via custom origin--&gt; public ALB -&gt; App
+</span></span></code></pre></div><p>To secure the public ALB, AWS also recommends using its <a href=https://aws.amazon.com/about-aws/whats-new/2022/02/amazon-cloudfront-managed-prefix-list/ target=_blank rel=noopener>managed CloudFront
+prefix
+list</a>.</p><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/alb/>#alb</a>
+<a href=https://ken.cheo.dev/tags/aws/>#aws</a>
+<a href=https://ken.cheo.dev/tags/cloudfront/>#cloudfront</a>
+<a href=https://ken.cheo.dev/tags/websockets/>#websockets</a></div></div></div></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>
