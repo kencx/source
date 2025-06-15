@@ -1,5 +1,5 @@
 ---
-title: "Automatically roll deployment With Helm"
+title: "How to auto roll deployments With Helm"
 date: 2025-02-19
 lastmod: 2025-02-19
 draft: false

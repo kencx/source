@@ -1,5 +1,5 @@
 ---
-title: "Ignoring SSL cert verification in Powershell"
+title: "How to ignore SSL cert verification in Powershell"
 date: 2025-02-19
 lastmod: 2025-02-19
 draft: false

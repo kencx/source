@@ -1,5 +1,5 @@
 ---
-title: "Empty headers result in 400 error in Nginx"
+title: "That empty headers result in 400 error in Nginx"
 date: 2025-02-19
 lastmod: 2025-02-19
 draft: false

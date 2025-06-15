@@ -1,5 +1,5 @@
 ---
-title: "CloudFront VPC Origins and Websockets"
+title: "That CloudFront VPC Origins and Websockets are broken"
 date: 2025-03-02
 lastmod: 2025-06-11
 draft: false

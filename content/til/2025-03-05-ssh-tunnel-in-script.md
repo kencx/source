@@ -1,5 +1,5 @@
 ---
-title: "Running SSH tunnels in Bash scripts"
+title: "How to run SSH tunnels in Bash scripts"
 date: 2025-03-05
 lastmod: 2025-06-11
 draft: false
