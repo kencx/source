@@ -1,5 +1,5 @@
 ---
-title: "That CloudFront VPC Origins and Websockets are broken"
+title: "That CloudFront VPC origins and Websockets are broken"
 date: 2025-03-02
 lastmod: 2025-06-11
 draft: false
@@ -11,9 +11,13 @@ tags:
 - websockets
 ---
 
+{{< details "Update (2025-06)" >}}
+From an [update to the AWS docs](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-vpc-origins.html#vpc-origin-prerequisites), Websockets are not supported for VPC origins.
+{{< /details >}}
+
 As of Mar 2025, CloudFront's new [VPC
-Origins](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-vpc-origins.html)
-does not work with the WebSockets protocol.
+origins](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-vpc-origins.html)
+do not work with the WebSockets protocol.
 
 Although AWS claims that CloudFront [natively
 supports](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-working-with.websockets.html)

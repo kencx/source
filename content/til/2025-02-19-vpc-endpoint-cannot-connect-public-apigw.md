@@ -1,5 +1,5 @@
 ---
-title: "VPC endpoint cannot be used to connect to public APIGW"
+title: "That VPC endpoints cannot connect to public APIGWs"
 date: 2025-02-19
 lastmod: 2025-06-11
 draft: false
