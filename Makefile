@@ -1,8 +1,8 @@
 build:
-	hugo --buildDrafts --buildFuture --gc --minify --enableGitInfo
+	zola build
 
 serve:
-	hugo serve --buildDrafts --buildFuture --gc --enableGitInfo --ignoreCache --disableFastRender
+	zola serve
 
 clean:
 	rm -rf public/

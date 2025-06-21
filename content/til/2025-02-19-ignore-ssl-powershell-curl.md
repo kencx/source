@@ -1,13 +1,11 @@
----
-title: "How to ignore SSL cert verification in Powershell"
-date: 2025-02-19
-lastmod: 2025-02-19
-draft: false
-toc: false
-tags:
-- powershell
-- curl
----
++++
+title = "How to ignore SSL cert verification in Powershell"
+date = "2025-02-19"
+updated = "2025-02-19"
+
+[taxonomies]
+tags = ["powershell", "curl"]
++++
 
 In Powershell 5.1, there is no flag to easily ignore SSL/TLS verification in `curl` or `Invoke-WebRequest`. The following is a workaround:
 

@@ -1,19 +1,18 @@
----
-title: "That CloudFront VPC origins and Websockets are broken"
-date: 2025-03-02
-lastmod: 2025-06-11
-draft: false
-toc: false
-tags:
-- aws
-- alb
-- cloudfront
-- websockets
----
++++
+title = "That CloudFront VPC origins and Websockets are broken"
+date = "2025-03-02"
+updated = "2025-06-11"
 
-{{< details "Update (2025-06)" >}}
+[taxonomies]
+tags = ["aws", "alb", "cloudfront", "websockets"]
+
+[extra]
+toc = false
++++
+
+{% details(summary="Update (2025-06)") %}
 From an [update to the AWS docs](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-vpc-origins.html#vpc-origin-prerequisites), Websockets are not supported for VPC origins.
-{{< /details >}}
+{% end %}
 
 As of Mar 2025, CloudFront's new [VPC
 origins](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-vpc-origins.html)
@@ -66,7 +65,6 @@ the WebSockets protocol.
 
 The workaround is to switch back to a custom origin and a public-facing ALB:
 ```text
-
 CloudFront --via custom origin--> public ALB -> App
 ```
 

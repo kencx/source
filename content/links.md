@@ -1,7 +1,11 @@
----
-title: "Links"
-toc: false
----
++++
+title = "links"
+date = "2025-06-16"
+updated = "2025-06-16"
+
+[extra]
+toc = false
++++
 
 ### Articles
 - [Learn in Public](https://www.swyx.io/learn-in-public) (2018)

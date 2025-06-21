@@ -1,0 +1,8 @@
+<div class="quote">
+  {{ body | markdown(inline=true) | safe }}
+  <footer class="quote-source">
+    {% if source %}
+    {{ source | markdown(inline=true) | safe }}
+    {% endif %}
+  </footer>
+</div>

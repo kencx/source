@@ -1,0 +1,17 @@
+<figure class="center">
+  <img src="{{ src | safe }}"
+    {% if body %}
+    alt="{{ body | safe }}"
+    {% endif %}
+    {% if width %}
+    width="{{ width }}"
+    {% endif %}
+    {% if height %}
+    height="{{ height }}"
+    {% endif %}
+    {% if loading %}
+    loading="{{ loading }}"
+    {% endif %}
+  />
+  <figcaption>{{ body | markdown(inline=true) | safe }}</figcaption>
+</figure>

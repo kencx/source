@@ -1,0 +1,4 @@
+<div class="alert alert-{{ type }}">
+  <span>{{ type | title | markdown(inline=true) }}:</span>
+  {{ body | markdown(inline=true) | safe }}
+</div>

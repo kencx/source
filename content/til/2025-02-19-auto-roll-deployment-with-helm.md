@@ -1,13 +1,11 @@
----
-title: "How to auto roll deployments With Helm"
-date: 2025-02-19
-lastmod: 2025-02-19
-draft: false
-toc: false
-tags:
-- helm
-- kubernetes
----
++++
+title = "How to auto roll deployments With Helm"
+date = "2025-02-19"
+updated = "2025-02-19"
+
+[taxonomies]
+tags = ["helm", "kubernetes"]
++++
 
 To automatically roll a Kubernetes deployment with Helm, use the
 `sha256sum` function with the `checksum/config` annotation:

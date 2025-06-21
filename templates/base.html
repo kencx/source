@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,
+    shrink-to-fit=no">
+    <meta name="robots" content="noodp" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ get_url(path="rss.xml", trailing_slash=false) }}">
+    <link rel="stylesheet" href="{{ get_url(path='css/bamboo.css', cachebust=true) }}">
+    <link rel="stylesheet" href="{{ get_url(path='css/custom.css', cachebust=true) }}">
+    <script src="{{ get_url(path='js/script.js', cachebust=true) }}"></script>
+</head>
+
+<body id="top">
+<nav role="navigation">
+    {% set index = get_section(path="_index.md") %}
+    {% for section in index.subsections %}
+    {% set sec = get_section(path=section) %}
+    <a class="navbar" href="{{ sec.path | safe }}">{{ sec.title }}</a>
+    {% endfor %}
+    {% set tags = get_taxonomy(kind="tags") %}
+    <a class="navbar" href="{{ tags.permalink | safe }}">{{ tags.kind.name }}</a>
+    <div style="float: right;">
+        <a href="{{ config.base_url }}/">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg"><path class="b" d="m20.49,6.63L12.49,2.13c-.3-.17-.68-.17-.98,0L3.51,6.63c-.31.18-.51.51-.51.87v9c0,.36.19.69.51.87l8,4.5c.15.09.32.13.49.13s.34-.04.49-.13l8-4.5c.31-.18.51-.51.51-.87V7.5c0-.36-.19-.69-.51-.87Zm-7.99-2.2l5.46,3.07-5.46,3.07v-6.14Zm-1,6.14l-5.46-3.07,5.46-3.07v6.14Zm-1.03,1.71l-5.47,3.08v-6.15l5.47,3.08Zm.53.85v6.15l-5.47-3.08,5.47-3.08Zm2,0l5.47,3.08-5.47,3.08v-6.15Zm.53-.85l5.47-3.08v6.15l-5.47-3.08Z"></path></svg>
+        </a>
+    </div>
+</nav>
+
+<main class="content">
+  {% block content %}{% endblock content %}
+</main>
+
+<footer>
+  {% set year = now() | date(format="%Y") %}
+  <span>
+    © {{ config.extra.copyright | replace(from="{year}", to=year) }} •
+    {% set hash = load_data(path=".git/refs/heads/master") %}
+    {% set truncated = hash | truncate(length=7, end="") %}
+    <a href="{{ config.extra.source }}/commit/{{ truncated }}">{{ truncated }}</a>
+  </span>
+  <div class="icons" style="float: right;">
+    <a href="#top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </a>
+  </div>
+</footer>
+</body>
+
+</html>

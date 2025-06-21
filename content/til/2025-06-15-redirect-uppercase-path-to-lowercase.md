@@ -1,10 +1,10 @@
----
-title: "How to redirect uppercase paths to lowercase in Nginx"
-date: 2025-06-15
-lastmod: 2025-06-15
-draft: false
-toc: false
----
++++
+title = "How to redirect uppercase paths to lowercase in Nginx"
+date = "2025-06-15"
+updated = "2025-06-15"
+[taxonomies]
+tags = ["nginx", "kubernetes"]
++++
 
 For a generic redirect for all paths:
 

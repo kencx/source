@@ -1,0 +1,366 @@
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/fonts/IBMPlexMono-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/fonts/IBMPlexMono-Bold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/fonts/IBMPlexMono-Italic.woff2") format("woff2");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/fonts/IBMPlexMono-BoldItalic.ttf") format("woff2");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --b-font-main: "IBM Plex Mono", Courier, monospace;
+  --b-font-mono: "Liberation Mono", Courier, monospace;
+  --b-font-size: 0.9rem;
+
+  --b-txt: hsl(150, 5%, 10%);
+  --b-bg-1: hsl(150, 5%, 95%);
+  --b-bg-2: hsl(150, 5%, 85%);
+  --b-link: #CA4C16;
+  --b-fade: hsl(150, 10%, 40%);
+
+  /* defaults */
+  /* --b-line: #3b4252; */
+  /* --b-btn-bg: #242933; */
+  /* --b-btn-txt: #fff; */
+  /* --b-focus: #88c0d0; */
+}
+
+@media(prefers-color-scheme: dark) {
+  :root {
+    --b-txt: hsl(150, 10%, 80%);
+    --b-bg-1: hsl(150, 5%, 10%);
+    --b-bg-2: hsl(150, 5%, 25%);
+    --b-link: #fa9b60;
+  }
+  details, .alert, .quote {
+    background: var(--b-btn-bg);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  line-height: 1.75;
+  max-width: 80ch;
+}
+
+/* nav */
+
+nav {
+  padding-top: 2rem;
+}
+
+nav a {
+  color: var(--b-txt);
+  padding-right: 0.5rem;
+  font-size: 1rem;
+}
+
+/* footer */
+
+footer {
+  margin: 4rem 0;
+}
+
+footer a, footer span {
+  color: var(--b-txt);
+  font-size: 0.85rem;
+}
+
+.icons a {
+  text-decoration: none;
+}
+
+.icons a svg {
+  position: relative;
+  height: 1.5rem;
+  width: 1.5rem;
+  padding-left: 0.5rem;
+}
+
+/* heading anchors */
+
+.heading-anchor {
+  position: absolute;
+  transform: translateX(-100%);
+  padding: 0 1rem;
+  opacity: 0;
+}
+
+.heading-anchor:hover, .heading-anchor:focus {
+  text-decoration: none !important;
+  opacity: 1;
+}
+
+h1:has(> .heading-anchor):hover,
+h2:has(> .heading-anchor):hover,
+h3:has(> .heading-anchor):hover,
+h4:has(> .heading-anchor):hover,
+h5:has(> .heading-anchor):hover,
+h6:has(> .heading-anchor):hover {
+  .heading-anchor {
+    text-decoration: none !important;
+    opacity: 1;
+  }
+}
+
+/* meta block */
+
+.meta {
+  margin-top: 1rem;
+  font-size: 0.7rem;
+  font-weight: normal;
+  color: var(--b-fade);
+  text-transform: uppercase;
+}
+
+/* content  */
+
+.posts, .til {
+  list-style: none;
+  padding-left: 1rem;
+}
+
+.posts li, .til li {
+  padding-bottom: 0.75rem;
+}
+
+.posts *, .til * {
+  color: var(--b-txt);
+  font-size: var(--b-font-size);
+}
+
+.posts .post, .til .post {
+  display: flex
+}
+
+.posts .date, .til .date {
+  padding-right: 1.5rem;
+  min-width: max-content;
+  color: var(--b-fade);
+}
+
+.tags-list {
+  margin-top: 0.5rem;
+  font-size: var(--b-font-size);
+}
+
+.tags-list li a {
+  color: var(--b-txt);
+}
+
+.tags-list .count {
+  color: var(--b-fade);
+}
+
+.tags, .tags > a {
+  margin-top: 0.5rem;
+  color: var(--b-fade);
+}
+
+.paginator {
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.paginator a {
+  color: var(--b-txt);
+  padding-right: 0.5rem;
+  font-size: 1rem;
+}
+
+/* figure  */
+
+figure {
+  text-align: center;
+}
+
+figcaption {
+  text-align: center !important;
+  font-size: 0.75rem;
+  color: var(--b-txt);
+}
+
+/* table of contents */
+
+.content {
+  font-size: var(--b-font-size);
+  display: grid;
+  grid-template-columns: 100% 20em;
+}
+
+pre, code, kbd, samp, tt, var {
+  font-size: 0.95em;
+}
+
+.content aside.tableOfContents {
+  position: sticky;
+  align-self: start;
+  top: 0;
+  margin-top: 6rem;
+}
+
+.tableOfContents {
+  display: block;
+  margin-left: 2.5rem;
+  border-width: 0px;
+  border-left-width: 4px;
+  border-style: solid;
+  border-color: var(--b-txt);
+  padding-left: 1.25rem
+}
+
+.tableOfContents nav {
+  display: inherit;
+  padding-top: 0;
+}
+
+.tableOfContents ul {
+  margin-bottom: 0rem;
+  padding-left: 0rem;
+}
+
+.tableOfContents li {
+  list-style: none;
+}
+
+.tableOfContents ul li > ul {
+  margin-bottom: 0rem;
+  padding-left: 1.25rem;
+}
+
+.tableOfContents a {
+  color: var(--b-txt);
+  font-size: 0.9em;
+  font-weight: 100;
+}
+
+.tableOfContents a:hover {
+  text-decoration: underline;
+}
+
+@media only screen and (max-width: 1280px) {
+  .tableOfContents {
+    display: none;
+  }
+}
+
+/* alert  */
+
+.alert {
+  padding: .5rem 1rem;
+  margin-left: 0;
+  margin-bottom: 1.5rem;
+  background: var(--b-bg-2);
+  border: 1px solid var(--b-line);
+  border-radius: .25rem;
+}
+
+.alert span {
+  font-weight: bold;
+  font-size: unset;
+}
+
+.quote {
+  margin: 1.5rem;
+  padding: .5rem 1rem;
+  background: var(--b-bg-2);
+  border: 1px solid var(--b-line);
+  border-radius: .25rem;
+}
+
+.quote-source {
+  margin: 0;
+  text-align: right;
+  font-weight: bold;
+
+  a {
+    color: var(--b-txt) !important;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+/* books */
+.card-view {
+  /* auto scaling grid with max num of columns and min width*/
+  /* https://css-tricks.com/an-auto-filling-css-grid-with-max-columns/ */
+  --grid-layout-gap: 1.4rem;
+  --grid-column-count: 5;
+  --grid-item--min-width: 140px;
+
+  --gap-count: calc(var(--grid-column-count) - 1);
+  --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
+  --grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--grid-column-count));
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr));
+  grid-gap: var(--grid-layout-gap);
+}
+
+.book-card {
+	display: flex;
+	flex-direction: column;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.book-card:hover {
+  transform: translateY(4px);
+}
+
+.book-card:hover img {
+  transform: scale3d(1.02, 1.02, 1.02);
+  opacity: 0.2;
+}
+
+.cover {
+  aspect-ratio: 5/8;
+}
+
+.cover img {
+  border-radius: 0.2rem;
+  width: 0;
+  height: 0;
+  inset: 0;
+  display: block;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  margin: auto;
+}
+
+.book-author {
+  font-size: 0.7rem;
+  color: var(--b-fade);
+  font-weight: normal;
+}

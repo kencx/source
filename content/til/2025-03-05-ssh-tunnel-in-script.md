@@ -1,12 +1,10 @@
----
-title: "How to run SSH tunnels in Bash scripts"
-date: 2025-03-05
-lastmod: 2025-06-11
-draft: false
-toc: false
-tags:
-- ssh
----
++++
+title = "How to run SSH tunnels in Bash scripts"
+date = "2025-03-05"
+updated = "2025-06-11"
+[taxonomies]
+tags = ["ssh"]
++++
 
 To run a SSH tunnel in a Bash script or a CI job, we can utilize the
 following command:

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  <h1>
+    {{ section.title }}
+  </h1>
+
+  {% if section.content %}
+  {{ section.content | safe }}
+  {% endif %}
+
+  {% if paginator.pages %}
+  <ul class="posts">
+    {% for page in paginator.pages %}
+      {% include "partials/post.html" %}
+    {% endfor %}
+  </ul>
+  {% include "partials/paginator.html" %}
+  {% elif section.pages %}
+  <ul class="posts">
+    {% for page in section.pages %}
+      {% include "partials/post.html" %}
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+{% endblock content %}

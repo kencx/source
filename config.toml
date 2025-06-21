@@ -1,61 +1,34 @@
-baseURL = "https://ken.cheo.dev"
-languageCode = "en-us"
-title = "cheo.dev"
-theme = "bamboo"
-rssLimit = 20
+title = "blog.cheo.dev"
+description = ""
+author = "ken@cheo.dev"
+base_url = "https://blog.cheo.dev"
+# theme = ""
+
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = false
+
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = false
+
+generate_sitemap = true
+generate_feeds = true
+feed_filenames = ["rss.xml"]
+
+ignored_content = []
+ignored_static = []
+
+taxonomies = [
+    { name = "tags", render = true, paginate_by = 20}
+]
+
+[markdown]
+insert_anchor_links = "left"
+
+bottom_footnotes = true
+
+highlight_code = true
+highlight_theme = "gruvbox-dark"
+
+[extra]
 copyright = "2021—{year}"
-enableGitInfo = true
-enableRobotsTXT = false
-
-[frontmatter]
-  date = ["date", "publishDate", ":fileModTime"]
-  lastmod = ["lastmod", ":git"]
-
-[markup]
-  [markup.highlight]
-	lineNos = false
-    lineNumbersInTable = false
-	tabWidth = 4
-
-  [markup.tableOfContents]
-    endLevel = 5
-
-[taxonomies]
-  tag = "tags"
-
-[permalinks]
-  posts = "/posts/:title/"
-  til = "/til/:title/"
-  projects = "/projects/:title/"
-
-[params]
-  author = "kencx"
-  github = "https://github.com/kencx"
-  email = "ken@cheo.dev"
-
-[menu]
-  [[menu.main]]
-    identifier = "posts"
-    name       = "Posts"
-    url        = "posts/"
-    weight     = 1
-
-  [[menu.main]]
-    identifier = "projects"
-    name       = "Projects"
-    url        = "projects/"
-    weight     = 2
-
-  [[menu.main]]
-    identifier = "tags"
-    name       = "Tags"
-    url        = "tags/"
-    weight     = 3
-
-[module]
-  [[module.mounts]]
-    source = "assets/covers"
-    target = "static/covers"
-  [[module.mounts]]
-    source = "static"
-    target = "static"
+source = "https://github.com/kencx/source"

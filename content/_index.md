@@ -1,8 +1,7 @@
----
-title: ken.cheo.dev
----
++++
+title = "About"
++++
 
-- [TIL](/til)
 - [Colophon](/colophon)
 - [Bookshelf](/books)
 - [Links](/links)

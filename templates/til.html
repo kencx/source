@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+  <h2>
+    {% set title = page.title | split(pat=" ") %}
+    TIL {{ title | first | lower }} {{ title | slice(start=1) | join(sep=" ") }}
+    <div class="meta">
+      {{ page.date | date(format="%Y-%m-%d") }}
+    • {{ page.reading_time }} min{{ page.reading_time | pluralize }}
+    </div>
+  </h2>
+  {{ page.content | safe }}
+  <div class="meta">
+    {% if page.updated %}
+    Edited: {{ page.updated | date(format="%Y-%m-%d") }}
+    {% endif %}
+    {% if page.taxonomies.tags %}
+    <div class="tags">
+      {% for tag in page.taxonomies.tags %}
+        <a href="{{ get_taxonomy_url(kind="tags", name=tag) | safe }}">#{{ tag }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% include "partials/toc.html" %}
+{% endblock content %}

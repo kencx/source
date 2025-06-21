@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  <h1>
+    {{ taxonomy.name }}
+  </h1>
+
+  {% if terms %}
+  <ul class="tags-list">
+    {% for term in terms %}
+      <li>
+        <a href="{{ term.path | safe }}">{{ term.name }}</a>
+        <span class="count">({{ term.page_count }})</span>
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+{% endblock content %}
