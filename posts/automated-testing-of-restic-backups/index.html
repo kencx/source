@@ -1,0 +1,66 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Automated Testing of Restic Backups</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.1982b439a3c9e329cd05a67408cce138a0250e43504cf189686579d4a8d310bdd8a8cb7f4a37831e5d30ac27af1aac4dd90d3b35eb6e0f9d65cca0eb97a6b460.css integrity="sha512-GYK0OaPJ4ynNBaZ0CMzhOKAlDkNQTPGJaGV51KjTEL3YqMt/SjeDHl0wrCevGqxN2Q07NetuD51lzKDrl6a0YA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Automated Testing of Restic Backups<div class=meta>9 Aug 2023
+• 3 mins</div></h1><p>My NAS server runs daily backups to an onsite USB hard drive and an offsite
+<a href=https://www.backblaze.com/ target=_blank rel=noopener>Backblaze</a> B2 bucket with
+<a href=https://restic.net/ target=_blank rel=noopener>restic</a> and <a href=https://autorestic.vercel.app/ target=_blank rel=noopener>autorestic</a>.
+This backup plan aims to fulfil the <a href=https://www.backblaze.com/blog/the-3-2-1-backup-strategy/ target=_blank rel=noopener>3,2,1
+rule</a> by being
+automatic, redundant and offsite.</p><p>However, a backup is only as good as its ability to be restored successfully. It
+can be potentially disastrous if we tried to restore a backup after data loss
+and realise that the data has been unknowningly corrupted or loss during the
+backup process.</p><p>A good measure involves performing automated restoration tests as part of the
+backup process. After restic backs up any new data and prunes old snapshots, it
+also performs the following:</p><ul><li>Check a subset of all data with <a href=https://restic.readthedocs.io/en/stable/045_working_with_repos.html#checking-integrity-and-consistency target=_blank rel=noopener>restic
+check</a>
+(1% in my case)</li><li>Restore a series of test files and compare them with the original</li></ul><p>While complete checks and restores would be more representative of the integrity
+of the backups, they are also very unfeasible<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>.</p><h2 class=headings id=restic-check><a class=heading-anchor href=#restic-check>##</a>
+Restic check</h2><p>The <code>check</code> subcommand runs two types of checks:</p><ul><li>Structural consistency and integrity of the backups, e.g. snapshots, trees and
+pack files (default)</li><li>Integrity of the actual data (enabled with <code>--read-data[-subset]</code>)</li></ul><p>By including the <code>--read-data-subset</code> flag, restic will download a randomly
+chosen subset of repository pack files, and verify their integrity:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ restic check --read-data-subset<span style=color:#f92672>=</span>1%
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># or with autorestic</span>
+</span></span><span style=display:flex><span>$ autorestic exec -av -- check --read-data-subset<span style=color:#f92672>=</span>1%
+</span></span></code></pre></div><h2 class=headings id=restoring-test-files><a class=heading-anchor href=#restoring-test-files>##</a>
+Restoring Test Files</h2><p>In addition to restic&rsquo;s native integrity checks, we also run explicit checks by
+restoring a test file after the backup process. This involves creating a test
+file with random content in a specified test directory before the backup:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e># generate-restore-test-files.sh</span>
+</span></span><span style=display:flex><span>TEST_DIR<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;~/restore-test&#34;</span>
+</span></span><span style=display:flex><span>dd <span style=color:#66d9ef>if</span><span style=color:#f92672>=</span>/dev/random of<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;</span>$TEST_DIR<span style=color:#e6db74>/test-</span><span style=color:#66d9ef>$(</span>date +%Y-%m-%d<span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span> count<span style=color:#f92672>=</span><span style=color:#ae81ff>10</span> &gt;/dev/null 2&gt;&amp;<span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># delete any files older than 5 days</span>
+</span></span><span style=display:flex><span>cd $TEST_DIR <span style=color:#f92672>&amp;&amp;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    find . -type f ! -newerct <span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>date --date<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;-5 days&#39;</span> <span style=color:#e6db74>&#39;+%Y/%m/%d %H:%M:%S&#39;</span><span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span> -delete
+</span></span></code></pre></div><p>Any test files older than the last 5 generated files are discarded. During the
+backup, we have restic restore the files in this directory to a temporary
+directory.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>RESTORE_DIR<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;~/restore-test&#34;</span>
+</span></span><span style=display:flex><span>TMP_DIR<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>mktemp -d<span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>autorestic restore -v --include <span style=color:#e6db74>&#34;</span>$RESTORE_DIR<span style=color:#e6db74>&#34;</span> --to <span style=color:#e6db74>&#34;</span>$TMP_DIR<span style=color:#e6db74>&#34;</span>
+</span></span></code></pre></div><p>These restored files are <code>diff</code>-ed with the originals found in the test
+directory. The backup will fail if any of the files are different.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>RESTORED_FILES<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>cd <span style=color:#e6db74>&#34;</span>$RESTORE_DIR<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>&amp;&amp;</span> find . -type f -printf <span style=color:#e6db74>&#39;%f\n&#39;</span><span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> file in $RESTORED_FILES; <span style=color:#66d9ef>do</span>
+</span></span><span style=display:flex><span>    diff <span style=color:#e6db74>&#34;</span>$RESTORE_DIR<span style=color:#e6db74>/</span>$file<span style=color:#e6db74>&#34;</span> <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>TMP_DIR<span style=color:#e6db74>}${</span>RESTORE_DIR<span style=color:#e6db74>}</span><span style=color:#e6db74>/</span>$file<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>done</span>
+</span></span></code></pre></div><p>If there are any differences, <code>diff</code> returns an exit code of <code>1</code>, causing the
+script to fail. Otherwise, the backup passes and the script cleans up any
+temporary directories.</p><h2 class=headings id=systemd-timer><a class=heading-anchor href=#systemd-timer>##</a>
+Systemd Timer</h2><p>The backup process is scheduled with systemd timers. An extract of the
+<code>backup.service</code> file is as follows:</p><pre tabindex=0><code># /etc/systemd/system/backup.service
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/generate-restore-test-files.sh
+ExecStart=/usr/bin/backup.sh
+</code></pre><div class="alert alert-note"><span style=font-weight:700>Note:</span>
+The complete scripts and files can be found
+<a href=https://github.com/kencx/homelab/tree/master/ansible/roles/autorestic/templates target=_blank rel=noopener>here</a>.
+They are written as Jinja2 templates as they are provisioned with an Ansible
+role.</div><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href=https://tomm.org/2022/preparing-for-the-worst target=_blank rel=noopener>Preparing for the worst</a></li></ul><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>Due to high bandwidth costs for checks on remote backup repositories, the
+need for disk space to perform the restores to, all of which can be very
+expensive and time-consuming.&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div><div class=meta>Edited: 22 Jan 2024<div class=tags><a href=https://ken.cheo.dev/tags/backups/>#backups</a>
+<a href=https://ken.cheo.dev/tags/restic/>#restic</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#restic-check>Restic check</a></li><li><a href=#restoring-test-files>Restoring Test Files</a></li><li><a href=#systemd-timer>Systemd Timer</a></li><li><a href=#references>References</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

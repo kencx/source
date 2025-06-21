@@ -1,0 +1,263 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>Automating blog deployments with my caddy-git fork</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.1982b439a3c9e329cd05a67408cce138a0250e43504cf189686579d4a8d310bdd8a8cb7f4a37831e5d30ac27af1aac4dd90d3b35eb6e0f9d65cca0eb97a6b460.css integrity="sha512-GYK0OaPJ4ynNBaZ0CMzhOKAlDkNQTPGJaGV51KjTEL3YqMt/SjeDHl0wrCevGqxN2Q07NetuD51lzKDrl6a0YA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>Automating blog deployments with my caddy-git fork<div class=meta>25 Feb 2024
+• 9 mins</div></h1><details><summary>Summary</summary>
+I discuss how I automated the process of deploying this blog with Github Actions
+and my own forked version of caddy-git.</details><p>This blog is built with the static site generator <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a>.
+When I make any changes to the source, I push the new commits to the GitHub
+repository where GitHub Actions will build the static files with <code>actions-hugo</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span>  <span style=color:#f92672>steps</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Checkout codebase</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v4</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Setup Hugo</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>peaceiris/actions-hugo@v2</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>hugo-version</span>: <span style=color:#e6db74>&#39;0.119.0&#39;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>extended</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Delete public/</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>run</span>: <span style=color:#ae81ff>rm -rf public/</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build site</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>run</span>: <span style=color:#ae81ff>hugo --gc --minify --enableGitInfo</span>
+</span></span></code></pre></div><p>Then, the pipeline deploys the static files in <code>public/</code> to the branch <code>deploy</code>
+on the same repository:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Deploy site to deploy branch</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        git worktree add deploy
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        git config user.name &#34;Deploy from CI&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        git config user.email &#34;&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        cd deploy
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        # Delete the ref to avoid keeping history.
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        git update-ref -d refs/heads/deploy
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        rm -rf *
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        mv ../public/* .
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        git add .
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        git commit -m &#34;Deploy $GITHUB_SHA to deploy&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        git push --force --set-upstream origin deploy</span>        
+</span></span></code></pre></div><p>This method continuously rewrites history on that <code>deploy</code> branch but that&rsquo;s
+okay as the full history of the source is still present in <code>master</code>. Take note
+of this because it becomes important later.</p><p>At this stage, you can opt to serve the static files with GitHub Pages by
+pointing it at the <code>deploy</code> branch. Or you can also serve the files through a
+file server on your own server. I serve this site with the file server
+<a href=https://caddyserver.com/ target=_blank rel=noopener>Caddy</a> on a VPS.</p><div class="alert alert-"><span style=font-weight:700></span>
+I opted to use Caddy instead of Nginx because it supports automatic HTTPS.</div><p>This is my <code>Caddyfile</code> configuration:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-caddyfile data-lang=caddyfile><span style=display:flex><span>ken.cheo.dev {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>root</span> <span style=color:#a6e22e>*</span> <span style=color:#e6db74>/srv/source</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>file_server</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>try_files</span> <span style=color:#ae81ff>{path}</span> <span style=color:#ae81ff>{path}</span><span style=color:#e6db74>/</span> <span style=color:#e6db74>=404</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>handle_errors</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>rewrite</span> <span style=color:#a6e22e>*</span> <span style=color:#e6db74>/404.html</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>file_server</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 class=headings id=wheres-the-automation><a class=heading-anchor href=#wheres-the-automation>##</a>
+Where&rsquo;s the automation?</h2><p>Don&rsquo;t worry, I haven&rsquo;t forgotten about that. At this point, we still have to
+figure out how to copy the static files from the Git repository&rsquo;s <code>deploy</code>
+branch to our server. Let me give you the simplest way to do it: <strong>Run a cronjob
+on the server that automatically pulls the <code>deploy</code> branch at a given
+interval.</strong></p><p>There, you can stop reading now.</p><p>Seriously, that&rsquo;s it.</p><p>I wasn&rsquo;t very satisfied with that. Surely I could have the changes be propagated
+automatically without a cronjob? Okay, let&rsquo;s consider some of the methods that I
+implemented that pull from the repository:</p><ul><li>Running a <a href=https://github.com/adnanh/webhook target=_blank rel=noopener>webhook</a> server on the VPS that
+listens for webhook requests from the source repository. When a new build is
+ready, <a href=https://docs.github.com/en/webhooks/using-webhooks/creating-webhooks target=_blank rel=noopener>GitHub sends a POST
+request</a>
+to the webhook server which runs a shell script to pull the new changes</li><li>Containerizing the static files into a Nginx container. This Docker image
+built with GitHub Actions and run on the VPS with a sidecar
+<a href=https://containrrr.dev/watchtower/ target=_blank rel=noopener>Watchtower</a> container that listens for
+new images. These new images are automatically pulled by Watchtower</li></ul><p>These methods work but they are way too complex for something as simple as a
+static site.</p><p>How about pushing the files to the server? You could opt to <code>scp</code> or <code>rsync</code> the
+generated static files to the server using GitHub Actions. You would also have
+to add your server IP and credentials as secrets in the repository, something I
+would prefer not to do if I could.</p><h2 class=headings id=caddy-git><a class=heading-anchor href=#caddy-git>##</a>
+caddy-git</h2><p>Caddy has a rich ecosystem of plugins. While browsing for interesting plugins, I
+came across <a href=https://github.com/greenpau/caddy-git target=_blank rel=noopener>caddy-git</a>, a plugin that
+allows updating a directory backed by a Git repo.</p><p>With this configuration, you can configure Caddy to pull any updates from a
+given repository&rsquo;s branch at a fixed interval:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Caddyfile data-lang=Caddyfile><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>git</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>repo</span> <span style=color:#e6db74>source</span> {
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>base_dir</span> <span style=color:#e6db74>/srv</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>url</span> <span style=color:#e6db74>https://github.com/kencx/source.git</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>branch</span> <span style=color:#e6db74>deploy</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>update</span> <span style=color:#e6db74>every</span> <span style=color:#ae81ff>1800</span>
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Wait a minute&mldr; we just replaced our cronjob with a Caddy plugin!</p><p>At this point, we could take the sane approach and go back to the cronjob&mldr; or
+we could try out this shiny new thing we just found!</p><p>Let&rsquo;s add the above configuration to our Caddyfile and start it:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>2024/02/23 13:21:32.837 INFO    using provided configuration    {&#34;config_file&#34;: &#34;./Caddyfile&#34;, &#34;config_adapter&#34;: &#34;&#34;}
+</span></span><span style=display:flex><span>2024/02/23 13:21:32.839 INFO    admin   admin endpoint started  {&#34;address&#34;: &#34;localhost:2019&#34;, &#34;enforce_origin&#34;: false, &#34;origins&#34;: [&#34;//localhost:2019&#34;, &#34;//[::1]:2019&#34;, &#34;//127.0.0.1:2019&#34;]}
+</span></span><span style=display:flex><span>2024/02/23 13:21:32.839 INFO    git     provisioning app instance       {&#34;app&#34;: &#34;git&#34;}
+</span></span><span style=display:flex><span>2024/02/23 13:21:33.650 ERROR   git     failed managing repo    {&#34;repo_name&#34;: &#34;source&#34;, &#34;error&#34;: &#34;non-fast-forward update&#34;}
+</span></span><span style=display:flex><span>2024/02/23 13:21:33.650 ERROR   git     failed configuring app instance {&#34;app&#34;: &#34;git&#34;, &#34;error&#34;: &#34;non-fast-forward update&#34;}
+</span></span><span style=display:flex><span>Error: loading initial config: loading new config: loading git app module: provision git: non-fast-forward update
+</span></span><span style=display:flex><span>2024/02/23 21:21:33 [ERROR] exit status 1
+</span></span></code></pre></div><p>Wait, what?</p><p>If you remember, our <code>deploy</code> branch&rsquo;s history is continuously overwritten with
+every new build. This means pulling the repository&rsquo;s branch normally would
+result into a non-fast-forward update, something that <code>caddy-git</code> does not
+support.</p><p>Okay then, sometimes you just got to
+<a href=https://github.com/kencx/caddy-git/tree/force-pull target=_blank rel=noopener>do it yourself</a>.</p><h2 class=headings id=forking-caddy-git><a class=heading-anchor href=#forking-caddy-git>##</a>
+Forking caddy-git</h2><div class="alert alert-"><span style=font-weight:700></span>
+If you&rsquo;re not interested in the implementation details of the fork, please skip
+to the <a href=#success>next section</a>.</div><p>Taking at look at the <a href=https://github.com/greenpau/caddy-git target=_blank rel=noopener>source</a> of
+<code>caddy-git</code>, we see that it handles the fetching and pulling of the latest
+commits in the <code>runUpdate()</code> method:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>r</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Repository</span>) <span style=color:#a6e22e>runUpdate</span>() <span style=color:#66d9ef>error</span> {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// truncated
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>w</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>repo</span>.<span style=color:#a6e22e>Worktree</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// truncated
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Pull</span>(<span style=color:#a6e22e>opts</span>); <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>==</span> <span style=color:#a6e22e>git</span>.<span style=color:#a6e22e>NoErrAlreadyUpToDate</span> {
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>logger</span>.<span style=color:#a6e22e>Debug</span>(
+</span></span><span style=display:flex><span>				<span style=color:#e6db74>&#34;repo is already up to date&#34;</span>,
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>zap</span>.<span style=color:#a6e22e>String</span>(<span style=color:#e6db74>&#34;repo_name&#34;</span>, <span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Config</span>.<span style=color:#a6e22e>Name</span>),
+</span></span><span style=display:flex><span>			)
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// truncated
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span></code></pre></div><p>Specifically, it initializes a worktree and attempts to pull the latest commits
+from the remote repository. This isn&rsquo;t really telling us why its failing so we
+have to go deeper and look at the implementation of the <code>w.Pull()</code> method.</p><p>The <code>caddy-git</code> plugin utilizes the <code>go-git</code>
+<a href=https://github.com/go-git/go-git/tree/master target=_blank rel=noopener>library</a>, a pure Go
+implementation of Git. However, it seems that the <code>go-git</code> library <a href=https://github.com/go-git/go-git/blob/master/COMPATIBILITY.md#sharing-and-updating-projects target=_blank rel=noopener>only
+supports</a>
+fast-forward merges, throwing an <code>ErrNonFastForwardUpdate</code> error otherwise.</p><p>Okay, there should be a <code>force</code> option somewhere that we can add to override
+this behaviour. Looking at the
+<a href=https://pkg.go.dev/github.com/go-git/go-git target=_blank rel=noopener>godocs</a>, there seems to be a
+<code>Force</code> boolean in <code>PullOptions</code> that we could try:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>PullOptions</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// Force allows the pull to update a local branch even when the remote
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// branch does not descend from it.
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>Force</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>On closer inspection, this <a href=https://github.com/go-git/go-git/issues/358 target=_blank rel=noopener>does not
+work</a>.</p><details><summary>Why doesn&rsquo;t it work?</summary><p>The <code>w.Pull()</code> method calls <code>w.PullContext()</code> which passes the <code>Force</code> boolean
+in <code>PullOptions</code> to the <code>fetch()</code> method:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>w</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Worktree</span>) <span style=color:#a6e22e>PullContext</span>(<span style=color:#a6e22e>ctx</span> <span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>Context</span>, <span style=color:#a6e22e>o</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>PullOptions</span>) <span style=color:#66d9ef>error</span> {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// truncated
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>remote</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Remote</span>(<span style=color:#a6e22e>o</span>.<span style=color:#a6e22e>RemoteName</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>err</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fetchHead</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>remote</span>.<span style=color:#a6e22e>fetch</span>(<span style=color:#a6e22e>ctx</span>, <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>FetchOptions</span>{
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// truncated
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#a6e22e>Force</span>:           <span style=color:#a6e22e>o</span>.<span style=color:#a6e22e>Force</span>,
+</span></span><span style=display:flex><span>	})
+</span></span></code></pre></div><p>This method merely fetches the references of the repository and doesn&rsquo;t merge
+them. Its akin to running <code>git fetch</code> instead of <code>git fetch && git merge FETCH_HEAD</code>. Adding the <code>Force</code> boolean allows <code>go-git</code> to fetch remote commits
+of unrelated histories, but it does nothing of merging them.</p><p>Sure enough, we see this in the later part of
+<code>PullContext()</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>    <span style=color:#a6e22e>ff</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>isFastForward</span>(<span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Storer</span>, <span style=color:#a6e22e>head</span>.<span style=color:#a6e22e>Hash</span>(), <span style=color:#a6e22e>ref</span>.<span style=color:#a6e22e>Hash</span>(), <span style=color:#a6e22e>earliestShallow</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>err</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> !<span style=color:#a6e22e>ff</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>ErrNonFastForwardUpdate</span>
+</span></span><span style=display:flex><span>    }
+</span></span></code></pre></div><p>where the error we encountered, <code>ErrNonFastForwardUpdate</code> is thrown with no way
+to bypass it with the <code>Force</code> boolean.</p></details><p>As such, we need to force the repository to destructively rewrite its local
+history using another way. The most destructive action is <code>git reset --hard</code>,
+and we can use it to reset the repository HEAD to the latest remote reference:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ git fetch origin
+</span></span><span style=display:flex><span>$ git reset --hard origin/deploy
+</span></span></code></pre></div><p>To do so, first, we have to add an additional conditional in <code>caddy-git</code>&rsquo;s
+<code>runUpdate()</code> method that handles the <code>ErrNonFastForwardUpdate</code> error:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>r</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Repository</span>) <span style=color:#a6e22e>runUpdate</span>() <span style=color:#66d9ef>error</span> {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// truncated
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Pull</span>(<span style=color:#a6e22e>opts</span>); <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>==</span> <span style=color:#a6e22e>git</span>.<span style=color:#a6e22e>NoErrAlreadyUpToDate</span> {
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>logger</span>.<span style=color:#a6e22e>Debug</span>(
+</span></span><span style=display:flex><span>				<span style=color:#e6db74>&#34;repo is already up to date&#34;</span>,
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>zap</span>.<span style=color:#a6e22e>String</span>(<span style=color:#e6db74>&#34;repo_name&#34;</span>, <span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Config</span>.<span style=color:#a6e22e>Name</span>),
+</span></span><span style=display:flex><span>			)
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span> 		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>==</span> <span style=color:#a6e22e>git</span>.<span style=color:#a6e22e>ErrNonFastForwardUpdate</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Config</span>.<span style=color:#a6e22e>Force</span> {
+</span></span><span style=display:flex><span>            <span style=color:#75715e>// implementation goes here
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>        } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>err</span>
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// truncated
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Next, we get the latest remote reference from the repository, i.e. the reference
+that we wish to pull. Note that Git is able to find that reference because it
+has fetched it earlier when running the <code>w.Pull()</code> method; it was just unable to
+merge the two diverging histories.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>==</span> <span style=color:#a6e22e>git</span>.<span style=color:#a6e22e>ErrNonFastForwardUpdate</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Config</span>.<span style=color:#a6e22e>Force</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>remoteRef</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>plumbing</span>.<span style=color:#a6e22e>NewRemoteReferenceName</span>(<span style=color:#a6e22e>opts</span>.<span style=color:#a6e22e>RemoteName</span>, <span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Config</span>.<span style=color:#a6e22e>Branch</span>)
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>ref</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>repo</span>.<span style=color:#a6e22e>Reference</span>(<span style=color:#a6e22e>remoteRef</span>, <span style=color:#66d9ef>true</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>err</span>
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span></code></pre></div><p>Then, with that remote reference&rsquo;s hash, we perform a hard reset, effectively
+rewriting all local history to match the remote reference&rsquo;s history.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>==</span> <span style=color:#a6e22e>git</span>.<span style=color:#a6e22e>ErrNonFastForwardUpdate</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Config</span>.<span style=color:#a6e22e>Force</span> {
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// truncated
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>resetOpts</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>git</span>.<span style=color:#a6e22e>ResetOptions</span>{
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>Commit</span>: <span style=color:#a6e22e>ref</span>.<span style=color:#a6e22e>Hash</span>(),
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>Mode</span>:   <span style=color:#a6e22e>git</span>.<span style=color:#a6e22e>HardReset</span>,
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>err</span> = <span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Reset</span>(<span style=color:#a6e22e>resetOpts</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>err</span>
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>logger</span>.<span style=color:#a6e22e>Info</span>(
+</span></span><span style=display:flex><span>            <span style=color:#e6db74>&#34;force hard reset from remote&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>zap</span>.<span style=color:#a6e22e>String</span>(<span style=color:#e6db74>&#34;remote_ref&#34;</span>, <span style=color:#a6e22e>remoteRef</span>.<span style=color:#a6e22e>String</span>()),
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>zap</span>.<span style=color:#a6e22e>Any</span>(<span style=color:#e6db74>&#34;commit&#34;</span>, <span style=color:#a6e22e>ref</span>.<span style=color:#a6e22e>Hash</span>()),
+</span></span><span style=display:flex><span>        )
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>
+</span></span><span style=display:flex><span>    } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>err</span>
+</span></span><span style=display:flex><span>    }
+</span></span></code></pre></div><p>All that&rsquo;s left now is to build a custom Caddy image with our fork and run it.</p><details><summary>Building the custom Caddy image</summary><p><a href=https://github.com/caddyserver/xcaddy target=_blank rel=noopener>xcaddy</a> can do this very simply
+as it supports forks and branches:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Dockerfile data-lang=Dockerfile><span style=display:flex><span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> caddy:2.7.5-builder-alpine AS builder</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> xcaddy build <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --with github.com/greenpau/caddy-git<span style=color:#f92672>=</span>github.com/kencx/caddy-git@force-pull <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --with github.com/caddy-dns/cloudflare<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> caddy:2.7.5-alpine</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> --from<span style=color:#f92672>=</span>builder /usr/bin/caddy /usr/bin/caddy<span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div></details><h2 class=headings id=success><a class=heading-anchor href=#success>##</a>
+Success</h2><p>With our custom Caddy build, we can add the new flag to our <code>Caddyfile</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    git {
+</span></span><span style=display:flex><span>        repo source {
+</span></span><span style=display:flex><span>            base_dir /srv
+</span></span><span style=display:flex><span>            url https://github.com/kencx/source.git
+</span></span><span style=display:flex><span>            branch deploy
+</span></span><span style=display:flex><span><span style=color:#a6e22e>+           force true
+</span></span></span><span style=display:flex><span><span style=color:#a6e22e></span>            update every 1800
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>and success!</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>2024/02/23 13:22:44.049 INFO    using provided configuration    {&#34;config_file&#34;: &#34;./Caddyfile&#34;, &#34;config_adapter&#34;: &#34;&#34;}
+</span></span><span style=display:flex><span>2024/02/23 13:22:44.050 INFO    admin   admin endpoint started  {&#34;address&#34;: &#34;localhost:2019&#34;, &#34;enforce_origin&#34;: false, &#34;origins&#34;: [&#34;//localhost:2019&#34;, &#34;//[::1]:2019&#34;, &#34;//127.0.0.1:2019&#34;]}
+</span></span><span style=display:flex><span>2024/02/23 13:22:44.050 INFO    git     provisioning app instance       {&#34;app&#34;: &#34;git&#34;}
+</span></span><span style=display:flex><span>2024/02/23 13:22:44.727 INFO    git     force hard reset from remote    {&#34;remote_ref&#34;: &#34;refs/remotes/origin/deploy&#34;, &#34;commit&#34;: &#34;7b230c533992a957dedfd07260c0f0cc9b62a540&#34;}
+</span></span><span style=display:flex><span>2024/02/23 13:22:44.727 INFO    git     provisioned app instance        {&#34;app&#34;: &#34;git&#34;}
+</span></span></code></pre></div><h2 class=headings id=summary><a class=heading-anchor href=#summary>##</a>
+Summary</h2><p>Once again, here are all the things I tried in order to automate the deployment
+of a static site from GitHub to a VPS server, in increasing complexity:</p><ul><li>Host the site on GitHub Pages or Netlify</li><li>Run a cronjob on the server that automatically pulls the <code>deploy</code> branch at a
+given interval</li><li><code>scp</code> or <code>rsync</code> the generated static files to the server using GitHub Actions</li><li>Containerize the static files into a Nginx container. This Docker image is run
+on the VPS with a sidecar <a href=https://containrrr.dev/watchtower/ target=_blank rel=noopener>Watchtower</a>
+container that listens for new images</li><li>Run a webhook server on the VPS that listens for webhook requests from the
+source repository. When a new build is ready, GitHub sends a POST request to
+the webhook server which runs a shell script to pull the new changes</li><li>Fork <code>caddy-git</code> to implement a new <code>force</code> flag so that Caddy can
+successfully force pull the <code>deploy</code> branch at a given interval (the one I&rsquo;m
+using now)</li></ul><p>I must emphasize that I really do believe in simple implementations of software
+and <a href=https://grugbrain.dev/#grug-on-complexity target=_blank rel=noopener>reducing complexity</a>, especially
+at work. But the reasons why I opted for the last method now were because:</p><ul><li>I was already using Caddy as a reverse proxy for some other sites hosted on
+the same VPS</li><li>I was already building a custom image of <code>Caddy</code> because I was using the
+Cloudflare <code>caddy-dns</code> plugin</li></ul><p>and most importantly,</p><ul><li>I found a non-trivial problem that I felt could be solved by tracing the
+source code in <code>caddy-git</code> and <code>go-git</code> and I was excited to come up with a
+solution that works</li></ul><p>If you don&rsquo;t share any of these reasons, maybe just
+<a href=https://en.wikipedia.org/wiki/KISS_principle target=_blank rel=noopener>KISS</a> and stick to the cronjob.</p><div class=meta>Edited: 22 Jun 2025<div class=tags><a href=https://ken.cheo.dev/tags/automation/>#automation</a>
+<a href=https://ken.cheo.dev/tags/caddy/>#caddy</a>
+<a href=https://ken.cheo.dev/tags/git/>#git</a>
+<a href=https://ken.cheo.dev/tags/github_actions/>#github_actions</a></div></div></div><aside class=tableOfContents><div style=margin-top:.8rem><a href=# style=font-weight:700>Table of Contents</a></div><nav id=TableOfContents><ul><li><a href=#wheres-the-automation>Where&rsquo;s the automation?</a></li><li><a href=#caddy-git>caddy-git</a></li><li><a href=#forking-caddy-git>Forking caddy-git</a></li><li><a href=#success>Success</a></li><li><a href=#summary>Summary</a></li></ul></nav></aside></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>

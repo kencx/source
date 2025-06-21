@@ -1,0 +1,21 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,
+	shrink-to-fit=no"><meta name=robots content="noodp"><title>How to ignore SSL cert verification in Powershell</title><link rel="shortcut icon" type=image/svg href=https://ken.cheo.dev/favicon.svg><link rel=stylesheet href=/assets/css/bundle.min.1982b439a3c9e329cd05a67408cce138a0250e43504cf189686579d4a8d310bdd8a8cb7f4a37831e5d30ac27af1aac4dd90d3b35eb6e0f9d65cca0eb97a6b460.css integrity="sha512-GYK0OaPJ4ynNBaZ0CMzhOKAlDkNQTPGJaGV51KjTEL3YqMt/SjeDHl0wrCevGqxN2Q07NetuD51lzKDrl6a0YA=="><link rel=alternate type=application/rss+xml href=https://ken.cheo.dev/index.xml title=cheo.dev></head><body id=top><header></header><nav role=navigation><a class=navbar href=https://ken.cheo.dev/>Home</a>
+<a class=navbar href=/posts/>Posts</a>
+<a class=navbar href=/projects/>Projects</a>
+<a class=navbar href=/tags/>Tags</a></nav><main class=content><div><h1>How to ignore SSL cert verification in Powershell<div class=meta>19 Feb 2025
+• 1 min</div></h1><p>In Powershell 5.1, there is no flag to easily ignore SSL/TLS verification in <code>curl</code> or <code>Invoke-WebRequest</code>. The following is a workaround:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span>add-type <span style=color:#e6db74>@&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    using System.Net;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    using System.Security.Cryptography.X509Certificates;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    public class TrustAllCertsPolicy : ICertificatePolicy {
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        public bool CheckValidationResult(
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            ServicePoint srvPoint, X509Certificate certificate,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            WebRequest request, int certificateProblem) {
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            return true;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>&#34;@</span>
+</span></span><span style=display:flex><span>[<span style=color:#66d9ef>System.Net.ServicePointManager</span>]::CertificatePolicy = New-Object TrustAllCertsPolicy
+</span></span><span style=display:flex><span>Invoke-WebRequest -Uri <span style=color:#e6db74>&#34;https://api.example.com&#34;</span>
+</span></span></code></pre></div><p>In Powershell >7, we can use the <code>-SkipCertificateCheck</code> flag.</p><h2 class=headings id=references><a class=heading-anchor href=#references>##</a>
+References</h2><ul><li><a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-7.5" target=_blank rel=noopener>Powershell - Invoke-WebRequest</a></li></ul><div class=meta><div class=tags><a href=https://ken.cheo.dev/tags/curl/>#curl</a>
+<a href=https://ken.cheo.dev/tags/powershell/>#powershell</a></div></div></div></main><footer><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>&copy; 2021—2025</a><div class=icons style=float:right><a href=#top><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></a></div></footer></body></html>
