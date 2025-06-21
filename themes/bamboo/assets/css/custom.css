@@ -55,6 +55,9 @@
     --b-bg-2: hsl(150, 5%, 25%);
     --b-link: #fa9b60;
   }
+  details, .alert, .quote {
+    background: var(--b-btn-bg);
+  }
 }
 
 html {
@@ -64,10 +67,6 @@ html {
 body {
   line-height: 1.75;
   max-width: 80ch;
-}
-
-details {
-  background: var(--b-btn-bg);
 }
 
 /* nav */
@@ -235,7 +234,7 @@ pre, code, kbd, samp, tt, var {
   padding: .5rem 1rem;
   margin-left: 0;
   margin-bottom: 1.5rem;
-  background: var(--b-btn-bg);
+  background: var(--b-bg-2);
   border: 1px solid var(--b-line);
   border-radius: .25rem;
 }
@@ -243,7 +242,7 @@ pre, code, kbd, samp, tt, var {
 .quote {
   margin: 1.5rem;
   padding: .5rem 1rem;
-  background: var(--b-btn-bg);
+  background: var(--b-bg-2);
   border: 1px solid var(--b-line);
   border-radius: .25rem;
 }
