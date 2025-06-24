@@ -45,6 +45,8 @@
       {% if hash %}
       {% set truncated = hash | truncate(length=7, end="") %}
       <a href="{{ config.extra.source }}/commit/{{ truncated }}">{{ truncated }}</a>
+      {% else %}
+      <a href="{{ config.extra.source }}">Source</a>
       {% endif %}
     {% endif %}
   </span>
