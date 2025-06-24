@@ -36,7 +36,7 @@
   {% set year = now() | date(format="%Y") %}
   <span>
     © {{ config.extra.copyright | replace(from="{year}", to=year) }} •
-    {% set hash = load_data(path="refs/heads/master", required=false) %}
+    {% set hash = load_data(path="master", required=false) %}
     {% if hash %}
     {% set truncated = hash | truncate(length=7, end="") %}
     <a href="{{ config.extra.source }}/commit/{{ truncated }}">{{ truncated }}</a>
