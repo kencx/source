@@ -10,4 +10,4 @@ I write stuff sometimes.
 - [Links](/links)
 - [Colophon](/colophon)
 - [Github](https://github.com/kencx)
-- [RSS](/posts/index.xml)
+- [RSS](/posts/rss.xml)

@@ -11,7 +11,9 @@ compile_sass = false
 build_search_index = false
 
 generate_sitemap = true
-generate_feeds = true
+exclude_paginated_pages_in_sitemap = "all"
+
+generate_feeds = false
 feed_filenames = ["rss.xml"]
 
 ignored_content = []
