@@ -389,7 +389,7 @@ pre, code, kbd, samp, tt, var {
   .books .book a {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 0.5rem;
-    margin-bottom: 1.75rem;
+    grid-gap: 0.1rem;
+    margin-bottom: 1rem;
   }
 }
