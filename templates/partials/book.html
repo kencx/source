@@ -1,0 +1,11 @@
+<li>
+    <div class="book">
+      <a href="{{ book.url }}">
+        <span class="title">{{ book.title }}</span>
+        <span class="author">{{ book.authors }}</span>
+        {%- if book.date %}
+        <span class="date">{{ book.date }}</span>
+        {%- endif %}
+      </a>
+    </div>
+</li>

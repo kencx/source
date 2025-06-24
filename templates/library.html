@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  <h1>
+    {{ page.title }}
+    <div class="meta">
+      Last updated: {{ page.updated | date(format="%Y-%m-%d") }}
+    </div>
+  </h1>
+
+  {% if page.content %}
+  {{ page.content | safe }}
+  {% endif %}
+
+  {% set books = load_data(path=page.extra.data) %}
+
+  <ul class="books list-view">
+    {% for book in books %}
+      {% include "partials/book.html" %}
+    {% endfor %}
+  </ul>
+
+  {% if page.extra.footnote %}
+  {{ page.extra.footnote | markdown | safe }}
+  {% endif %}
+</div>
+{% endblock content %}

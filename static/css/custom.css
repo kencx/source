@@ -310,7 +310,7 @@ pre, code, kbd, samp, tt, var {
 }
 
 /* books */
-.card-view {
+.books .card-view {
   /* auto scaling grid with max num of columns and min width*/
   /* https://css-tricks.com/an-auto-filling-css-grid-with-max-columns/ */
   --grid-layout-gap: 1.4rem;
@@ -363,4 +363,33 @@ pre, code, kbd, samp, tt, var {
   font-size: 0.7rem;
   color: var(--b-fade);
   font-weight: normal;
+}
+
+.books, .list-view {
+  list-style: none;
+  padding-left: 1rem;
+}
+
+.books .book a {
+  display: grid;
+  grid-template-columns: 1fr 12rem max-content;
+  grid-gap: 0.95rem;
+
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: var(--b-txt);
+}
+
+.books .book a:hover {
+  text-decoration: none;
+  background: var(--b-bg-2);
+}
+
+@media only screen and (max-width: 1280px) {
+  .books .book a {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.5rem;
+    margin-bottom: 1.75rem;
+  }
 }
