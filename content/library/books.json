@@ -18,22 +18,17 @@
     "date": "2025-05-20"
   },
   {
-    "title": "A Drop of Corruption",
+    "title": "Shadow of the Leviathan Series",
     "isbn": "",
     "authors": "Robert Jackson Bennett",
     "url": "",
     "cover_url": "",
     "cover": "",
-    "date": "2025-05-11"
-  },
-  {
-    "title": "The Tainted Cup",
-    "isbn": "",
-    "authors": "Robert Jackson Bennett",
-    "url": "",
-    "cover_url": "",
-    "cover": "",
-    "date": "2025-04-25"
+    "date": "2025-05-11",
+    "books": [
+      {"title": "The Tainted Cup", "date": "2025-04-25"},
+      {"title": "A Drop of Corruption", "date": "2025-05-11"}
+    ]
   },
   {
     "title": "Alien Clay",
@@ -54,13 +49,16 @@
     "date": "2025-01-19"
   },
   {
-    "title": "The Mercy of Gods",
+    "title": "The Captive's War Series",
     "isbn": "",
     "authors": "James S.A. Corey",
     "url": "",
     "cover_url": "",
     "cover": "",
-    "date": "2024-12-23"
+    "date": "2024-12-23",
+    "books": [
+      {"title": "The Mercy of Gods", "date": "2024-12-23"}
+    ]
   },
   {
     "title": "The Player of Games",
@@ -123,7 +121,16 @@
     "url": "https://openlibrary.org/books/OL26500848M/All_Systems_Red_The_Murderbot_Diaries",
     "cover_url": "https://covers.openlibrary.org/b/id/9157148-M.jpg",
     "cover": "all_systems_red.jpg",
-    "date": "2024-07-06"
+    "date": "2024-07-06",
+    "books": [
+      {"title": "All Systems Red", "date": "2023-06-03"},
+      {"title": "Artificial Condition", "date": "2023-06-04"},
+      {"title": "Rogue Protocol", "date": "2023-06-05"},
+      {"title": "Exit Strategy", "date": "2023-06-05"},
+      {"title": "Network Effect", "date": "2023-06-07"},
+      {"title": "Fugitive Telemetry", "date": "2023-06-11"},
+      {"title": "System Collapse", "date": "2024-07-06"}
+    ]
   },
   {
     "title": "Radicalized",
@@ -162,22 +169,33 @@
     "date": "2023-10-04"
   },
   {
-    "title": "Judas Unchained",
-    "isbn": "9780345461674",
-    "authors": "Peter F. Hamilton",
-    "url": "https://openlibrary.org/books/OL25612667M/Judas_Unchained",
-    "cover_url": null,
-    "cover": "judas_unchained.jpg",
-    "date": "2023-09-22"
-  },
-  {
-    "title": "Pandora's Star",
+    "title": "The Commonwealth Saga Series",
     "isbn": "9780345479211",
     "authors": "Peter F. Hamilton",
     "url": "https://openlibrary.org/books/OL20239201M/Pandora's_Star",
     "cover_url": "https://covers.openlibrary.org/b/id/10294867-M.jpg",
     "cover": "pandora's_star.jpg",
-    "date": "2023-09-15"
+    "date": "2023-09-22",
+    "books": [
+      {
+        "title": "Pandora's Star",
+        "isbn": "9780345479211",
+        "authors": "Peter F. Hamilton",
+        "url": "https://openlibrary.org/books/OL20239201M/Pandora's_Star",
+        "cover_url": "https://covers.openlibrary.org/b/id/10294867-M.jpg",
+        "cover": "pandora's_star.jpg",
+        "date": "2023-09-15"
+      },
+      {
+        "title": "Judas Unchained",
+        "isbn": "9780345461674",
+        "authors": "Peter F. Hamilton",
+        "url": "https://openlibrary.org/books/OL25612667M/Judas_Unchained",
+        "cover_url": null,
+        "cover": "judas_unchained.jpg",
+        "date": "2023-09-22"
+      }
+    ]
   },
   {
     "title": "Sixteen Ways to Defend a Walled City",
@@ -243,15 +261,6 @@
     "date": "2023-03-18"
   },
   {
-    "title": "A Desolation Called Peace",
-    "isbn": "9781250186461",
-    "authors": "Arkady Martine",
-    "url": "https://openlibrary.org/books/OL28203910M/A_Desolation_Called_Peace",
-    "cover_url": "https://covers.openlibrary.org/b/id/10718806-M.jpg",
-    "cover": "a_desolation_called_peace.jpg",
-    "date": "2023-03-04"
-  },
-  {
     "title": "Solaris",
     "isbn": "0802755267",
     "authors": "Stanisław Lem",
@@ -270,13 +279,33 @@
     "date": "2023-02-07"
   },
   {
-    "title": "A Memory Called Empire",
+    "title": "Texicalaan Series",
     "isbn": "1529001587",
     "authors": "Arkady Martine",
     "url": "https://openlibrary.org/books/OL28211764M/A_Memory_Called_Empire",
     "cover_url": "https://covers.openlibrary.org/b/id/10145992-M.jpg",
     "cover": "a_memory_called_empire.jpg",
-    "date": "2023-02-05"
+    "date": "2023-03-04",
+    "books": [
+      {
+        "title": "A Memory Called Empire",
+        "isbn": "1529001587",
+        "authors": "Arkady Martine",
+        "url": "https://openlibrary.org/books/OL28211764M/A_Memory_Called_Empire",
+        "cover_url": "https://covers.openlibrary.org/b/id/10145992-M.jpg",
+        "cover": "a_memory_called_empire.jpg",
+        "date": "2023-02-05"
+      },
+      {
+        "title": "A Desolation Called Peace",
+        "isbn": "9781250186461",
+        "authors": "Arkady Martine",
+        "url": "https://openlibrary.org/books/OL28203910M/A_Desolation_Called_Peace",
+        "cover_url": "https://covers.openlibrary.org/b/id/10718806-M.jpg",
+        "cover": "a_desolation_called_peace.jpg",
+        "date": "2023-03-04"
+      }
+    ]
   },
   {
     "title": "Spin",
@@ -288,31 +317,42 @@
     "date": "2023-01-25"
   },
   {
-    "title": "Children of Memory",
-    "isbn": "0316466409",
-    "authors": "Adrian Tchaikovsky",
-    "url": "https://openlibrary.org/books/OL38410196M/Children_of_Memory",
-    "cover_url": null,
-    "cover": "children_of_memory.jpg",
-    "date": "2023-01-22"
-  },
-  {
-    "title": "Children of Ruin",
-    "isbn": "031645253X",
-    "authors": "Adrian Tchaikovsky",
-    "url": "https://openlibrary.org/books/OL27259544M/Children_of_Ruin",
-    "cover_url": "https://covers.openlibrary.org/b/id/8750923-M.jpg",
-    "cover": "children_of_ruin.jpg",
-    "date": "2023-01-19"
-  },
-  {
-    "title": "Children of Time",
+    "title": "Children of Time Series",
     "isbn": "0316452505",
     "authors": "Adrian Tchaikovsky",
     "url": "https://openlibrary.org/books/OL27322146M/Children_of_Time",
     "cover_url": "https://covers.openlibrary.org/b/id/14361783-M.jpg",
     "cover": "children_of_time.jpg",
-    "date": "2022-12-19"
+    "date": "2023-01-22",
+    "books": [
+      {
+        "title": "Children of Time",
+        "isbn": "0316452505",
+        "authors": "Adrian Tchaikovsky",
+        "url": "https://openlibrary.org/books/OL27322146M/Children_of_Time",
+        "cover_url": "https://covers.openlibrary.org/b/id/14361783-M.jpg",
+        "cover": "children_of_time.jpg",
+        "date": "2022-12-19"
+      },
+      {
+        "title": "Children of Ruin",
+        "isbn": "031645253X",
+        "authors": "Adrian Tchaikovsky",
+        "url": "https://openlibrary.org/books/OL27259544M/Children_of_Ruin",
+        "cover_url": "https://covers.openlibrary.org/b/id/8750923-M.jpg",
+        "cover": "children_of_ruin.jpg",
+        "date": "2023-01-19"
+      },
+      {
+        "title": "Children of Memory",
+        "isbn": "0316466409",
+        "authors": "Adrian Tchaikovsky",
+        "url": "https://openlibrary.org/books/OL38410196M/Children_of_Memory",
+        "cover_url": null,
+        "cover": "children_of_memory.jpg",
+        "date": "2023-01-22"
+      }
+    ]
   },
   {
     "title": "House of Suns",
@@ -393,7 +433,18 @@
     "url": "https://openlibrary.org/books/OL32667325M/Leviathan_Wakes",
     "cover_url": "https://covers.openlibrary.org/b/id/11295081-M.jpg",
     "cover": "leviathan_wakes.jpg",
-    "date": "2021-12-18"
+    "date": "2022-10-26",
+    "books": [
+      {"title": "Leviathan Wakes", "date": "2020-07-05"},
+      {"title": "Caliban's War", "date": "2020-07-08"},
+      {"title": "Abaddon's Gate", "date": "2022-09-25"},
+      {"title": "Cibola Burn", "date": "2022-10-07"},
+      {"title": "Nemesis Games", "date": "2022-10-10"},
+      {"title": "Babylon's Ashes", "date": "2022-10-13"},
+      {"title": "Persepolis Rising", "date": "2022-10-16"},
+      {"title": "Tiamat's Wrath", "date": "2022-10-21"},
+      {"title": "Leviathan Falls", "date": "2022-10-26"}
+    ]
   },
   {
     "title": "Foundation",
@@ -465,7 +516,12 @@
     "url": "https://openlibrary.org/books/OL39480276M/Red_Rising",
     "cover_url": null,
     "cover": "red_rising.jpg",
-    "date": "2018-11-16"
+    "date": "2018-11-16",
+    "books": [
+      {"title": "Red Rising", "date": "2018-11-05"},
+      {"title": "Golden Son", "date": "2018-11-10"},
+      {"title": "Morning Star", "date": "2018-11-16"}
+    ]
   },
   {
     "title": "Slaughterhouse V",

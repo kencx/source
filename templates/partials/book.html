@@ -1,4 +1,21 @@
 <li>
+    {% if book.books %}
+    <details class="book">
+      <summary>
+        <span class="title">{{ book.title }} ({{ book.books | length }} book{{ book.books | length | pluralize }})</span>
+        <span class="author">{{ book.authors }}</span>
+        {%- if book.date %}
+        <span class="date">{{ book.date }}</span>
+        {%- endif %}
+      </summary>
+      {% for b in book.books %}
+        <div class="series">
+          <span class="title">{{ b.title }}</span>
+          <span class="date">{{ b.date }}</span>
+        </div>
+      {% endfor %}
+    </details>
+    {% else %}
     <div class="book">
       <a href="{{ book.url }}">
         <span class="title">{{ book.title }}</span>
@@ -8,4 +25,5 @@
         {%- endif %}
       </a>
     </div>
+    {% endif %}
 </li>

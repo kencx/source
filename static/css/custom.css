@@ -393,3 +393,68 @@ pre, code, kbd, samp, tt, var {
     margin-bottom: 1rem;
   }
 }
+
+li details.book {
+  background: var(--b-bg-1);
+  border: none;
+  border-radius: unset;
+  padding: unset;
+  margin: unset;
+}
+
+li details.book:hover {
+  text-decoration: none;
+  background: var(--b-bg-2);
+}
+
+li details[open].book:hover {
+  background: var(--b-bg-1);
+}
+
+li details.book > summary {
+  display: grid;
+  grid-template-columns: 1fr 12rem max-content;
+  grid-gap: 0.95rem;
+
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: var(--b-txt);
+
+  font-weight: normal;
+}
+
+li details[open].book > summary {
+  margin-bottom: 0;
+}
+
+li details.book > .series {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  grid-gap: 0.95rem;
+
+  margin-left: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+li details.book > .series:hover {
+  text-decoration: none;
+  background: var(--b-bg-2);
+}
+
+@media only screen and (max-width: 1280px) {
+  li details.book > summary {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 0.1rem;
+    margin-bottom: 1rem;
+  }
+
+  li details.book > .series {
+    margin-left: 0.75rem;
+  }
+
+  li details.book > .series:last-child {
+    margin-bottom: 1rem
+  }
+}
