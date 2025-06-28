@@ -7,7 +7,7 @@ draft = false
 tags = ["linux"]
 +++
 
-`X` (capital `x`) is a special flag in `chmod` that:
+The conditional execute flag `X` (uppercase) is a special flag in `chmod` that:
 
 {% quote(source="[chmod(1)](https://www.mankier.com/1/chmod)") %}
 execute/search only if the file is a directory or already has execute

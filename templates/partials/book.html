@@ -2,7 +2,7 @@
     {% if book.books %}
     <details class="book">
       <summary>
-        <span class="title">{{ book.title }} ({{ book.books | length }} book{{ book.books | length | pluralize }})</span>
+        <span class="title">{{ book.title }} ({{ book.books | length }})</span>
         <span class="author">{{ book.authors }}</span>
         {%- if book.date %}
         <span class="date">{{ book.date }}</span>
@@ -12,6 +12,13 @@
         <div class="series">
           <span class="title">{{ b.title }}</span>
           <span class="date">{{ b.date }}</span>
+          {%- if b.rating %}
+          <span class="rating">
+          {% for i in range(end=b.rating) %}
+          ★
+          {% endfor %}
+          </span>
+          {%- endif %}
         </div>
       {% endfor %}
     </details>
@@ -22,6 +29,13 @@
         <span class="author">{{ book.authors }}</span>
         {%- if book.date %}
         <span class="date">{{ book.date }}</span>
+        {%- endif %}
+        {%- if book.rating %}
+        <span class="rating">
+        {% for i in range(end=book.rating) %}
+        ★
+        {% endfor %}
+        </span>
         {%- endif %}
       </a>
     </div>

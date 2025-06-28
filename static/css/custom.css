@@ -372,7 +372,7 @@ pre, code, kbd, samp, tt, var {
 
 .books .book a {
   display: grid;
-  grid-template-columns: 1fr 12rem max-content;
+  grid-template-columns: 1fr 12rem 6rem 5rem;
   grid-gap: 0.95rem;
 
   padding-top: 0.5rem;
@@ -413,7 +413,7 @@ li details[open].book:hover {
 
 li details.book > summary {
   display: grid;
-  grid-template-columns: 1fr 12rem max-content;
+  grid-template-columns: 1fr 12rem 6rem 5rem;
   grid-gap: 0.95rem;
 
   padding-top: 0.5rem;
@@ -429,7 +429,7 @@ li details[open].book > summary {
 
 li details.book > .series {
   display: grid;
-  grid-template-columns: 1fr max-content;
+  grid-template-columns: 1fr 6rem 5rem;
   grid-gap: 0.95rem;
 
   margin-left: 1.5rem;

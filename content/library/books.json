@@ -6,7 +6,8 @@
     "url": "",
     "cover_url": "",
     "cover": "",
-    "date": "2025-05-24"
+    "date": "2025-05-24",
+    "rating": 4
   },
   {
     "title": "Blood Over Bright Haven",
@@ -15,7 +16,8 @@
     "url": "",
     "cover_url": "",
     "cover": "",
-    "date": "2025-05-20"
+    "date": "2025-05-20",
+    "rating": 4
   },
   {
     "title": "Shadow of the Leviathan Series",
@@ -26,8 +28,8 @@
     "cover": "",
     "date": "2025-05-11",
     "books": [
-      {"title": "The Tainted Cup", "date": "2025-04-25"},
-      {"title": "A Drop of Corruption", "date": "2025-05-11"}
+      {"title": "The Tainted Cup", "date": "2025-04-25", "rating": 5},
+      {"title": "A Drop of Corruption", "date": "2025-05-11", "rating": 5}
     ]
   },
   {
@@ -37,7 +39,50 @@
     "url": "",
     "cover_url": "",
     "cover": "",
-    "date": "2025-04-23"
+    "date": "2025-04-23",
+    "rating": 3
+  },
+  {
+    "title": "The State of the Art",
+    "isbn": "",
+    "authors": "Iain M. Banks",
+    "url": "",
+    "cover_url": "",
+    "cover": "",
+    "date": "2025-02-22",
+    "rating": 4
+  },
+  {
+    "title": "Fine Structure",
+    "isbn": "",
+    "authors": "qntm",
+    "url": "",
+    "cover_url": "",
+    "cover": "",
+    "date": "2025-02-09",
+    "rating": 5
+  },
+  {
+    "title": "The Frugal Wizard's Handbook for Surviving Medieval England",
+    "isbn": "",
+    "authors": "Brandon Sanderson",
+    "url": "",
+    "cover_url": "",
+    "cover": "",
+    "date": "DNF"
+  },
+  {
+    "title": "Monk & Robot Series",
+    "isbn": "",
+    "authors": "Becky Chambers",
+    "url": "",
+    "cover_url": "",
+    "cover": "",
+    "date": "",
+    "books": [
+      {"title": "A Psalm for the Wild-Built", "date": "2025-01-25", "rating": 5},
+      {"title": "A Prayer for the Crown-Shy", "date": "2025-01-26", "rating": 5}
+    ]
   },
   {
     "title": "The Years of Rice and Salt",
@@ -46,7 +91,18 @@
     "url": "https://openlibrary.org/books/OL24224658M/The_years_of_rice_and_salt",
     "cover_url": "https://covers.openlibrary.org/b/id/6577355-M.jpg",
     "cover": "the_years_of_rice_and_salt.jpg",
-    "date": "2025-01-19"
+    "date": "2025-01-19",
+    "rating": 5
+  },
+  {
+    "title": "The Kaiju Preservation Society",
+    "isbn": "",
+    "authors": "John Scalzi",
+    "url": "",
+    "cover_url": "",
+    "cover": "",
+    "date": "2024-12-26",
+    "rating": 5
   },
   {
     "title": "The Captive's War Series",
@@ -57,7 +113,7 @@
     "cover": "",
     "date": "2024-12-23",
     "books": [
-      {"title": "The Mercy of Gods", "date": "2024-12-23"}
+      {"title": "The Mercy of Gods", "date": "2024-12-23", "rating": 4}
     ]
   },
   {
@@ -67,7 +123,8 @@
     "url": "https://openlibrary.org/books/OL10426057M/The_Player_of_Games",
     "cover_url": "https://covers.openlibrary.org/b/id/2378901-M.jpg",
     "cover": "the_player_of_games.jpg",
-    "date": "2024-09-29"
+    "date": "2024-09-29",
+    "rating": 5
   },
   {
     "title": "Ra",
@@ -76,7 +133,8 @@
     "url": "https://openlibrary.org/books/OL32826032M/Ra",
     "cover_url": "https://covers.openlibrary.org/b/id/11457994-M.jpg",
     "cover": "ra.jpg",
-    "date": "2024-09-13"
+    "date": "2024-09-13",
+    "rating": 5
   },
   {
     "title": "There is No Antimemetics Division",
@@ -85,7 +143,8 @@
     "url": "https://openlibrary.org/books/OL49226440M/There_is_No_Antimemetics_Division",
     "cover_url": "https://covers.openlibrary.org/b/id/0011457905-M.jpg",
     "cover": "there_is_no_antimemetics_division.jpg",
-    "date": "2024-08-18"
+    "date": "2024-08-18",
+    "rating": 5
   },
   {
     "title": "The Andromeda Strain",
@@ -94,7 +153,8 @@
     "url": "https://openlibrary.org/books/OL26824947M/The_Andromeda_Strain",
     "cover_url": "https://covers.openlibrary.org/b/id/12882897-M.jpg",
     "cover": "the_andromeda_strain.jpg",
-    "date": "2024-08-12"
+    "date": "2024-08-12",
+    "rating": 5
   },
   {
     "title": "Jurassic Park",
@@ -103,7 +163,18 @@
     "url": "",
     "cover_url": "",
     "cover": "",
-    "date": "2024-08-10"
+    "date": "2024-08-10",
+    "rating": 4
+  },
+  {
+    "title": "Lessons in Chemistry",
+    "isbn": "",
+    "authors": "Bonnie Garmus",
+    "url": "",
+    "cover_url": "",
+    "cover": "",
+    "date": "2024-08-02",
+    "rating": 5
   },
   {
     "title": "Remarkably Bright Creatures",
@@ -112,7 +183,8 @@
     "url": "https://openlibrary.org/books/OL40329349M/Remarkably_Bright_Creatures",
     "cover_url": "https://covers.openlibrary.org/b/id/14809662-M.jpg",
     "cover": "remarkably_bright_creatures.jpg",
-    "date": "2024-07-20"
+    "date": "2024-07-20",
+    "rating": 5
   },
   {
     "title": "The Murderbot Diaries Series",
@@ -123,13 +195,13 @@
     "cover": "all_systems_red.jpg",
     "date": "2024-07-06",
     "books": [
-      {"title": "All Systems Red", "date": "2023-06-03"},
-      {"title": "Artificial Condition", "date": "2023-06-04"},
-      {"title": "Rogue Protocol", "date": "2023-06-05"},
-      {"title": "Exit Strategy", "date": "2023-06-05"},
-      {"title": "Network Effect", "date": "2023-06-07"},
-      {"title": "Fugitive Telemetry", "date": "2023-06-11"},
-      {"title": "System Collapse", "date": "2024-07-06"}
+      {"title": "All Systems Red", "date": "2023-06-03", "rating": 5},
+      {"title": "Artificial Condition", "date": "2023-06-04", "rating": 5},
+      {"title": "Rogue Protocol", "date": "2023-06-05", "rating": 5},
+      {"title": "Exit Strategy", "date": "2023-06-05", "rating": 5},
+      {"title": "Network Effect", "date": "2023-06-07", "rating": 5},
+      {"title": "Fugitive Telemetry", "date": "2023-06-11", "rating": 5},
+      {"title": "System Collapse", "date": "2024-07-06", "rating": 5}
     ]
   },
   {
@@ -139,7 +211,8 @@
     "url": "https://openlibrary.org/books/OL28914815M/Radicalized",
     "cover_url": "https://covers.openlibrary.org/b/id/10722651-M.jpg",
     "cover": "radicalized.jpg",
-    "date": "2024-06-01"
+    "date": "2024-06-01",
+    "rating": 4
   },
   {
     "title": "Babel",
@@ -148,7 +221,8 @@
     "url": "",
     "cover_url": "",
     "cover": "",
-    "date": "2024-05-18"
+    "date": "2024-05-18",
+    "rating": 3
   },
   {
     "title": "The Dispossessed",
@@ -157,7 +231,8 @@
     "url": "https://openlibrary.org/books/OL1156124M/The_Dispossessed",
     "cover_url": "https://covers.openlibrary.org/b/id/6492681-M.jpg",
     "cover": "the_dispossessed.jpg",
-    "date": "2023-10-22"
+    "date": "2023-10-22",
+    "rating": 4
   },
   {
     "title": "The Left Hand of Darkness",
@@ -166,7 +241,8 @@
     "url": "https://openlibrary.org/books/OL31935740M/The_Left_Hand_of_Darkness",
     "cover_url": "https://covers.openlibrary.org/b/id/10618463-M.jpg",
     "cover": "the_left_hand_of_darkness.jpg",
-    "date": "2023-10-04"
+    "date": "2023-10-04",
+    "rating": 4
   },
   {
     "title": "The Commonwealth Saga Series",
@@ -184,7 +260,8 @@
         "url": "https://openlibrary.org/books/OL20239201M/Pandora's_Star",
         "cover_url": "https://covers.openlibrary.org/b/id/10294867-M.jpg",
         "cover": "pandora's_star.jpg",
-        "date": "2023-09-15"
+        "date": "2023-09-15",
+        "rating": 4
       },
       {
         "title": "Judas Unchained",
@@ -193,7 +270,8 @@
         "url": "https://openlibrary.org/books/OL25612667M/Judas_Unchained",
         "cover_url": null,
         "cover": "judas_unchained.jpg",
-        "date": "2023-09-22"
+        "date": "2023-09-22",
+        "rating": 5
       }
     ]
   },
@@ -204,7 +282,8 @@
     "url": "https://openlibrary.org/books/OL27340399M/Sixteen_Ways_to_Defend_a_Walled_City",
     "cover_url": "https://covers.openlibrary.org/b/id/8804476-M.jpg",
     "cover": "sixteen_ways_to_defend_a_walled_city.jpg",
-    "date": "2023-09-03"
+    "date": "2023-09-03",
+    "rating": 5
   },
   {
     "title": "A Deepness in the Sky",
@@ -213,7 +292,8 @@
     "url": "https://openlibrary.org/books/OL9347834M/A_Deepness_in_the_Sky_(Zones_of_Thought)",
     "cover_url": "https://covers.openlibrary.org/b/id/6621925-M.jpg",
     "cover": "a_deepness_in_the_sky_(zones_of_thought).jpg",
-    "date": "2023-07-13"
+    "date": "2023-07-13",
+    "rating": 5
   },
   {
     "title": "The Algebraist",
@@ -222,7 +302,17 @@
     "url": "https://openlibrary.org/books/OL8895416M/The_Algebraist",
     "cover_url": "https://covers.openlibrary.org/b/id/878449-M.jpg",
     "cover": "the_algebraist.jpg",
-    "date": "2023-06-25"
+    "date": "2023-06-25",
+    "rating": 5
+  },
+  {
+    "title": "This is How You Lose the Time War",
+    "isbn": "",
+    "authors": "Amal El-Mohtar, Max Gladstone",
+    "url": "",
+    "cover_url": "",
+    "cover": "",
+    "date": "DNF"
   },
   {
     "title": "Embassytown",
@@ -231,7 +321,8 @@
     "url": "https://openlibrary.org/books/OL24906070M/Embassytown",
     "cover_url": "https://covers.openlibrary.org/b/id/7958415-M.jpg",
     "cover": "embassytown.jpg",
-    "date": "2023-05-06"
+    "date": "2023-05-06",
+    "rating": 3
   },
   {
     "title": "Stories of Your Life and Others",
@@ -240,7 +331,8 @@
     "url": "https://openlibrary.org/books/OL9836567M/Stories_of_Your_Life_and_Others",
     "cover_url": "https://covers.openlibrary.org/b/id/197773-M.jpg",
     "cover": "stories_of_your_life_and_others.jpg",
-    "date": "2023-05-06"
+    "date": "2023-05-06",
+    "rating": 5
   },
   {
     "title": "Diaspora",
@@ -249,7 +341,8 @@
     "url": "https://openlibrary.org/books/OL9041059M/Diaspora.",
     "cover_url": "https://covers.openlibrary.org/b/id/1009216-M.jpg",
     "cover": "diaspora.jpg",
-    "date": "2023-04-23"
+    "date": "2023-04-23",
+    "rating": 5
   },
   {
     "title": "Blindsight",
@@ -258,7 +351,8 @@
     "url": "https://openlibrary.org/books/OL8053539M/Blindsight",
     "cover_url": "https://covers.openlibrary.org/b/id/524560-M.jpg",
     "cover": "blindsight.jpg",
-    "date": "2023-03-18"
+    "date": "2023-03-18",
+    "rating": 4
   },
   {
     "title": "Solaris",
@@ -267,7 +361,8 @@
     "url": "https://openlibrary.org/books/OL5219384M/Solaris",
     "cover_url": "https://covers.openlibrary.org/b/id/10534855-M.jpg",
     "cover": "solaris.jpg",
-    "date": "2023-02-16"
+    "date": "2023-02-16",
+    "rating": 5
   },
   {
     "title": "Dogs of War",
@@ -276,7 +371,8 @@
     "url": "https://openlibrary.org/books/OL34691140M/Dogs_of_War",
     "cover_url": null,
     "cover": "dogs_of_war.jpg",
-    "date": "2023-02-07"
+    "date": "2023-02-07",
+    "rating": 4
   },
   {
     "title": "Texicalaan Series",
@@ -294,7 +390,8 @@
         "url": "https://openlibrary.org/books/OL28211764M/A_Memory_Called_Empire",
         "cover_url": "https://covers.openlibrary.org/b/id/10145992-M.jpg",
         "cover": "a_memory_called_empire.jpg",
-        "date": "2023-02-05"
+        "date": "2023-02-05",
+        "rating": 5
       },
       {
         "title": "A Desolation Called Peace",
@@ -303,7 +400,8 @@
         "url": "https://openlibrary.org/books/OL28203910M/A_Desolation_Called_Peace",
         "cover_url": "https://covers.openlibrary.org/b/id/10718806-M.jpg",
         "cover": "a_desolation_called_peace.jpg",
-        "date": "2023-03-04"
+        "date": "2023-03-04",
+        "rating": 5
       }
     ]
   },
@@ -314,7 +412,8 @@
     "url": "https://openlibrary.org/books/OL24591590M/Spin",
     "cover_url": "https://covers.openlibrary.org/b/id/6679303-M.jpg",
     "cover": "spin.jpg",
-    "date": "2023-01-25"
+    "date": "2023-01-25",
+    "rating": 5
   },
   {
     "title": "Children of Time Series",
@@ -332,7 +431,8 @@
         "url": "https://openlibrary.org/books/OL27322146M/Children_of_Time",
         "cover_url": "https://covers.openlibrary.org/b/id/14361783-M.jpg",
         "cover": "children_of_time.jpg",
-        "date": "2022-12-19"
+        "date": "2022-12-19",
+        "rating": 5
       },
       {
         "title": "Children of Ruin",
@@ -341,7 +441,8 @@
         "url": "https://openlibrary.org/books/OL27259544M/Children_of_Ruin",
         "cover_url": "https://covers.openlibrary.org/b/id/8750923-M.jpg",
         "cover": "children_of_ruin.jpg",
-        "date": "2023-01-19"
+        "date": "2023-01-19",
+        "rating": 4
       },
       {
         "title": "Children of Memory",
@@ -350,7 +451,8 @@
         "url": "https://openlibrary.org/books/OL38410196M/Children_of_Memory",
         "cover_url": null,
         "cover": "children_of_memory.jpg",
-        "date": "2023-01-22"
+        "date": "2023-01-22",
+        "rating": 3
       }
     ]
   },
@@ -361,7 +463,8 @@
     "url": "https://openlibrary.org/books/OL30126560M/House_of_Suns",
     "cover_url": "https://covers.openlibrary.org/b/id/10439716-M.jpg",
     "cover": "house_of_suns.jpg",
-    "date": "2022-12-11"
+    "date": "2022-12-11",
+    "rating": 5
   },
   {
     "title": "Ideas",
@@ -370,7 +473,8 @@
     "url": "https://openlibrary.org/books/OL7285278M/Ideas",
     "cover_url": "https://covers.openlibrary.org/b/id/41277-M.jpg",
     "cover": "ideas.jpg",
-    "date": "2022-10-02"
+    "date": "2022-10-02",
+    "rating": 5
   },
   {
     "title": "All Quiet on the Western Front",
@@ -379,7 +483,8 @@
     "url": "https://openlibrary.org/books/OL37798555M/All_Quiet_on_the_Western_Front",
     "cover_url": "https://covers.openlibrary.org/b/id/12706791-M.jpg",
     "cover": "all_quiet_on_the_western_front.jpg",
-    "date": "2022-09-25"
+    "date": "2022-09-25",
+    "rating": 5
   },
   {
     "title": "A Fire upon the Deep",
@@ -388,7 +493,8 @@
     "url": "https://openlibrary.org/books/OL24207123M/A_Fire_upon_the_Deep",
     "cover_url": "https://covers.openlibrary.org/b/id/6501239-M.jpg",
     "cover": "a_fire_upon_the_deep.jpg",
-    "date": "2022-09-13"
+    "date": "2022-09-13",
+    "rating": 5
   },
   {
     "title": "Relativity",
@@ -397,7 +503,8 @@
     "url": "https://openlibrary.org/books/OL3432416M/Relativity",
     "cover_url": "https://covers.openlibrary.org/b/id/111548-M.jpg",
     "cover": "relativity.jpg",
-    "date": "2022-09-10"
+    "date": "2022-09-10",
+    "rating": 5
   },
   {
     "title": "Digital Minimalism",
@@ -406,7 +513,8 @@
     "url": "https://openlibrary.org/books/OL26832542M/Digital_Minimalism",
     "cover_url": "https://covers.openlibrary.org/b/id/8507540-M.jpg",
     "cover": "digital_minimalism.jpg",
-    "date": "2022-08-29"
+    "date": "2022-08-29",
+    "rating": 4
   },
   {
     "title": "The Phoenix Project",
@@ -415,7 +523,8 @@
     "url": "https://openlibrary.org/books/OL26945757M/The_Phoenix_Project",
     "cover_url": "https://covers.openlibrary.org/b/id/12391318-M.jpg",
     "cover": "the_phoenix_project.jpg",
-    "date": "2022-07-25"
+    "date": "2022-07-25",
+    "rating": 5
   },
   {
     "title": "Rendezvous with Rama",
@@ -424,7 +533,8 @@
     "url": "https://openlibrary.org/books/OL8998739M/Rendezvous_with_Rama",
     "cover_url": "https://covers.openlibrary.org/b/id/908812-M.jpg",
     "cover": "rendezvous_with_rama.jpg",
-    "date": "2022-07-10"
+    "date": "2022-07-10",
+    "rating": 5
   },
   {
     "title": "The Expanse Series",
@@ -435,15 +545,15 @@
     "cover": "leviathan_wakes.jpg",
     "date": "2022-10-26",
     "books": [
-      {"title": "Leviathan Wakes", "date": "2020-07-05"},
-      {"title": "Caliban's War", "date": "2020-07-08"},
-      {"title": "Abaddon's Gate", "date": "2022-09-25"},
-      {"title": "Cibola Burn", "date": "2022-10-07"},
-      {"title": "Nemesis Games", "date": "2022-10-10"},
-      {"title": "Babylon's Ashes", "date": "2022-10-13"},
-      {"title": "Persepolis Rising", "date": "2022-10-16"},
-      {"title": "Tiamat's Wrath", "date": "2022-10-21"},
-      {"title": "Leviathan Falls", "date": "2022-10-26"}
+      {"title": "Leviathan Wakes", "date": "2020-07-05", "rating": 5},
+      {"title": "Caliban's War", "date": "2020-07-08", "rating": 5},
+      {"title": "Abaddon's Gate", "date": "2022-09-25", "rating": 5},
+      {"title": "Cibola Burn", "date": "2022-10-07", "rating": 4},
+      {"title": "Nemesis Games", "date": "2022-10-10", "rating": 3},
+      {"title": "Babylon's Ashes", "date": "2022-10-13", "rating": 5},
+      {"title": "Persepolis Rising", "date": "2022-10-16", "rating": 5},
+      {"title": "Tiamat's Wrath", "date": "2022-10-21", "rating": 5},
+      {"title": "Leviathan Falls", "date": "2022-10-26", "rating": 5}
     ]
   },
   {
@@ -453,7 +563,8 @@
     "url": "https://openlibrary.org/books/OL3693746M/Foundation",
     "cover_url": "https://covers.openlibrary.org/b/id/374166-M.jpg",
     "cover": "foundation.jpg",
-    "date": "2020-12-30"
+    "date": "2020-12-30",
+    "rating": 4
   },
   {
     "title": "Alex's Adventures in Numberland",
@@ -462,7 +573,18 @@
     "url": "https://openlibrary.org/books/OL29481601M/Alex's_Adventures_in_Numberland",
     "cover_url": null,
     "cover": "alex_adventures_in_numberland.jpg",
-    "date": "2020-12-26"
+    "date": "2020-12-26",
+    "rating": 5
+  },
+  {
+    "title": "The Three Body Problem",
+    "isbn": "",
+    "authors": "Liu Cixin",
+    "url": "",
+    "cover_url": "",
+    "cover": "",
+    "date": "2020-08-13",
+    "rating": 3
   },
   {
     "title": "The First Three Minutes",
@@ -471,7 +593,8 @@
     "url": "https://openlibrary.org/books/OL1036857M/The_first_three_minutes",
     "cover_url": "https://covers.openlibrary.org/b/id/298540-M.jpg",
     "cover": "the_first_three_minutes.jpg",
-    "date": "2020-08-01"
+    "date": "2020-08-01",
+    "rating": 4
   },
   {
     "title": "Chaos",
@@ -480,7 +603,8 @@
     "url": "https://openlibrary.org/books/OL18306916M/Chaos",
     "cover_url": "https://covers.openlibrary.org/b/id/11086514-M.jpg",
     "cover": "chaos.jpg",
-    "date": "2020-06-08"
+    "date": "2020-06-08",
+    "rating": 5
   },
   {
     "title": "Deep Down Things",
@@ -489,7 +613,8 @@
     "url": "https://openlibrary.org/books/OL3306269M/Deep_down_things",
     "cover_url": "https://covers.openlibrary.org/b/id/567365-M.jpg",
     "cover": "deep_down_things.jpg",
-    "date": "2019-10-27"
+    "date": "2019-10-27",
+    "rating": 4
   },
   {
     "title": "Flatland",
@@ -498,7 +623,8 @@
     "url": "https://openlibrary.org/books/OL42161092M/Flatland",
     "cover_url": null,
     "cover": "flatland.jpg",
-    "date": "2019-08-06"
+    "date": "2019-08-06",
+    "rating": 4
   },
   {
     "title": "Cloud Atlas",
@@ -507,7 +633,8 @@
     "url": "https://openlibrary.org/books/OL3693769M/Cloud_Atlas",
     "cover_url": "https://covers.openlibrary.org/b/id/228013-M.jpg",
     "cover": "cloud_atlas.jpg",
-    "date": "2019-05-18"
+    "date": "2019-05-18",
+    "rating": 4
   },
   {
     "title": "Red Rising Series",
@@ -518,9 +645,9 @@
     "cover": "red_rising.jpg",
     "date": "2018-11-16",
     "books": [
-      {"title": "Red Rising", "date": "2018-11-05"},
-      {"title": "Golden Son", "date": "2018-11-10"},
-      {"title": "Morning Star", "date": "2018-11-16"}
+      {"title": "Red Rising", "date": "2018-11-05", "rating": 4},
+      {"title": "Golden Son", "date": "2018-11-10", "rating": 5},
+      {"title": "Morning Star", "date": "2018-11-16", "rating": 5}
     ]
   },
   {
@@ -530,7 +657,8 @@
     "url": "https://openlibrary.org/books/OL26322366M/Slaughterhouse-five_or_The_children's_crusade_a_duty-dance_with_death",
     "cover_url": "https://covers.openlibrary.org/b/id/7997164-M.jpg",
     "cover": "slaughterhouse-five.jpg",
-    "date": "2018-06-01"
+    "date": "2018-06-01",
+    "rating": 4
   },
   {
     "title": "World War Z",
@@ -539,6 +667,7 @@
     "url": "https://openlibrary.org/books/OL23275263M/World_War_Z",
     "cover_url": "https://covers.openlibrary.org/b/id/6391724-M.jpg",
     "cover": "world_war_z.jpg",
-    "date": "2017-01-15"
+    "date": "2017-01-15",
+    "rating": 5
   }
 ]
