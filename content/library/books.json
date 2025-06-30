@@ -3,7 +3,7 @@
     "title": "Hyperion",
     "isbn": "",
     "authors": "Dan Simmons",
-    "url": "",
+    "url": "https://openlibrary.org/books/OL24961127M/Hyperion",
     "cover_url": "",
     "cover": "",
     "date": "Now"
@@ -12,7 +12,7 @@
     "title": "The 2020 Commission Report on the North Korean Nuclear Attacks Against the United States: A Speculative Novel",
     "isbn": "",
     "authors": "Jeffrey Lewis",
-    "url": "",
+    "url": "https://openlibrary.org/books/OL29375197M/2020_Commission_Report_on_the_North_Korean_Nuclear_Attacks_Against_the_United_States",
     "cover_url": "",
     "cover": "",
     "date": "2025-05-24",
@@ -22,7 +22,7 @@
     "title": "Blood Over Bright Haven",
     "isbn": "",
     "authors": "M.L. Wang",
-    "url": "",
+    "url": "https://openlibrary.org/books/OL51347806M/Blood_over_Bright_Haven",
     "cover_url": "",
     "cover": "",
     "date": "2025-05-20",
@@ -37,15 +37,15 @@
     "cover": "",
     "date": "2025-05-11",
     "books": [
-      {"title": "The Tainted Cup", "date": "2025-04-25", "rating": 5},
-      {"title": "A Drop of Corruption", "date": "2025-05-11", "rating": 5}
+      {"title": "The Tainted Cup", "date": "2025-04-25", "rating": 5, "url": "https://openlibrary.org/books/OL50732795M/Tainted_Cup"},
+      {"title": "A Drop of Corruption", "date": "2025-05-11", "rating": 5, "url": "https://openlibrary.org/books/OL58559296M/A_Drop_of_Corruption"}
     ]
   },
   {
     "title": "Alien Clay",
     "isbn": "",
     "authors": "Adrian Tchaikovsky",
-    "url": "",
+    "url": "https://openlibrary.org/books/OL50716070M/Alien_Clay",
     "cover_url": "",
     "cover": "",
     "date": "2025-04-23",
@@ -55,7 +55,7 @@
     "title": "The State of the Art",
     "isbn": "",
     "authors": "Iain M. Banks",
-    "url": "",
+    "url": "https://openlibrary.org/books/OL8895438M/The_State_Of_The_Art",
     "cover_url": "",
     "cover": "",
     "date": "2025-02-22",
@@ -65,7 +65,7 @@
     "title": "Fine Structure",
     "isbn": "",
     "authors": "qntm",
-    "url": "",
+    "url": "https://openlibrary.org/books/OL55858388M/Fine_Structure",
     "cover_url": "",
     "cover": "",
     "date": "2025-02-09",
@@ -75,7 +75,7 @@
     "title": "The Frugal Wizard's Handbook for Surviving Medieval England",
     "isbn": "",
     "authors": "Brandon Sanderson",
-    "url": "",
+    "url": "https://openlibrary.org/books/OL50714314M/Frugal_Wizard's_Handbook_for_Surviving_Medieval_England",
     "cover_url": "",
     "cover": "",
     "date": "DNF"
@@ -89,8 +89,8 @@
     "cover": "",
     "date": "",
     "books": [
-      {"title": "A Psalm for the Wild-Built", "date": "2025-01-25", "rating": 5},
-      {"title": "A Prayer for the Crown-Shy", "date": "2025-01-26", "rating": 5}
+      {"title": "A Psalm for the Wild-Built", "date": "2025-01-25", "rating": 5, "url": "https://openlibrary.org/books/OL32177625M/A_Psalm_for_the_Wild-Built"},
+      {"title": "A Prayer for the Crown-Shy", "date": "2025-01-26", "rating": 5, "url": "https://openlibrary.org/books/OL35034781M/A_Prayer_for_the_Crown-Shy"}
     ]
   },
   {
@@ -107,7 +107,7 @@
     "title": "The Kaiju Preservation Society",
     "isbn": "",
     "authors": "John Scalzi",
-    "url": "",
+    "url": "https://openlibrary.org/books/OL37811851M/The_Kaiju_Preservation_Society",
     "cover_url": "",
     "cover": "",
     "date": "2024-12-26",
@@ -122,7 +122,7 @@
     "cover": "",
     "date": "2024-12-23",
     "books": [
-      {"title": "The Mercy of Gods", "date": "2024-12-23", "rating": 4}
+      {"title": "The Mercy of Gods", "date": "2024-12-23", "rating": 4, "url": "https://openlibrary.org/books/OL50707940M/The_Mercy_of_Gods"}
     ]
   },
   {
@@ -169,7 +169,7 @@
     "title": "Jurassic Park",
     "isbn": "",
     "authors": "Michael Crichton",
-    "url": "",
+    "url": "https://openlibrary.org/books/OL33897070M/Jurassic_Park",
     "cover_url": "",
     "cover": "",
     "date": "2024-08-10",
@@ -179,7 +179,7 @@
     "title": "Lessons in Chemistry",
     "isbn": "",
     "authors": "Bonnie Garmus",
-    "url": "",
+    "url": "https://openlibrary.org/books/OL34121983M/Lessons_in_Chemistry",
     "cover_url": "",
     "cover": "",
     "date": "2024-08-02",
@@ -204,13 +204,13 @@
     "cover": "all_systems_red.jpg",
     "date": "2024-07-06",
     "books": [
-      {"title": "All Systems Red", "date": "2023-06-03", "rating": 5},
-      {"title": "Artificial Condition", "date": "2023-06-04", "rating": 5},
-      {"title": "Rogue Protocol", "date": "2023-06-05", "rating": 5},
-      {"title": "Exit Strategy", "date": "2023-06-05", "rating": 5},
-      {"title": "Network Effect", "date": "2023-06-07", "rating": 5},
-      {"title": "Fugitive Telemetry", "date": "2023-06-11", "rating": 5},
-      {"title": "System Collapse", "date": "2024-07-06", "rating": 5}
+      {"title": "All Systems Red", "date": "2023-06-03", "rating": 5, "url": ""},
+      {"title": "Artificial Condition", "date": "2023-06-04", "rating": 5, "url": ""},
+      {"title": "Rogue Protocol", "date": "2023-06-05", "rating": 5, "url": ""},
+      {"title": "Exit Strategy", "date": "2023-06-05", "rating": 5, "url": ""},
+      {"title": "Network Effect", "date": "2023-06-07", "rating": 5, "url": ""},
+      {"title": "Fugitive Telemetry", "date": "2023-06-11", "rating": 5, "url": ""},
+      {"title": "System Collapse", "date": "2024-07-06", "rating": 5, "url": ""}
     ]
   },
   {
@@ -227,7 +227,7 @@
     "title": "Babel",
     "isbn": "",
     "authors": "R.F. Kuang",
-    "url": "",
+    "url": "https://openlibrary.org/books/OL36541099M/Babel",
     "cover_url": "",
     "cover": "",
     "date": "2024-05-18",
@@ -318,7 +318,7 @@
     "title": "This is How You Lose the Time War",
     "isbn": "",
     "authors": "Amal El-Mohtar, Max Gladstone",
-    "url": "",
+    "url": "https://openlibrary.org/books/OL28364975M/This_Is_How_You_Lose_the_Time_War",
     "cover_url": "",
     "cover": "",
     "date": "DNF"
@@ -554,15 +554,15 @@
     "cover": "leviathan_wakes.jpg",
     "date": "2022-10-26",
     "books": [
-      {"title": "Leviathan Wakes", "date": "2020-07-05", "rating": 5},
-      {"title": "Caliban's War", "date": "2020-07-08", "rating": 5},
-      {"title": "Abaddon's Gate", "date": "2022-09-25", "rating": 5},
-      {"title": "Cibola Burn", "date": "2022-10-07", "rating": 4},
-      {"title": "Nemesis Games", "date": "2022-10-10", "rating": 3},
-      {"title": "Babylon's Ashes", "date": "2022-10-13", "rating": 5},
-      {"title": "Persepolis Rising", "date": "2022-10-16", "rating": 5},
-      {"title": "Tiamat's Wrath", "date": "2022-10-21", "rating": 5},
-      {"title": "Leviathan Falls", "date": "2022-10-26", "rating": 5}
+      {"title": "Leviathan Wakes", "date": "2020-07-05", "rating": 5, "url": ""},
+      {"title": "Caliban's War", "date": "2020-07-08", "rating": 5, "url": ""},
+      {"title": "Abaddon's Gate", "date": "2022-09-25", "rating": 5, "url": ""},
+      {"title": "Cibola Burn", "date": "2022-10-07", "rating": 4, "url": ""},
+      {"title": "Nemesis Games", "date": "2022-10-10", "rating": 3, "url": ""},
+      {"title": "Babylon's Ashes", "date": "2022-10-13", "rating": 5, "url": ""},
+      {"title": "Persepolis Rising", "date": "2022-10-16", "rating": 5, "url": ""},
+      {"title": "Tiamat's Wrath", "date": "2022-10-21", "rating": 5, "url": ""},
+      {"title": "Leviathan Falls", "date": "2022-10-26", "rating": 5, "url": ""}
     ]
   },
   {
@@ -589,7 +589,7 @@
     "title": "The Three Body Problem",
     "isbn": "",
     "authors": "Liu Cixin",
-    "url": "",
+    "url": "https://openlibrary.org/books/OL25840917M/The_Three-Body_Problem",
     "cover_url": "",
     "cover": "",
     "date": "2020-08-13",
@@ -654,9 +654,9 @@
     "cover": "red_rising.jpg",
     "date": "2018-11-16",
     "books": [
-      {"title": "Red Rising", "date": "2018-11-05", "rating": 4},
-      {"title": "Golden Son", "date": "2018-11-10", "rating": 5},
-      {"title": "Morning Star", "date": "2018-11-16", "rating": 5}
+      {"title": "Red Rising", "date": "2018-11-05", "rating": 4, "url": ""},
+      {"title": "Golden Son", "date": "2018-11-10", "rating": 5, "url": ""},
+      {"title": "Morning Star", "date": "2018-11-16", "rating": 5, "url": ""}
     ]
   },
   {

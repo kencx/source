@@ -1,7 +1,7 @@
 +++
 title = "anti-library"
 updated = "2025-06-24"
-template = "library.html"
+template = "anti-library.html"
 draft = false
 
 [extra]

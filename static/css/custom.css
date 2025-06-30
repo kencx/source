@@ -365,14 +365,26 @@ pre, code, kbd, samp, tt, var {
   font-weight: normal;
 }
 
-.books, .list-view {
+.books {
   list-style: none;
   padding-left: 1rem;
 }
 
-.books .book a {
+.books.library .book a,
+.books .book.heading {
   display: grid;
   grid-template-columns: 1fr 12rem 6rem 5rem;
+  grid-gap: 0.95rem;
+
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: var(--b-txt);
+}
+
+.books.anti-library .book a,
+.books.anti-library .book.heading {
+  display: grid;
+  grid-template-columns: 1fr 12rem;
   grid-gap: 0.95rem;
 
   padding-top: 0.5rem;
@@ -385,12 +397,22 @@ pre, code, kbd, samp, tt, var {
   background: var(--b-bg-2);
 }
 
+.books .book.heading {
+  font-weight: bold;
+}
+
 @media only screen and (max-width: 1280px) {
-  .books .book a {
+  .books.library .book a,
+  .books.anti-library .book a {
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 0.1rem;
     margin-bottom: 1rem;
+  }
+
+  .books .book.heading,
+  .books.anti-library .book.heading {
+    display: none;
   }
 }
 
@@ -456,5 +478,12 @@ li details.book > .series:hover {
 
   li details.book > .series:last-child {
     margin-bottom: 1rem
+  }
+
+  li details.book > .series {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 0.1rem;
+    margin-bottom: 1rem;
   }
 }

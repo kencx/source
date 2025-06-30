@@ -9,7 +9,7 @@
         {%- endif %}
       </summary>
       {% for b in book.books %}
-        <div class="series">
+      <a href="{{ b.url }}" class="series">
           <span class="title">{{ b.title }}</span>
           <span class="date">{{ b.date }}</span>
           {%- if b.rating %}
@@ -19,7 +19,7 @@
           {% endfor %}
           </span>
           {%- endif %}
-        </div>
+        </a>
       {% endfor %}
     </details>
     {% else %}

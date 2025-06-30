@@ -15,12 +15,10 @@
 
   {% set books = load_data(path=page.extra.data) %}
 
-  <ul class="books library">
+  <ul class="books anti-library">
     <div class="book heading">
       <span>Title</span>
       <span>Author(s)</span>
-      <span>Date</span>
-      <span>Rating</span>
     </div>
     {% for book in books %}
       {% include "partials/book.html" %}
