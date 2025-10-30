@@ -8,8 +8,8 @@ clean:
 	rm -rf public/
 
 deploy:
-	git push hetzner master
+	git push
 
 redeploy:
 	git commit --amend --no-edit --allow-empty
-	git push hetzner master --force-with-lease
+	git push origin master --force-with-lease
