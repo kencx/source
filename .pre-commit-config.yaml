@@ -9,3 +9,12 @@ repos:
       - id: check-toml
       - id: mixed-line-ending
       - id: check-merge-conflict
+  - repo: local
+    hooks:
+      - id: last-updated-date
+        name: last-updated-date
+        entry: bin/last-updated-date
+        language: system
+        types: ["markdown"]
+        files: ^content/
+        exclude: ^_index.md$
