@@ -1,5 +1,38 @@
 [
   {
+    "title": "Hierarchy Series",
+    "isbn": "",
+    "authors": "James Islington",
+    "url": "",
+    "cover_url": "",
+    "cover": "",
+    "books": [
+      {"title": "The Will of the Many", "date": "Now", "rating": 0, "url": "https://openlibrary.org/works/OL31088394W/The_Will_of_the_Many"}
+    ]
+  },
+  {
+    "title": "The Captive's War Series",
+    "isbn": "",
+    "authors": "James S.A. Corey",
+    "url": "",
+    "cover_url": "",
+    "cover": "",
+    "books": [
+      {"title": "The Mercy of Gods", "date": "2024-12-23", "rating": 4, "url": "https://openlibrary.org/books/OL50707940M/The_Mercy_of_Gods"},
+      {"title": "Livesuit", "date": "2025-12-27", "rating": 5, "url": "https://openlibrary.org/works/OL39179583W/Livesuit"}
+    ]
+  },
+  {
+    "title": "A Short Stay in Hell",
+    "isbn": "",
+    "authors": "Stevel L. Peck",
+    "url": "https://openlibrary.org/works/OL16653954W/A_Short_Stay_in_Hell",
+    "cover_url": "",
+    "cover": "",
+    "date": "2025-12-14",
+    "rating": 5
+  },
+  {
     "title": "Hyperion",
     "isbn": "",
     "authors": "Dan Simmons",
@@ -122,18 +155,6 @@
     "cover": "",
     "date": "2024-12-26",
     "rating": 5
-  },
-  {
-    "title": "The Captive's War Series",
-    "isbn": "",
-    "authors": "James S.A. Corey",
-    "url": "",
-    "cover_url": "",
-    "cover": "",
-    "date": "2024-12-23",
-    "books": [
-      {"title": "The Mercy of Gods", "date": "2024-12-23", "rating": 4, "url": "https://openlibrary.org/books/OL50707940M/The_Mercy_of_Gods"}
-    ]
   },
   {
     "title": "The Player of Games",
