@@ -1,7 +1,7 @@
 +++
 title = "links"
 date = "2025-10-30"
-updated = "2025-10-30"
+updated = 2025-12-29
 
 [extra]
 toc = false
@@ -26,6 +26,7 @@ toc = false
 - [The 300% Production Problem](https://leebriggs.co.uk/blog/2023/09/28/300_percent_problem) (2023)
 - [The Law of Leaky Abstractions](https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/) (2002)
 - [Simple sabotage for software](https://erikbern.com/2023/12/13/simple-sabotage-for-software.html) (2023)
+- [I sell onions on the Internet](https://www.deepsouthventures.com/i-sell-onions-on-the-internet/) (2019)
 
 ### Stories
 
