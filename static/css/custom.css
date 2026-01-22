@@ -33,7 +33,7 @@
 :root {
   --b-font-main: "IBM Plex Mono", Courier, monospace;
   --b-font-mono: "Liberation Mono", Courier, monospace;
-  --b-font-size: 0.9rem;
+  --b-font-size: 0.95rem;
 
   --b-txt: hsl(150, 5%, 10%);
   --b-bg-1: hsl(150, 5%, 95%);
