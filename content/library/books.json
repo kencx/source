@@ -6,6 +6,7 @@
     "url": "",
     "cover_url": "",
     "cover": "",
+    "date": "2026-01-03",
     "books": [
       {"title": "The Will of the Many", "date": "2025-12-29", "rating": 4, "url": "https://openlibrary.org/works/OL31088394W/The_Will_of_the_Many"},
       {"title": "The Strength of the Few", "date": "2026-01-03", "rating": 3, "url": "https://openlibrary.org/works/OL44370085W/The_Strength_of_the_Few"}
@@ -18,6 +19,7 @@
     "url": "",
     "cover_url": "",
     "cover": "",
+    "date": "2025-12-27",
     "books": [
       {"title": "The Mercy of Gods", "date": "2024-12-23", "rating": 4, "url": "https://openlibrary.org/books/OL50707940M/The_Mercy_of_Gods"},
       {"title": "Livesuit", "date": "2025-12-27", "rating": 5, "url": "https://openlibrary.org/works/OL39179583W/Livesuit"}

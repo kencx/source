@@ -449,6 +449,22 @@ li details[open].book > summary {
   margin-bottom: 0;
 }
 
+li details.book > summary {
+  list-style: none;
+}
+
+li details.book > summary::-webkit-details-marker {
+  display: none
+}
+
+  li details.book > summary > span.title::before {
+    content: '► ';
+  }
+
+li details[open].book > summary > span.title::before {
+  content: "▼ ";
+}
+
 li details.book > .series {
   display: grid;
   grid-template-columns: 1fr 6rem 5rem;
@@ -470,6 +486,10 @@ li details.book > .series:hover {
     grid-template-columns: 1fr;
     grid-gap: 0.1rem;
     margin-bottom: 1rem;
+  }
+
+  li details.book > summary > span.title::before {
+    content: '► ';
   }
 
   li details.book > .series {
