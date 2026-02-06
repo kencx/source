@@ -310,61 +310,6 @@ pre, code, kbd, samp, tt, var {
 }
 
 /* books */
-.books .card-view {
-  /* auto scaling grid with max num of columns and min width*/
-  /* https://css-tricks.com/an-auto-filling-css-grid-with-max-columns/ */
-  --grid-layout-gap: 1.4rem;
-  --grid-column-count: 5;
-  --grid-item--min-width: 140px;
-
-  --gap-count: calc(var(--grid-column-count) - 1);
-  --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
-  --grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--grid-column-count));
-
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr));
-  grid-gap: var(--grid-layout-gap);
-}
-
-.book-card {
-	display: flex;
-	flex-direction: column;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out 0s;
-}
-
-.book-card:hover {
-  transform: translateY(4px);
-}
-
-.book-card:hover img {
-  transform: scale3d(1.02, 1.02, 1.02);
-  opacity: 0.2;
-}
-
-.cover {
-  aspect-ratio: 5/8;
-}
-
-.cover img {
-  border-radius: 0.2rem;
-  width: 0;
-  height: 0;
-  inset: 0;
-  display: block;
-  min-width: 100%;
-  max-width: 100%;
-  min-height: 100%;
-  max-height: 100%;
-  margin: auto;
-}
-
-.book-author {
-  font-size: 0.7rem;
-  color: var(--b-fade);
-  font-weight: normal;
-}
-
 .books {
   list-style: none;
   padding-left: 1rem;
@@ -373,7 +318,7 @@ pre, code, kbd, samp, tt, var {
 .books.library .book a,
 .books .book.heading {
   display: grid;
-  grid-template-columns: 1fr 12rem 6rem 5rem;
+  grid-template-columns: 3fr 2fr 1fr 1fr;
   grid-gap: 0.95rem;
 
   padding-top: 0.5rem;
@@ -384,7 +329,7 @@ pre, code, kbd, samp, tt, var {
 .books.anti-library .book a,
 .books.anti-library .book.heading {
   display: grid;
-  grid-template-columns: 1fr 12rem;
+  grid-template-columns: 2fr 1fr;
   grid-gap: 0.95rem;
 
   padding-top: 0.5rem;
@@ -435,7 +380,7 @@ li details[open].book:hover {
 
 li details.book > summary {
   display: grid;
-  grid-template-columns: 1fr 12rem 6rem 5rem;
+  grid-template-columns: 3fr 2fr 1fr 1fr;
   grid-gap: 0.95rem;
 
   padding-top: 0.5rem;
@@ -467,7 +412,7 @@ li details[open].book > summary > span.title::before {
 
 li details.book > .series {
   display: grid;
-  grid-template-columns: 1fr 6rem 5rem;
+  grid-template-columns: 3fr 1fr 1fr;
   grid-gap: 0.95rem;
 
   margin-left: 1.5rem;
