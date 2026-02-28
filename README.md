@@ -11,18 +11,19 @@ Build and deploy with a bare Git repo on the web server. No CI/CD required.
 # push to multiple remotes at once
 $ git remote add origin <source>
 $ git remote set-url --add --push origin <source>
-$ git remote set-url --add --push origin <server>
+$ git remote set-url --add --push origin ssh://<user>@<host>/path/to/blog.git
 $ git push origin <branch>
 ```
 
 ```bash
 # setup bare Git repo
-$ git clone --bare <source> blog.git
+$ ssh <user>@<host>
+~$ git clone --bare <source> blog.git
 
 # build and serve with git post-receive hook and zola
-$ mkdir blog
-$ touch blog.git/hooks/post-receive
-$ cat <<EOF > blog.git/hooks/post-receive
+~$ mkdir blog
+~$ touch blog.git/hooks/post-receive
+~$ cat <<EOF > blog.git/hooks/post-receive
 #/bin/sh
 set -e
 
@@ -42,5 +43,5 @@ while read oldrev newrev ref; do
   fi
 done
 EOF
-$ chmod u+x blog.git/hooks/post-receive
+~$ chmod u+x blog.git/hooks/post-receive
 ```
