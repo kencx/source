@@ -1,14 +1,14 @@
 +++
 title = "The difference between optional and blocking manual jobs in GitLab CI"
 date = "2026-03-10"
-updated = "2026-03-10"
+updated = 2026-03-31
 
 [taxonomies]
 tags = ["gitlab", "ci/cd"]
 +++
 
 To create an optional job in GitLab CI, add `when: manual` to the job
-configuration. However, the location of `when: manual` determines the type of
+configuration. Note that the location of `when: manual` determines the type of
 manual job created:
 
 - If defined outside `rules`, the job will default to `allow_failure: true`,

@@ -1,7 +1,7 @@
 +++
 title = "How to use custom DNS servers with Mullvad"
 date = "2025-12-28"
-updated = "2025-12-28"
+updated = 2026-03-31
 
 [taxonomies]
 tags = ["wireguard", "mullvad", "dns", "networking"]
@@ -62,7 +62,7 @@ As a Bash script:
 ```bash
 #!/usr/bin/env bash
 
-account_number="123456789"
+MULLVAD_ACCOUNT_NUMBER="123456789"
 
 WG_PRIVATE_KEY="$(wg genkey)"
 WG_PUBLIC_KEY="$(wg pubkey <<<"${WG_PRIVATE_KEY}")"
