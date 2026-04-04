@@ -12,7 +12,7 @@
   {{ page.content | safe }}
   <div class="meta">
     {% if page.updated %}
-    Edited: {{ page.updated | date(format="%Y-%m-%d") }}
+    Last Updated: {{ page.updated | date(format="%Y-%m-%d") }}
     {% endif %}
     {% if page.taxonomies.tags %}
     <div class="tags">

@@ -10,7 +10,7 @@
   </h1>
   {{ page.content | safe }}
   <div class="meta">
-    Edited: {{ page.updated | date(format="%Y-%m-%d") }}
+    Last Updated: {{ page.updated | date(format="%Y-%m-%d") }}
     {% if page.taxonomies.tags %}
     <div class="tags">
       {% for tag in page.taxonomies.tags %}
