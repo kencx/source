@@ -1,7 +1,7 @@
 +++
 title = "uses"
 date = "2025-06-16"
-updated = "2025-06-16"
+updated = 2026-04-27
 
 [extra]
 toc = false
@@ -10,7 +10,7 @@ toc = false
 ## Hardware
 - **Keyboard**: [OLKB Planck Rev 5](https://olkb.com/collections/planck)
 - **Headphones**: Bose QC 35 II Headphones
-- **Phone**: Pixel 4A
+- **Phone**: Pixel 8A
 
 ## Software
 
@@ -21,5 +21,5 @@ toc = false
 - **Shell**: zsh, see [dotfiles](https://github.com/kencx/dotfiles)
 - **Editor**: Neovim
 - **Reading**: Kobo Clara + Calibre
-- **Feeds**: [yarr](https://github.com/kencx/yarr)
-- **Email**: Protonmail, but I would like to switch to Fastmail
+- **Feed Reader**: [yarr](https://github.com/kencx/yarr)
+- **Email**: Fastmail
