@@ -1,5 +1,25 @@
 [
   {
+    "title": "Way Station",
+    "isbn": "",
+    "authors": "Cliff D. Simak",
+    "url": "https://openlibrary.org/books/OL1717965M/Way_station",
+    "cover_url": "",
+    "cover": "",
+    "date": "2026-04-26",
+    "rating": 5
+  },
+  {
+    "title": "How it Unfolds",
+    "isbn": "",
+    "authors": "James S.A. Corey",
+    "url": "https://openlibrary.org/works/OL43802374W/How_It_Unfolds",
+    "cover_url": "",
+    "cover": "",
+    "date": "2026-04-18",
+    "rating": 5
+  },
+  {
     "title": "Excession",
     "isbn": "",
     "authors": "Iain M. Banks",
