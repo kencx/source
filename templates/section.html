@@ -11,14 +11,14 @@
   {% endif %}
 
   {% if paginator.pages %}
-  <ul class="posts">
+  <ul class="section">
     {% for page in paginator.pages %}
       {% include "partials/post.html" %}
     {% endfor %}
   </ul>
   {% include "partials/paginator.html" %}
   {% elif section.pages %}
-  <ul class="posts">
+  <ul class="section">
     {% for page in section.pages %}
       {% include "partials/post.html" %}
     {% endfor %}

@@ -6,14 +6,14 @@
     {{ term.name }} ({{ term.page_count }})
   </h1>
   {% if paginator.pages %}
-  <ul class="posts">
+  <ul class="section">
     {% for page in paginator.pages %}
       {% include "partials/post.html" %}
     {% endfor %}
   </ul>
   {% include "partials/paginator.html" %}
   {% elif term.pages %}
-  <ul class="posts">
+  <ul class="section">
       {% for page in term.pages | sort(attribute="date") | reverse %}
       {% include "partials/post.html" %}
       {% endfor %}

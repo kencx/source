@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 <div>
-  <h1>
+  <h2>
     {{ page.title }}
     <div class="meta">
       {{ page.date | date(format="%Y-%m-%d") }}
       • {{ page.reading_time }} min{{ page.reading_time | pluralize }}
     </div>
-  </h1>
+  </h2>
   {{ page.content | safe }}
   <div class="meta">
     Last Updated: {{ page.updated | date(format="%Y-%m-%d") }}
