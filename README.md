@@ -1,5 +1,5 @@
 # Source
-Source for [blog](https://ken.cheo.dev). Hosted on Hetzner behind Caddy.
+Source for [blog](https://ken.cheo.dev).
 
 Built with zola.
 
