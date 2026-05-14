@@ -1,7 +1,7 @@
 +++
-title = "AWS Gateway endpoints don't play nice with restrictive NACL rules"
+title = "That AWS Gateway endpoints don't play nice with restrictive NACL rules"
 date = "2026-05-12"
-updated = "2026-05-12"
+updated = 2026-05-14
 
 [taxonomies]
 tags = ["aws", "s3", "networking", "vpc-endpoint"]
