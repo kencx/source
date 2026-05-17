@@ -1,5 +1,18 @@
 [
   {
+    "title": "The Mistborn Saga Series",
+    "isbn": "",
+    "authors": "Brandon Sanderson",
+    "url": "",
+    "cover_url": "",
+    "cover": "",
+    "date": "",
+    "books": [
+      {"title": "The Final Empire", "date": "2026-05-17", "rating": 0, "url": "http://openlibrary.org/works/OL5738148W/The_Final_Empire"},
+      {"title": "The Well of Ascension", "date": "Now", "rating": 0, "url": "https://openlibrary.org/works/OL5738150W/The_Well_of_Ascension"}
+    ]
+  },
+  {
     "title": "Way Station",
     "isbn": "",
     "authors": "Cliff D. Simak",
