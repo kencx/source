@@ -8,8 +8,9 @@
     "cover": "",
     "date": "",
     "books": [
-      {"title": "The Final Empire", "date": "2026-05-17", "rating": 0, "url": "http://openlibrary.org/works/OL5738148W/The_Final_Empire"},
-      {"title": "The Well of Ascension", "date": "Now", "rating": 0, "url": "https://openlibrary.org/works/OL5738150W/The_Well_of_Ascension"}
+      {"title": "The Final Empire", "date": "2026-05-17", "rating": 5, "url": "http://openlibrary.org/works/OL5738148W/The_Final_Empire"},
+      {"title": "The Well of Ascension", "date": "2026-05-20", "rating": 5, "url": "https://openlibrary.org/works/OL5738150W/The_Well_of_Ascension"},
+      {"title": "The Hero of Ages", "date": "2026-05-25", "rating": 5, "url": "https://openlibrary.org/works/OL5738154W/The_Hero_of_Ages"}
     ]
   },
   {
