@@ -1,6 +1,18 @@
 [
   {
-    "title": "The Mistborn Saga Series",
+    "title": "The Kingkiller Chronicle Series",
+    "isbn": "",
+    "authors": "Patrick Rothfuss",
+    "url": "",
+    "cover_url": "",
+    "cover": "",
+    "date": "",
+    "books": [
+      {"title": "Name of the Wind", "date": "Now", "rating": 0, "url": "https://openlibrary.org/works/OL8479867W/The_Name_of_the_Wind"}
+    ]
+  },
+  {
+    "title": "Mistborn Series",
     "isbn": "",
     "authors": "Brandon Sanderson",
     "url": "",

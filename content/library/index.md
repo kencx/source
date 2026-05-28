@@ -1,6 +1,6 @@
 +++
 title = "library"
-updated = "2026-05-25"
+updated = "2026-05-28"
 template = "library.html"
 draft = false
 
