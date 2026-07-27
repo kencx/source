@@ -8,7 +8,8 @@
     "cover": "",
     "date": "",
     "books": [
-      {"title": "Name of the Wind", "date": "Now", "rating": 0, "url": "https://openlibrary.org/works/OL8479867W/The_Name_of_the_Wind"}
+      {"title": "The Name of the Wind", "date": "2026-07-20", "rating": 4, "url": "https://openlibrary.org/works/OL8479867W/The_Name_of_the_Wind"},
+      {"title": "The Wise Man's Fear", "date": "Now", "rating": 0, "url": "https://openlibrary.org/works/OL8479869W/The_Wise_Man%E2%80%99s_Fear"}
     ]
   },
   {
