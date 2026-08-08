@@ -3,6 +3,23 @@
 
 <head>
     <meta charset="UTF-8" />
+    <title>
+        {% if title %}
+            {%- set suffix = title -%}
+        {% elif section.title -%}
+            {%- set suffix = section.title -%}
+        {% elif page.title %}
+            {%- set suffix = page.title -%}
+        {% elif term.name %}
+            {%- set suffix = term.name -%}
+        {% elif taxonomy.name %}
+            {%- set suffix = taxonomy.name -%}
+        {% else %}
+            {%- set suffix = "404" %}
+        {%- endif -%}
+
+        {{- suffix ~ " - " ~ config.title | safe -}}
+    </title>
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0,
     shrink-to-fit=no">
