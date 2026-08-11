@@ -276,6 +276,7 @@ a:has(svg) {
   height: 1.5rem;
   width: 1.5rem;
   padding-left: 0.5rem;
+  text-decoration: none;
 }
 a:hover {
     color: var(--b-link);
