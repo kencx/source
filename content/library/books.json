@@ -8,7 +8,7 @@
     "cover": "",
     "date": "",
     "books": [
-      {"title": "The Name of the Wind", "date": "2026-07-20", "rating": 4, "url": "https://openlibrary.org/works/OL8479867W/The_Name_of_the_Wind"},
+      {"title": "The Name of the Wind", "date": "2026-07-20", "rating": 3, "url": "https://openlibrary.org/works/OL8479867W/The_Name_of_the_Wind"},
       {"title": "The Wise Man's Fear", "date": "Now", "rating": 0, "url": "https://openlibrary.org/works/OL8479869W/The_Wise_Man%E2%80%99s_Fear"}
     ]
   },
@@ -22,7 +22,7 @@
     "date": "",
     "books": [
       {"title": "The Final Empire", "date": "2026-05-17", "rating": 5, "url": "http://openlibrary.org/works/OL5738148W/The_Final_Empire"},
-      {"title": "The Well of Ascension", "date": "2026-05-20", "rating": 5, "url": "https://openlibrary.org/works/OL5738150W/The_Well_of_Ascension"},
+      {"title": "The Well of Ascension", "date": "2026-05-20", "rating": 4, "url": "https://openlibrary.org/works/OL5738150W/The_Well_of_Ascension"},
       {"title": "The Hero of Ages", "date": "2026-05-25", "rating": 5, "url": "https://openlibrary.org/works/OL5738154W/The_Hero_of_Ages"}
     ]
   },
@@ -65,7 +65,7 @@
     "cover": "",
     "date": "2026-01-03",
     "books": [
-      {"title": "The Will of the Many", "date": "2025-12-29", "rating": 4, "url": "https://openlibrary.org/works/OL31088394W/The_Will_of_the_Many"},
+      {"title": "The Will of the Many", "date": "2025-12-29", "rating": 3, "url": "https://openlibrary.org/works/OL31088394W/The_Will_of_the_Many"},
       {"title": "The Strength of the Few", "date": "2026-01-03", "rating": 3, "url": "https://openlibrary.org/works/OL44370085W/The_Strength_of_the_Few"}
     ]
   },
@@ -78,7 +78,7 @@
     "cover": "",
     "date": "2025-12-27",
     "books": [
-      {"title": "The Mercy of Gods", "date": "2024-12-23", "rating": 4, "url": "https://openlibrary.org/books/OL50707940M/The_Mercy_of_Gods"},
+      {"title": "The Mercy of Gods", "date": "2024-12-23", "rating": 3, "url": "https://openlibrary.org/books/OL50707940M/The_Mercy_of_Gods"},
       {"title": "Livesuit", "date": "2025-12-27", "rating": 5, "url": "https://openlibrary.org/works/OL39179583W/Livesuit"}
     ]
   },
@@ -90,7 +90,7 @@
     "cover_url": "",
     "cover": "",
     "date": "2025-12-14",
-    "rating": 5
+    "rating": 4
   },
   {
     "title": "Hyperion",
@@ -100,7 +100,7 @@
     "cover_url": "",
     "cover": "",
     "date": "2025-10-21",
-    "rating": 5
+    "rating": 4
   },
   {
     "title": "Semiosis",
@@ -119,7 +119,7 @@
     "cover_url": "",
     "cover": "",
     "date": "2025-05-24",
-    "rating": 4
+    "rating": 2
   },
   {
     "title": "Blood Over Bright Haven",
@@ -129,7 +129,7 @@
     "cover_url": "",
     "cover": "",
     "date": "2025-05-20",
-    "rating": 4
+    "rating": 3
   },
   {
     "title": "Shadow of the Leviathan Series",
@@ -192,8 +192,8 @@
     "cover": "",
     "date": "",
     "books": [
-      {"title": "A Psalm for the Wild-Built", "date": "2025-01-25", "rating": 5, "url": "https://openlibrary.org/books/OL32177625M/A_Psalm_for_the_Wild-Built"},
-      {"title": "A Prayer for the Crown-Shy", "date": "2025-01-26", "rating": 5, "url": "https://openlibrary.org/books/OL35034781M/A_Prayer_for_the_Crown-Shy"}
+      {"title": "A Psalm for the Wild-Built", "date": "2025-01-25", "rating": 4, "url": "https://openlibrary.org/books/OL32177625M/A_Psalm_for_the_Wild-Built"},
+      {"title": "A Prayer for the Crown-Shy", "date": "2025-01-26", "rating": 4, "url": "https://openlibrary.org/books/OL35034781M/A_Prayer_for_the_Crown-Shy"}
     ]
   },
   {
@@ -224,7 +224,7 @@
     "cover_url": "https://covers.openlibrary.org/b/id/2378901-M.jpg",
     "cover": "the_player_of_games.jpg",
     "date": "2024-09-29",
-    "rating": 5
+    "rating": 4
   },
   {
     "title": "Ra",
@@ -264,7 +264,7 @@
     "cover_url": "",
     "cover": "",
     "date": "2024-08-10",
-    "rating": 4
+    "rating": 3
   },
   {
     "title": "Lessons in Chemistry",
@@ -274,7 +274,7 @@
     "cover_url": "",
     "cover": "",
     "date": "2024-08-02",
-    "rating": 5
+    "rating": 4
   },
   {
     "title": "Remarkably Bright Creatures",
@@ -342,7 +342,7 @@
     "cover_url": "https://covers.openlibrary.org/b/id/10618463-M.jpg",
     "cover": "the_left_hand_of_darkness.jpg",
     "date": "2023-10-04",
-    "rating": 4
+    "rating": 3
   },
   {
     "title": "The Commonwealth Saga Series",
@@ -393,7 +393,7 @@
     "cover_url": "https://covers.openlibrary.org/b/id/6621925-M.jpg",
     "cover": "a_deepness_in_the_sky_(zones_of_thought).jpg",
     "date": "2023-07-13",
-    "rating": 5
+    "rating": 4
   },
   {
     "title": "The Algebraist",
@@ -432,7 +432,7 @@
     "cover_url": "https://covers.openlibrary.org/b/id/197773-M.jpg",
     "cover": "stories_of_your_life_and_others.jpg",
     "date": "2023-05-06",
-    "rating": 5
+    "rating": 4
   },
   {
     "title": "Diaspora",
@@ -472,7 +472,7 @@
     "cover_url": null,
     "cover": "dogs_of_war.jpg",
     "date": "2023-02-07",
-    "rating": 4
+    "rating": 3
   },
   {
     "title": "Texicalaan Series",
@@ -491,7 +491,7 @@
         "cover_url": "https://covers.openlibrary.org/b/id/10145992-M.jpg",
         "cover": "a_memory_called_empire.jpg",
         "date": "2023-02-05",
-        "rating": 5
+        "rating": 4
       },
       {
         "title": "A Desolation Called Peace",
@@ -501,7 +501,7 @@
         "cover_url": "https://covers.openlibrary.org/b/id/10718806-M.jpg",
         "cover": "a_desolation_called_peace.jpg",
         "date": "2023-03-04",
-        "rating": 5
+        "rating": 4
       }
     ]
   },
@@ -594,7 +594,7 @@
     "cover_url": "https://covers.openlibrary.org/b/id/6501239-M.jpg",
     "cover": "a_fire_upon_the_deep.jpg",
     "date": "2022-09-13",
-    "rating": 5
+    "rating": 4
   },
   {
     "title": "Relativity",
@@ -614,7 +614,7 @@
     "cover_url": "https://covers.openlibrary.org/b/id/8507540-M.jpg",
     "cover": "digital_minimalism.jpg",
     "date": "2022-08-29",
-    "rating": 4
+    "rating": 3
   },
   {
     "title": "The Phoenix Project",
@@ -651,7 +651,7 @@
       {"title": "Cibola Burn", "date": "2022-10-07", "rating": 4, "url": ""},
       {"title": "Nemesis Games", "date": "2022-10-10", "rating": 3, "url": ""},
       {"title": "Babylon's Ashes", "date": "2022-10-13", "rating": 5, "url": ""},
-      {"title": "Persepolis Rising", "date": "2022-10-16", "rating": 5, "url": ""},
+      {"title": "Persepolis Rising", "date": "2022-10-16", "rating": 3, "url": ""},
       {"title": "Tiamat's Wrath", "date": "2022-10-21", "rating": 5, "url": ""},
       {"title": "Leviathan Falls", "date": "2022-10-26", "rating": 5, "url": ""}
     ]
@@ -674,7 +674,7 @@
     "cover_url": null,
     "cover": "alex_adventures_in_numberland.jpg",
     "date": "2020-12-26",
-    "rating": 5
+    "rating": 4
   },
   {
     "title": "The Three Body Problem",
@@ -724,7 +724,7 @@
     "cover_url": null,
     "cover": "flatland.jpg",
     "date": "2019-08-06",
-    "rating": 4
+    "rating": 3
   },
   {
     "title": "Cloud Atlas",
@@ -747,7 +747,7 @@
     "books": [
       {"title": "Red Rising", "date": "2018-11-05", "rating": 4, "url": ""},
       {"title": "Golden Son", "date": "2018-11-10", "rating": 5, "url": ""},
-      {"title": "Morning Star", "date": "2018-11-16", "rating": 5, "url": ""}
+      {"title": "Morning Star", "date": "2018-11-16", "rating": 4, "url": ""}
     ]
   },
   {
