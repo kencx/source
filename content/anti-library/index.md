@@ -1,6 +1,6 @@
 +++
 title = "anti-library"
-updated = "2025-06-24"
+updated = 2025-06-24
 template = "anti-library.html"
 draft = false
 
@@ -9,6 +9,6 @@ data = "content/anti-library/books.json"
 footnote = "Also see [library](/library)."
 +++
 
-{% quote(source="[Wikipedia](https://en.wikipedia.org/wiki/Antilibrary)") %}
+{% <quote source="[Wikipedia](https://en.wikipedia.org/wiki/Antilibrary)"> %}
 An antilibrary is a collection of books that are owned but have not yet been read.
-{% end %}
+{% </quote> %}

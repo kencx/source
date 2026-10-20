@@ -1,7 +1,7 @@
 +++
 title = "That VPC endpoints cannot connect to public APIGWs"
 date = "2025-02-19"
-updated = "2025-06-11"
+updated = 2026-10-20
 
 [taxonomies]
 tags = ["aws", "api-gateway", "vpc-endpoint"]
@@ -12,9 +12,9 @@ requests to AWS API Gateways in its VPC. This behaviour can lead to a `403
 Forbidden` error when attempting to connect to a public AWS API Gateway in the
 VPC.
 
-{% quote(source="[AWS](https://repost.aws/knowledge-center/api-gateway-vpc-connections)") %}
+{% <quote source="[AWS](https://repost.aws/knowledge-center/api-gateway-vpc-connections)"> %}
 The HTTP 403 Forbidden error occurs when you turn on DNS for an API Gateway interface VPC endpoint that's associated with a VPC. In this case, all requests from the VPC to API Gateway APIs resolve to that interface VPC endpoint. However, you can't use a VPC endpoint to connect to public APIs.
-{% end %}
+{% </quote> %}
 
 This occurs even for CNAMEs of public API Gateways.
 

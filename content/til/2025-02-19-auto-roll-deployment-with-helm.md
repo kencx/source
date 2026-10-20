@@ -1,7 +1,7 @@
 +++
 title = "How to auto roll deployments With Helm"
 date = "2025-02-19"
-updated = "2025-02-19"
+updated = 2026-10-20
 
 [taxonomies]
 tags = ["helm", "kubernetes"]
@@ -16,7 +16,9 @@ spec:
   template:
     metadata:
       annotations:
+        {%- raw %}
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {%- endraw %}
 [...]
 ```
 

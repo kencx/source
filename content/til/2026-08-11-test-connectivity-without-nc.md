@@ -1,7 +1,7 @@
 +++
 title = "How to test network connectivity without nc or telnet"
 date = "2026-08-11"
-updated = "2026-08-11"
+updated = 2026-10-20
 
 [taxonomies]
 tags = [ "linux", "networking", "bash" ]
@@ -25,7 +25,7 @@ we can ensure an output is always returned:
 
 [HTTP requests are also possible](https://rednafi.com/misc/http-requests-via-dev-tcp/).
 
-{% details(summary="Copied shameless from above for archival purposes") %}
+{% <details summary="Copied shameless from above for archival purposes"> %}
 ```sh
 #!/bin/bash
 
@@ -44,7 +44,7 @@ cat <&3
 # Close the file descriptor, terminating the TCP connection
 exec 3>&-
 ```
-{% end %}
+{% </details> %}
 
 ## References
 

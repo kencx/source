@@ -10,7 +10,7 @@
   {{ section.content | safe }}
   {% endif %}
 
-  {% if paginator.pages %}
+  {% if paginator %}
   <ul class="section">
     {% for page in paginator.pages %}
       {% include "partials/post.html" %}

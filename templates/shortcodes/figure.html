@@ -1,17 +1,6 @@
+{% component figure(src, ...attrs) %}
 <figure class="center">
-  <img src="{{ src | safe }}"
-    {% if body %}
-    alt="{{ body | safe }}"
-    {% endif %}
-    {% if width %}
-    width="{{ width }}"
-    {% endif %}
-    {% if height %}
-    height="{{ height }}"
-    {% endif %}
-    {% if loading %}
-    loading="{{ loading }}"
-    {% endif %}
-  />
+  <img src="{{ src | safe }}" {% if body %} alt="{{ body | safe }}" {% endif %} {% if attrs.width %} width="{{ attrs.width }}" {% endif %} {% if attrs.height %} height="{{ attrs.height }}" {% endif %} {% if attrs.loading %} loading="{{ attrs.loading }}" {% endif %}/>
   <figcaption>{{ body | markdown(inline=true) | safe }}</figcaption>
 </figure>
+{% endcomponent figure %}

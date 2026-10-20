@@ -1,7 +1,7 @@
 +++
 title = "How to limit authorization via OIDC condition context keys in AWS IAM trust policies"
 date = "2026-08-05"
-updated = "2026-08-05"
+updated = 2026-10-20
 
 [taxonomies]
 tags = [
@@ -17,9 +17,9 @@ When assuming AWS IAM roles from a GitLab CI/CD job using OIDC, it is possible
 limit authorization to a specific group, project, branch or tag using additional
 condition context keys in the role's trust policy.
 
-{% alert(type="Note") %}
+{% <alert type="Note"> %}
 This assumes you have setup GitLab as an IAM OIDC identity provider in AWS.
-{% end %}
+{% </alert> %}
 
 On GitLab.com, AWS supports [many different condition
 keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_iam-condition-keys.html#condition-keys-wif)

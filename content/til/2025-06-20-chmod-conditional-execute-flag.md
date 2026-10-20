@@ -1,7 +1,7 @@
 +++
 title = "About the conditional execute flag in chmod"
 date = "2025-06-20"
-updated = "2025-06-20"
+updated = 2026-10-20
 draft = false
 [taxonomies]
 tags = ["linux"]
@@ -9,10 +9,10 @@ tags = ["linux"]
 
 The conditional execute flag `X` (uppercase) is a special flag in `chmod` that:
 
-{% quote(source="[chmod(1)](https://www.mankier.com/1/chmod)") %}
+{% <quote source="[chmod(1)](https://www.mankier.com/1/chmod)"> %}
 execute/search only if the file is a directory or already has execute
 permission for some user (X)
-{% end %}
+{% </quote> %}
 
 In other words, it ignores any regular files that does not have the execute bit
 `x` set (non-executables). This is useful when trying to recursively `chmod +x`

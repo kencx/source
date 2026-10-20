@@ -1,7 +1,7 @@
 +++
 title = "That CloudFront VPC origins and Websockets are broken"
 date = "2025-03-02"
-updated = "2025-06-11"
+updated = 2026-10-20
 
 [taxonomies]
 tags = ["aws", "alb", "cloudfront", "websockets"]
@@ -10,9 +10,9 @@ tags = ["aws", "alb", "cloudfront", "websockets"]
 toc = false
 +++
 
-{% details(summary="Update (2025-06)") %}
+{% <details summary="Update (2025-06)"> %}
 From an [update to the AWS docs](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-vpc-origins.html#vpc-origin-prerequisites), Websockets are not supported for VPC origins.
-{% end %}
+{% </details> %}
 
 As of Mar 2025, CloudFront's new [VPC
 origins](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-vpc-origins.html)

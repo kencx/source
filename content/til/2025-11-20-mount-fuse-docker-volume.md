@@ -1,7 +1,7 @@
 +++
 title = "How to use a FUSE-mounted directory as a Docker volume"
 date = "2025-11-20"
-updated = "2025-11-20"
+updated = 2026-10-20
 
 [taxonomies]
 tags = ["fuse", "docker"]
@@ -10,7 +10,7 @@ tags = ["fuse", "docker"]
 We need to allow the Docker user `docker` to access the FUSE-mounted filesystem
 with the `allow_other` or `allow_root` mount options
 
-{% quote(source="[fuse(8)](https://man.archlinux.org/man/mount.fuse.8.en)") %}
+{% <quote source="[fuse(8)](https://man.archlinux.org/man/mount.fuse.8.en)"> %}
 allow_other
 
 
@@ -18,7 +18,7 @@ This option overrides the security measure restricting file access to the user
 mounting the filesystem. So all users (including root) can access the files.
 This option is by default only allowed to root, but this restriction can be
 removed with a configuration option described in the previous section.
-{% end %}
+{% </quote> %}
 
 However, to specify these mount options, we must set the following configuration
 line in `/etc/fuse.conf`:

@@ -1,7 +1,7 @@
 +++
 title = "How to deploy a static site with a bare git repository"
 date = "2025-10-30"
-updated = 2026-03-31
+updated = 2026-10-20
 
 [taxonomies]
 tags = ["git"]
@@ -53,9 +53,9 @@ EOF
 $ chmod u+x blog.git/hooks/post-receive
 ```
 
-{% alert(type="Note") %}
+{% <alert type="Note"> %}
 This script builds the static files in the directory `$TARGET/public`.
-{% end %}
+{% </alert> %}
 
 4. On your local system, setup a new remote in the git repository,
 

@@ -1,7 +1,7 @@
 +++
 title = "I built a terminal hotkey cheatsheet"
 date = "2024-02-22"
-updated = "2024-02-22"
+updated = 2026-10-20
 
 [taxonomies]
 tags = ["keybinds", "sxhkd", "tui", "hotkeys"]
@@ -10,11 +10,11 @@ tags = ["keybinds", "sxhkd", "tui", "hotkeys"]
 toc = true
 +++
 
-{% details(summary="Summary") %}
+{% <details summary="Summary"> %}
 I discuss how and why I built my own application
 [keyb](https://github.com/kencx/keyb) to remember
 custom hotkeys in Linux.
-{% end %}
+{% </details> %}
 
 When I first began learning Vim, I also started using tmux and a new window
 manager (bspwm) at the same time. In hindsight, this was a bad idea
@@ -77,11 +77,11 @@ super + space             # rofi
 
 We can combine this with `fzf` to generate a table of hotkeys with fuzzy search:
 
-{% figure(src="sxhkd_fzf.png") %}
+{% <figure src="sxhkd_fzf.png"> %}
 A handy sxhkd cheatsheet
-{% end %}
+{% </figure> %}
 
-{% details(summary="Full script") %}
+{% <details summary="Full script"> %}
 Use a hotkey to activate the script and you got an quick reference
 cheatsheet!
 
@@ -99,7 +99,7 @@ awk '/^[a-zA-Z{]/ && last {print $0,"\t",last} {last=""} /^#/{last=$0}' \
         --prompt='keys > ' \
 		--ansi
 ```
-{% end %}
+{% </details> %}
 
 ## Towards A Global Cheatsheet
 
@@ -119,9 +119,9 @@ comes really close to what I wanted, but there were two problems:
 2. At a glance, its quite difficult to find the hotkey I want since there's no
    search function
 
-{% figure(src="awesomewm_shortcut_menu.png") %}
+{% <figure src="awesomewm_shortcut_menu.png"> %}
 awesomewm shortcut menu. [Source](https://stackoverflow.com/questions/73519361/awesome-wm-shortcut-to-toggle-or-make-a-window-sticky-this-shortcut-is-not-show)
-{% end %}
+{% </figure> %}
 
 ## Building my own solution
 
@@ -130,9 +130,9 @@ find one, so I built my own: [keyb](https://github.com/kencx/keyb). Its built in
 Go and the fantastic
 [bubbletea](https://github.com/charmbracelet/bubbletea/tree/master) framework.
 
-{% figure(src="keyb.gif") %}
+{% <figure src="keyb.gif"> %}
 keyb demo
-{% end %}
+{% </figure> %}
 
 `keyb` requires you to create a hotkey file (`keyb.yml`) which you populate with
 any keybinds you want to show:
@@ -158,9 +158,9 @@ This allows you to split your hotkeys in any way you like. For example, I split
 my bspwm and tmux hotkeys based on their purpose, and my neovim hotkeys based on
 their plugins.
 
-{% figure(src="keyb_split.png") %}
+{% <figure src="keyb_split.png"> %}
 All hotkeys related to copy and pasting in tmux are in the tmux (copy) section
-{% end %}
+{% </figure> %}
 
 The other key feature of `keyb` is its fuzzy search. There are two search modes:
 

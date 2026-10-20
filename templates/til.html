@@ -3,7 +3,7 @@
 <div>
   <h2>
     {% set title = page.title | split(pat=" ") %}
-    TIL {{ title | first | lower }} {{ title | slice(start=1) | join(sep=" ") }}
+    TIL {{ title | first | lower }} {{ title[1:] | join(sep=" ") }}
     <div class="meta">
       {{ page.date | date(format="%Y-%m-%d") }}
     • {{ page.reading_time }} min{{ page.reading_time | pluralize }}

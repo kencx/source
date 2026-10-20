@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8" />
     <title>
+        {% set sec = get_section(path="_index.md") %}
         {% if title %}
             {%- set suffix = title -%}
-        {% elif section.title -%}
-            {%- set suffix = section.title -%}
+        {% elif sec.title -%}
+            {%- set suffix = sec.title -%}
         {% elif page.title %}
             {%- set suffix = page.title -%}
         {% elif term.name %}
